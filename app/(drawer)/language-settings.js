@@ -5,7 +5,6 @@ import i18n, { getSystemLocales } from '../../utils/i18n';
 const languages = [
   { code: 'en', name: 'English', dir: 'LTR' },
   { code: 'ar', name: 'العربية', dir: 'RTL' },
-  { code: 'he', name: 'עברית', dir: 'RTL' },
 ];
 
 export default function LanguageSettings() {

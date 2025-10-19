@@ -15,6 +15,13 @@ const translations = {
     LANGUAGE: 'Language',
     DIRECTION: 'Layout Direction',
     WELCOME: 'Welcome to the app',
+    REGISTER: 'Register',
+    LOGIN: 'Login',
+    MY_PROFILE: 'My Profile',
+    PRIVACY_POLICY: 'Privacy Policy',
+    CONTACT_US: 'Contact Us',
+    LOGOUT: 'Log Out',
+    NEWS_FEED: 'News Feed',
   },
   ar: {
     HOME: 'الرئيسية',
@@ -25,17 +32,49 @@ const translations = {
     LANGUAGE: 'اللغة',
     DIRECTION: 'اتجاه التخطيط',
     WELCOME: 'مرحباً بك في التطبيق',
+    REGISTER: 'Register',
+    LOGIN: 'Login',
+    MY_PROFILE: 'My Profile',
+    PRIVACY_POLICY: 'Privacy Policy',
+    CONTACT_US: 'Contact Us',
+    LOGOUT: 'Log Out',
+    NEWS_FEED: 'News Feed',
   },
-  he: {
-    HOME: 'בית',
-    SETTINGS: 'הגדרות',
-    PROFILE: 'פרופיל',
-    ABOUT: 'אודות',
-    DETAILS: 'פרטים',
-    LANGUAGE: 'שפה',
-    DIRECTION: 'כיוון פריסה',
-    WELCOME: 'ברוך הבא לאפליקציה',
-  }
+    ps: {
+    HOME: 'کورپاڼه',
+    SETTINGS: 'تنظیمات',
+    PROFILE: 'پروفایل',
+    ABOUT: 'په اړه',
+    DETAILS: 'تفصیلات',
+    LANGUAGE: 'ژبه',
+    DIRECTION: 'د ترتیب لوری',
+    WELCOME: 'اپ ته ښه راغلاست',
+    REGISTER: 'راجستر',
+    LOGIN: 'ننوتل',
+    MY_PROFILE: 'زما پروفایل',
+    PRIVACY_POLICY: 'د محرمیت تګلاره',
+    CONTACT_US: 'اړیکه ونیسئ',
+    LOGOUT: 'وتل',
+    NEWS_FEED: 'خبرونه',
+  },
+
+  pa: {
+    HOME: 'خانه',
+    SETTINGS: 'تنظیمات',
+    PROFILE: 'پروفایل',
+    ABOUT: 'درباره ما',
+    DETAILS: 'جزئیات',
+    LANGUAGE: 'زبان',
+    DIRECTION: 'جهت صفحه',
+    WELCOME: 'به برنامه خوش آمدید',
+    REGISTER: 'ثبت‌نام',
+    LOGIN: 'ورود',
+    MY_PROFILE: 'پروفایل من',
+    PRIVACY_POLICY: 'سیاست محرمانگی',
+    CONTACT_US: 'تماس با ما',
+    LOGOUT: 'خروج',
+    NEWS_FEED: 'اخبار',
+  },
 };
 
 i18n.translations = translations;
@@ -48,7 +87,7 @@ export const getCurrentLocale = () => {
 };
 
 export const isRTL = (locale = i18n.locale) => {
-  return locale.startsWith('ar') || locale.startsWith('he');
+  return locale.startsWith('ar') || locale.startsWith('ps') || locale.startsWith('pa');
 };
 
 export const changeLanguage = (locale) => {

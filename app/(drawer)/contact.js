@@ -1,9 +1,9 @@
 import { Text, View } from 'react-native';
 
-export default function WelcomeScreen() {
+export default function AboutScreen() {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text style={{ fontSize: 20 }}>Welcome</Text>
+      <Text style={{ fontSize: 20 }}>Contact Us</Text>
     </View>
   );
 }

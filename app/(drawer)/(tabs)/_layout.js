@@ -21,12 +21,6 @@ export default function TabsLayout() {
         }} 
       />
       <Tabs.Screen 
-        name="settings" 
-        options={{ 
-          title: i18n.t('SETTINGS'),
-        }} 
-      />
-      <Tabs.Screen 
         name="profile" 
         options={{ 
           title: i18n.t('PROFILE'),

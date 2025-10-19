@@ -10,9 +10,6 @@ export default function HomeScreen() {
       <Text style={[styles.title, { textAlign: isRTL ? 'right' : 'left' }]}>
         {i18n.t('HOME')}
       </Text>
-      <Text style={[styles.subtitle, { textAlign: isRTL ? 'right' : 'left' }]}>
-        {i18n.t('WELCOME')}
-      </Text>
       <Text style={[styles.info, { textAlign: isRTL ? 'right' : 'left' }]}>
         Current direction: {isRTL ? 'RTL' : 'LTR'}
       </Text>
