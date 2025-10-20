@@ -128,7 +128,7 @@ export const globalStyle = StyleSheet.create(
   inputIcon: { paddingHorizontal: 14, fontSize: 16 },
   input: {
     flex: 1,
-    paddingHorizontal: 14,
+    paddingHorizontal: 0,
     paddingVertical: 16,
     color: TEXT,
     fontSize: 16,
@@ -143,8 +143,8 @@ export const globalStyle = StyleSheet.create(
   inputRight: { paddingHorizontal: 12 },
   error: { color: '#EF4444', marginTop: 6, fontSize: 12, fontWeight: '500', textAlign: 'left' },
   eye: { fontWeight: '700', color: PRIMARY, fontSize: 14 },
-  fieldContainer: { marginBottom: 16 },
-  bloodGroupScroll: { marginHorizontal: -20, paddingHorizontal: 20 },
+  fieldContainer: { marginBottom: 16, paddingHorizontal: 20 },
+  bloodGroupScroll: { marginHorizontal: -20 },
   bloodGroupContent: {
     flexDirection: 'row',
     paddingVertical: 8,
@@ -373,5 +373,98 @@ export const globalStyle = StyleSheet.create(
     color: PRIMARY,
     fontWeight: '700',
   },
+
+  dropdownButton: {
+    borderWidth: 1.5,
+    borderColor: '#FFE6E6',
+    borderRadius: 14,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#FFFBFB',
+    paddingVertical: 16,
+    paddingHorizontal: 16,
+    justifyContent: 'space-between',
+  },
+  dropdownButtonRTL: {
+    flexDirection: 'row-reverse',
+  },
+  dropdownButtonText: {
+    fontSize: 16,
+    color: TEXT,
+    fontWeight: '500',
+    flex: 1,
+  },
+  dropdownPlaceholder: {
+    color: MUTED,
+  },
+  dropdownArrow: {
+    fontSize: 12,
+    color: MUTED,
+    marginLeft: 8,
+  },
+  dropdownArrowRTL: {
+    marginLeft: 0,
+    marginRight: 8,
+  },
+  dropdownError: {
+    borderColor: '#EF4444',
+  },
+  dropdownList: {
+    position: 'absolute',
+    top: '100%',
+    left: 0,
+    right: 0,
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1.5,
+    borderColor: '#FFE6E6',
+    borderRadius: 14,
+    maxHeight: 200,
+    zIndex: 1000,
+    marginTop: 8,
+    elevation: 8,
+    shadowColor: PRIMARY,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 12,
+  },
+  dropdownListRTL: {
+    left: 0,
+    right: 0,
+  },
+  dropdownScroll: {
+    maxHeight: 200,
+  },
+  dropdownItem: {
+    padding: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#FFE6E6',
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#FFFBFB',
+  },
+  dropdownItemRTL: {
+    flexDirection: 'row-reverse',
+  },
+  dropdownItemSelected: {
+    backgroundColor: '#FEF2F2',
+    borderLeftWidth: 4,
+    borderLeftColor: PRIMARY,
+  },
+  dropdownItemSelectedRTL: {
+    borderLeftWidth: 0,
+    borderRightWidth: 4,
+    borderRightColor: PRIMARY,
+  },
+  dropdownItemText: {
+    fontSize: 16,
+    color: TEXT,
+    fontWeight: '500',
+    flex: 1,
+  },
+  dropdownItemTextSelected: {
+    color: PRIMARY,
+    fontWeight: '700',
+  },
+  
 }
 );

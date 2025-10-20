@@ -2,9 +2,10 @@
 import { Ionicons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect, useRef } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import { Animated, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { AuthContext } from '../../../contexts/authContext';
 import { useLanguage } from '../../../contexts/LanguageContext';
 import i18n from '../../../utils/i18n';
 
@@ -16,8 +17,8 @@ const COLORS = {
   shadow: '#000000',
 };
 
+
 export default function TabsLayout() {
-  const { isRTL } = useLanguage();
 
   return (
     <Tabs
@@ -28,8 +29,38 @@ export default function TabsLayout() {
         tabBarHideOnKeyboard: true,
       }}
     >
-      <Tabs.Screen name="index" options={{ title: i18n.t('HOME') }} />
-      <Tabs.Screen name="profile" options={{ title: i18n.t('PROFILE') }} />
+      <Tabs.Screen 
+        name="index" 
+        options={{ 
+          title: i18n.t('HOME'),
+          headerShown: true,
+        }} 
+      />
+      
+      {/* Conditionally show profile or login based on auth status */}
+      <Tabs.Screen 
+        name="profile" 
+        options={{ 
+          title: i18n.t('PROFILE'),
+          headerShown: true,
+        }}
+      />
+      
+      {/* Keep login and register as hidden tabs for navigation */}
+      <Tabs.Screen 
+        name="login" 
+        options={{ 
+          href: null, // Hide from tab bar
+          headerShown: true,
+        }} 
+      />
+      <Tabs.Screen 
+        name="register" 
+        options={{ 
+          href: null, // Hide from tab bar
+          headerShown: true,
+        }} 
+      />
     </Tabs>
   );
 }
@@ -40,6 +71,7 @@ export default function TabsLayout() {
 function RedHeader({ options, navigation, route }) {
   const insets = useSafeAreaInsets();
   const { isRTL } = useLanguage();
+  const { login, user } = useContext(AuthContext);
   
   // Animation values
   const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -52,31 +84,37 @@ function RedHeader({ options, navigation, route }) {
       // First animate circles
       Animated.timing(circleScale, {
         toValue: 1,
-        duration: 600,
+        duration: 0,
         useNativeDriver: true,
       }),
       // Then header content
       Animated.parallel([
         Animated.timing(fadeAnim, {
           toValue: 1,
-          duration: 400,
+          duration: 0,
           useNativeDriver: true,
         }),
         Animated.timing(slideAnim, {
           toValue: 0,
-          duration: 500,
+          duration: 100,
           useNativeDriver: true,
         }),
       ]),
     ]).start();
   }, []);
 
-  const title =
-    typeof options.title === 'string'
-      ? options.title
-      : route?.name === 'index'
-      ? i18n.t('HOME')
-      : i18n.t('PROFILE');
+  // Determine title based on route and auth status
+  const getTitle = () => {
+    if (typeof options.title === 'string') return options.title;
+    
+    if (route?.name === 'index') return i18n.t('HOME');
+    if (route?.name === 'profile') return i18n.t('PROFILE');
+    if (route?.name === 'login') return i18n.t('LOGIN');
+    
+    return i18n.t('PROFILE');
+  };
+
+  const title = getTitle();
 
   const openDrawer = () => {
     // Add press animation
@@ -190,6 +228,12 @@ function RedHeader({ options, navigation, route }) {
           <Text numberOfLines={1} style={styles.headerTitle}>
             {title}
           </Text>
+          {/* Show user name if logged in and on profile page */}
+          {login && user?.name && route?.name === 'profile' && (
+            <Text numberOfLines={1} style={styles.userName}>
+              {user.name}
+            </Text>
+          )}
         </Animated.View>
 
         {/* Right: bell with pulse animation */}
@@ -201,16 +245,7 @@ function RedHeader({ options, navigation, route }) {
             pressed && styles.iconBtnPressed
           ]}
         >
-          {/* {({ pressed }) => (
-            <Animated.View style={[
-              styles.bellBadge,
-              {
-                transform: [{ scale: pressed ? 0.9 : 1 }]
-              }
-            ]}>
-              <Ionicons name="notifications-outline" size={18} color="#fff" />
-            </Animated.View>
-          )} */}
+          {/* Bell icon can be added back if needed */}
         </Pressable>
       </View>
     </Animated.View>
@@ -218,11 +253,12 @@ function RedHeader({ options, navigation, route }) {
 }
 
 /* =========================
-   Enhanced Bottom Tab Bar with Smooth Animations
+   Enhanced Bottom Tab Bar with Auth Logic
    ========================= */
 function CustomTabBar({ state, navigation }) {
   const insets = useSafeAreaInsets();
   const { isRTL } = useLanguage();
+  const { login, logout } = useContext(AuthContext);
   
   // Animation refs for each tab
   const tabAnimations = useRef(
@@ -265,31 +301,45 @@ function CustomTabBar({ state, navigation }) {
     });
   }, [state.index]);
 
-  const getLabel = (name) =>
-    name === 'index' ? i18n.t('HOME') :
-    name === 'profile' ? i18n.t('PROFILE') : name;
+  const getLabel = (name) => {
+    if (name === 'index') return i18n.t('HOME');
+    if (name === 'profile') return i18n.t('PROFILE');
+    return name;
+  };
 
-  const handleTabPress = (route, index, isFocused) => {
-    // Ripple effect animation
-    const rippleAnim = new Animated.Value(0);
-    
-    Animated.sequence([
-      Animated.timing(rippleAnim, {
-        toValue: 1,
-        duration: 300,
-        useNativeDriver: true,
-      }),
-      Animated.timing(rippleAnim, {
-        toValue: 0,
-        duration: 200,
-        useNativeDriver: true,
-      }),
-    ]).start();
+const handleTabPress = (route, index, isFocused) => {
+  // Ripple effect animation
+  const rippleAnim = new Animated.Value(0);
+  
+  Animated.sequence([
+    Animated.timing(rippleAnim, {
+      toValue: 1,
+      duration: 300,
+      useNativeDriver: true,
+    }),
+    Animated.timing(rippleAnim, {
+      toValue: 0,
+      duration: 200,
+      useNativeDriver: true,
+    }),
+  ]).start();
 
-    if (!isFocused) {
+  if (!isFocused) {
+    // Special handling for profile tab based on auth status
+    if (route.name === 'profile' && !login) {
+      // Navigate to login if not authenticated - use the correct path
+      navigation.navigate('login'); // Just use 'login' without the full path
+    } else {
+      // Normal navigation for other tabs
       navigation.navigate(route.name);
     }
-  };
+  }
+};
+
+  // Filter routes to only show index and profile in tab bar
+  const visibleRoutes = state.routes.filter(route => 
+    route.name === 'index' || route.name === 'profile'
+  );
 
   return (
     <View style={[styles.wrapper, { paddingBottom: Math.max(insets.bottom, 10) }]}>
@@ -322,11 +372,13 @@ function CustomTabBar({ state, navigation }) {
           ]} 
         />
 
-        {state.routes.map((route, index) => {
-          const isFocused = state.index === index;
-          const anim = tabAnimations[index];
+        {visibleRoutes.map((route, index) => {
+          // Map the filtered index to the original state index
+          const originalIndex = state.routes.findIndex(r => r.key === route.key);
+          const isFocused = state.index === originalIndex;
+          const anim = tabAnimations[originalIndex];
 
-          const onPress = () => handleTabPress(route, index, isFocused);
+          const onPress = () => handleTabPress(route, originalIndex, isFocused);
 
           const icon = route.name === 'index' ? 'home' : 'person';
 
@@ -430,6 +482,13 @@ const styles = StyleSheet.create({
     color: COLORS.text,
     fontWeight: '700',
     fontSize: 18,
+    textAlign: 'center',
+  },
+  userName: {
+    color: 'rgba(255,255,255,0.8)',
+    fontSize: 12,
+    fontWeight: '500',
+    marginTop: 2,
   },
   iconBtn: {
     width: 36,

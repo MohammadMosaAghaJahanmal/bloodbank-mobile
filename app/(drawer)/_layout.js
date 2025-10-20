@@ -43,8 +43,8 @@ export default function DrawerLayout() {
       <Drawer.Screen name="about" options={{ title: I18n.t('ABOUT') }} />
       <Drawer.Screen name="contact" options={{ title: I18n.t('CONTACT_US') }} />
       <Drawer.Screen name="language-settings" options={{ title: I18n.t('LANGUAGE') }} />
-      <Drawer.Screen name="register" options={{ title: I18n.t('REGISTER') }} />
-      <Drawer.Screen name="login" options={{ title: I18n.t('LOGIN') }} />
+      {/* <Drawer.Screen name="register" options={{ title: I18n.t('REGISTER') }} /> */}
+      {/* <Drawer.Screen name="login" options={{ title: I18n.t('LOGIN') }} /> */}
     </Drawer>
   );
 }

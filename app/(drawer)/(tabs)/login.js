@@ -1,3 +1,4 @@
+import { useNavigation } from 'expo-router';
 import { useMemo, useState } from 'react';
 import {
   ActivityIndicator,
@@ -10,17 +11,19 @@ import {
   View
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Input from '../../components/GeneralInput';
-import { useRTLStyles } from '../../contexts/useRTLStyles';
+import Input from '../../../components/GeneralInput';
+import { useRTLStyles } from '../../../contexts/useRTLStyles';
+
+
 const PRIMARY = '#E73C3C';
 const BG = '#FDF2F2';
 const TEXT = '#1E1E1E';
 const MUTED = '#7E7E7E';
 
-export default function LoginScreen({ navigation }) {
+export default function LoginScreen() {
   const { createRTLStyles } = useRTLStyles();
   const styles = createRTLStyles(baseStyles);
-
+  const navigation = useNavigation()
   const [loginIdentifier, setLoginIdentifier] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -142,7 +145,8 @@ export default function LoginScreen({ navigation }) {
 
   // Handle sign up navigation
   const handleSignUp = () => {
-    navigation?.navigate?.('RegisterScreen');
+    console.log("REGISTER")
+    navigation?.navigate?.('register');
   };
 
 
@@ -160,11 +164,11 @@ export default function LoginScreen({ navigation }) {
         >
           {/* Header with Blood Drop Logo */}
           <View style={styles.header}>
-            <View style={styles.logoContainer}>
+            {/* <View style={styles.logoContainer}>
               <View style={styles.bloodDropLogo}>
                 <Text style={styles.bloodDropText}>🩸</Text>
               </View>
-            </View>
+            </View> */}
             <Text style={styles.title}>Welcome Back</Text>
             <Text style={styles.subtitle}>Sign in to continue saving lives</Text>
           </View>
@@ -173,7 +177,7 @@ export default function LoginScreen({ navigation }) {
           <View style={styles.card}>
             <Input
               label="Email or Phone Number *"
-              placeholder="Enter your email or phone number"
+              placeholder="Email or Phone"
               value={loginIdentifier}
               onChangeText={setLoginIdentifier}
               onBlur={() => setTouched(t => ({ ...t, loginIdentifier: true }))}
@@ -185,7 +189,7 @@ export default function LoginScreen({ navigation }) {
 
             <Input
               label="Password *"
-              placeholder="Enter your password"
+              placeholder="Password"
               value={password}
               onChangeText={setPassword}
               onBlur={() => setTouched(t => ({ ...t, password: true }))}
@@ -259,7 +263,8 @@ const baseStyles = {
   },
   container: { 
     flexGrow: 1,
-    padding: 24,
+    padding: 20,
+    paddingTop: 0,
     justifyContent: 'center',
   },
   header: { 

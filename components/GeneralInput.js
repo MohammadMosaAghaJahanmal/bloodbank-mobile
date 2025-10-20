@@ -46,7 +46,6 @@ const Input = React.memo(function Input({
           autoCorrect={false}
           spellCheck={false}
           // helpful extras
-          blurOnSubmit={blurOnSubmit}
           onSubmitEditing={onSubmitEditing}
         />
         {right ? <View style={styles.inputRight}>{right}</View> : null}

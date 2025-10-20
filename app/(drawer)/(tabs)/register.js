@@ -1,32 +1,67 @@
+import * as Location from 'expo-location';
+import { useNavigation } from 'expo-router';
 import { useEffect, useMemo, useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
   Image,
   KeyboardAvoidingView,
-  PermissionsAndroid,
   Platform,
   ScrollView,
   Text,
-  TextInput,
   TouchableOpacity,
   View
 } from 'react-native';
-import Geolocation from 'react-native-geolocation-service';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useRTLStyles } from '../../contexts/useRTLStyles'; // Adjust path as needed
-import { globalStyle } from '../../utils/styles';
+import GeneralInput from '../../../components/GeneralInput';
+import { useRTLStyles } from '../../../contexts/useRTLStyles';
+import serverPath from '../../../utils/serverPath';
+import { globalStyle } from '../../../utils/styles';
+// Afghanistan provinces in multiple languages
+const AFGHANISTAN_PROVINCES = [
+  { id: 'kabul', en: 'Kabul', ps: 'کابل', prs: 'کابل' },
+  { id: 'kandahar', en: 'Kandahar', ps: 'کندهار', prs: 'قندهار' },
+  { id: 'herat', en: 'Herat', ps: 'هرات', prs: 'هرات' },
+  { id: 'balkh', en: 'Balkh', ps: 'بلخ', prs: 'بلخ' },
+  { id: 'nangarhar', en: 'Nangarhar', ps: 'ننگرهار', prs: 'ننگرهار' },
+  { id: 'helmand', en: 'Helmand', ps: 'هلمند', prs: 'هلمند' },
+  { id: 'kunduz', en: 'Kunduz', ps: 'کندز', prs: 'کندز' },
+  { id: 'ghazni', en: 'Ghazni', ps: 'غزني', prs: 'غزنی' },
+  { id: 'badghis', en: 'Badghis', ps: 'بادغیس', prs: 'بادغیس' },
+  { id: 'baghlan', en: 'Baghlan', ps: 'بغلان', prs: 'بغلان' },
+  { id: 'bamyan', en: 'Bamyan', ps: 'بامیان', prs: 'بامیان' },
+  { id: 'daykundi', en: 'Daykundi', ps: 'دایکندی', prs: 'دایکندی' },
+  { id: 'farah', en: 'Farah', ps: 'فراه', prs: 'فراه' },
+  { id: 'faryab', en: 'Faryab', ps: 'فاریاب', prs: 'فاریاب' },
+  { id: 'ghor', en: 'Ghor', ps: 'غور', prs: 'غور' },
+  { id: 'jowzjan', en: 'Jowzjan', ps: 'جوزجان', prs: 'جوزجان' },
+  { id: 'khost', en: 'Khost', ps: 'خوست', prs: 'خوست' },
+  { id: 'kunar', en: 'Kunar', ps: 'کونړ', prs: 'کنر' },
+  { id: 'laghman', en: 'Laghman', ps: 'لغمان', prs: 'لغمان' },
+  { id: 'logar', en: 'Logar', ps: 'لوگر', prs: 'لوگر' },
+  { id: 'nuristan', en: 'Nuristan', ps: 'نورستان', prs: 'نورستان' },
+  { id: 'paktia', en: 'Paktia', ps: 'پکتیا', prs: 'پکتیا' },
+  { id: 'paktika', en: 'Paktika', ps: 'پکتیکا', prs: 'پکتیکا' },
+  { id: 'panjshir', en: 'Panjshir', ps: 'پنجشیر', prs: 'پنجشیر' },
+  { id: 'parwan', en: 'Parwan', ps: 'پروان', prs: 'پروان' },
+  { id: 'samangan', en: 'Samangan', ps: 'سمنگان', prs: 'سمنگان' },
+  { id: 'sar-e-pol', en: 'Sar-e Pol', ps: 'سرپل', prs: 'سرپل' },
+  { id: 'takhar', en: 'Takhar', ps: 'تخار', prs: 'تخار' },
+  { id: 'uruzgan', en: 'Uruzgan', ps: 'اروزگان', prs: 'اروزگان' },
+  { id: 'wardak', en: 'Wardak', ps: 'وردګ', prs: 'وردک' },
+  { id: 'zabul', en: 'Zabul', ps: 'زابل', prs: 'زابل' }
+];
 
-const MUTED = '#7E7E7E';
-
-export default function RegisterScreen({ navigation }) {
-  const { createRTLStyles, isRTL } = useRTLStyles();
+export default function RegisterScreen() {
+  const { createRTLStyles, isRTL, language } = useRTLStyles();
   const styles = createRTLStyles(globalStyle);
   
+  const navigation = useNavigation();
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [locationLoading, setLocationLoading] = useState(false);
+  const [showProvinceDropdown, setShowProvinceDropdown] = useState(false);
 
   // Step 1 fields
   const [profileImage, setProfileImage] = useState(null);
@@ -35,6 +70,7 @@ export default function RegisterScreen({ navigation }) {
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [showPass, setShowPass] = useState(false);
+  const [province, setProvince] = useState('');
 
   // Step 2 fields
   const [bloodGroup, setBloodGroup] = useState('');
@@ -48,31 +84,35 @@ export default function RegisterScreen({ navigation }) {
   // Blood group options
   const bloodGroups = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
 
+  // Get province name based on current language
+  const getProvinceName = (provinceData) => {
+    switch (language) {
+      case 'ps': return provinceData.ps;
+      case 'prs': return provinceData.prs;
+      default: return provinceData.en;
+    }
+  };
+
+  // Get selected province display name
+  const getSelectedProvinceName = () => {
+    if (!province) return '';
+    const selectedProvince = AFGHANISTAN_PROVINCES.find(p => p.id === province);
+    return selectedProvince ? getProvinceName(selectedProvince) : '';
+  };
+
   // Check location permission on component mount
   useEffect(() => {
     checkLocationPermission();
   }, []);
 
   const checkLocationPermission = async () => {
-    if (Platform.OS === 'android') {
-      try {
-        const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-          {
-            title: 'Location Permission',
-            message: 'This app needs access to your location to help people find donors nearby.',
-            buttonNeutral: 'Ask Me Later',
-            buttonNegative: 'Cancel',
-            buttonPositive: 'OK',
-          }
-        );
-        return granted === PermissionsAndroid.RESULTS.GRANTED;
-      } catch (err) {
-        console.warn(err);
-        return false;
-      }
+    try {
+      const { status } = await Location.getForegroundPermissionsAsync();
+      return status === 'granted';
+    } catch (error) {
+      console.log('Permission check error:', error);
+      return false;
     }
-    return true;
   };
 
   // Validation for step 1
@@ -90,64 +130,102 @@ export default function RegisterScreen({ navigation }) {
     const e = {};
     if (touched.bloodGroup && !bloodGroup) e.bloodGroup = 'Please select your blood group';
     if (touched.locationText && locationText.trim().length < 3) e.locationText = 'Enter your location';
+    if (touched.province && !province) e.province = 'Please select your province';
+
     return e;
-  }, [bloodGroup, locationText, touched]);
+  }, [bloodGroup, locationText, touched, province]);
 
   const isStep1Valid = 
     fullName.trim().length >= 3 &&
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) &&
     /^\+?\d{8,15}$/.test(phone) &&
-    password.length >= 6;
+    password.length >= 6 
 
   const isStep2Valid = 
     bloodGroup && 
-    locationText.trim().length >= 3;
+    locationText.trim().length >= 3 &&
+    province;
 
-  // Get current location using device GPS
-  const getCurrentLocation = () => {
+  // Get current location using Expo Location
+  const getCurrentLocation = async () => {
     setLocationLoading(true);
 
-    Geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude: lat, longitude: lng } = position.coords;
-        setLatitude(lat.toString());
-        setLongitude(lng.toString());
+    try {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      
+      if (status !== 'granted') {
         setLocationLoading(false);
-        
-        // Reverse geocoding to get address from coordinates
-        getAddressFromCoordinates(lat, lng);
-      },
-      (error) => {
-        setLocationLoading(false);
-        console.log('Location error:', error);
         Alert.alert(
-          'Location Error',
+          'Permission Denied',
+          'Location permission is required to get your current location. Please enable it in your device settings.',
+          [{ text: 'OK' }]
+        );
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.Balanced,
+        timeout: 20000,
+      });
+
+      const { latitude: lat, longitude: lng } = location.coords;
+      setLatitude(lat.toString());
+      setLongitude(lng.toString());
+      
+      console.log('Location found:', { lat, lng });
+
+      await getAddressFromCoordinates(lat, lng);
+      
+      setLocationLoading(false);
+      
+    } catch (error) {
+      setLocationLoading(false);
+      console.log('Location error:', error);
+      
+      if (latitude && longitude) {
+        Alert.alert(
+          'Location Found', 
+          'Coordinates saved successfully, but could not get exact address. You can manually enter your location.',
+          [{ text: 'OK' }]
+        );
+      } else {
+        Alert.alert(
+          'Location Error', 
           'Unable to get your current location. Please make sure location services are enabled and try again.',
           [{ text: 'OK' }]
         );
-      },
-      {
-        enableHighAccuracy: true,
-        timeout: 15000,
-        maximumAge: 10000,
       }
-    );
+    }
   };
 
-  // Reverse geocoding to get address from coordinates
+  // Reverse geocoding to get address from coordinates using Expo Location
   const getAddressFromCoordinates = async (lat, lng) => {
     try {
-      const response = await fetch(
-        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
-      );
-      const data = await response.json();
-      
-      if (data && data.display_name) {
-        setLocationText(data.display_name);
+      let address = await Location.reverseGeocodeAsync({
+        latitude: lat,
+        longitude: lng,
+      });
+
+      if (address.length > 0) {
+        const firstAddress = address[0];
+        const addressParts = [
+          firstAddress.street,
+          firstAddress.city,
+          firstAddress.region,
+          firstAddress.country
+        ].filter(part => part).join(', ');
+        
+        if (addressParts) {
+          setLocationText(addressParts);
+          return;
+        }
       }
+      
+      setLocationText(`Location at ${lat.toFixed(6)}, ${lng.toFixed(6)}`);
+      
     } catch (error) {
       console.log('Reverse geocoding error:', error);
-      // If reverse geocoding fails, user can still manually enter location text
+      setLocationText(`Location at ${lat.toFixed(6)}, ${lng.toFixed(6)}`);
     }
   };
 
@@ -248,6 +326,7 @@ export default function RegisterScreen({ navigation }) {
     formData.append('email', email);
     formData.append('phone', phone);
     formData.append('password', password);
+    formData.append('province', province); // Add province to form data
     formData.append('bloodGroup', bloodGroup);
     formData.append('locationText', locationText);
     formData.append('latitude', latitude);
@@ -258,6 +337,7 @@ export default function RegisterScreen({ navigation }) {
       fullName,
       email,
       phone,
+      province,
       bloodGroup,
       locationText,
       latitude,
@@ -266,70 +346,107 @@ export default function RegisterScreen({ navigation }) {
       hasProfileImage: !!profileImage,
     });
 
-    // Simulate API call - replace with your actual API endpoint
     try {
-      setTimeout(() => {
-        setLoading(false);
+      // Replace with your actual API endpoint
+      const response = await fetch(serverPath('/user'), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
         Alert.alert(
           'Registration Successful! 🎉',
           'Thank you for joining our blood donor community. You can now save lives!',
           [
             {
               text: 'Get Started',
-              onPress: () => navigation?.navigate?.('HomeScreen'),
+              onPress: () => navigation?.navigate?.('index'),
             },
           ]
         );
-      }, 2000);
+      } else {
+        Alert.alert('Registration Failed', result.message || 'Please try again later.');
+      }
     } catch (e) {
+      console.log('Registration error:', e);
+      Alert.alert('Registration Failed', 'Please check your connection and try again.');
+    } finally {
       setLoading(false);
-      Alert.alert('Registration Failed', 'Please try again later.');
     }
   };
 
-  // RTL-aware Input component
-  const Input = ({
-    label,
-    value,
-    onChangeText,
-    placeholder,
-    keyboardType = 'default',
-    secureTextEntry,
-    returnKeyType,
-    onBlur,
-    error,
-    icon,
-    right,
-    autoCapitalize = 'sentences',
-  }) => {
-    return (
-      <View style={{ marginBottom: 16 }}>
-        <Text style={styles.label}>{label}</Text>
-        <View style={[styles.inputWrap, !!error && styles.inputError]}>
-          {icon && <Text style={styles.inputIcon}>{icon}</Text>}
-          <TextInput
-            value={value}
-            onChangeText={onChangeText}
-            placeholder={placeholder}
-            placeholderTextColor={MUTED}
-            style={[
-              styles.input, 
-              icon && styles.inputWithIcon,
-              isRTL && styles.inputRTL
-            ]}
-            keyboardType={keyboardType}
-            secureTextEntry={secureTextEntry}
-            returnKeyType={returnKeyType}
-            onBlur={onBlur}
-            autoCapitalize={autoCapitalize}
-            textAlign={isRTL ? 'right' : 'left'}
-          />
-          {right ? <View style={styles.inputRight}>{right}</View> : null}
-        </View>
-        {!!error && <Text style={styles.error}>{error}</Text>}
+  // Custom Province Dropdown Component
+// Custom Province Dropdown Component
+const ProvinceDropdown = () => (
+  <View style={{marginBottom: 16}}>
+    <Text style={styles.label}>Province *</Text>
+    <TouchableOpacity
+      style={[
+        styles.dropdownButton,
+        touched.province && !province && styles.dropdownError,
+        isRTL && styles.dropdownButtonRTL
+      ]}
+      onPress={() => setShowProvinceDropdown(!showProvinceDropdown)}
+    >
+      <Text style={[
+        styles.dropdownButtonText,
+        !province && styles.dropdownPlaceholder
+      ]}>
+        {province ? getSelectedProvinceName() : 'Select your province'}
+      </Text>
+      <Text style={[
+        styles.dropdownArrow,
+        isRTL && styles.dropdownArrowRTL
+      ]}>
+        {showProvinceDropdown ? '▲' : '▼'}
+      </Text>
+    </TouchableOpacity>
+    
+    {step1Errors.province && <Text style={styles.error}>{step1Errors.province}</Text>}
+
+    {showProvinceDropdown && (
+      <View style={[
+        styles.dropdownList,
+        isRTL && styles.dropdownListRTL
+      ]}>
+        <ScrollView 
+          style={styles.dropdownScroll}
+          nestedScrollEnabled={true}
+          showsVerticalScrollIndicator={false}
+        >
+          {AFGHANISTAN_PROVINCES.map((provinceItem) => (
+            <TouchableOpacity
+              key={provinceItem.id}
+              style={[
+                styles.dropdownItem,
+                province === provinceItem.id && styles.dropdownItemSelected,
+                isRTL && styles.dropdownItemRTL,
+                province === provinceItem.id && isRTL && styles.dropdownItemSelectedRTL
+              ]}
+              onPress={() => {
+                setProvince(provinceItem.id);
+                setShowProvinceDropdown(false);
+                setTouched(t => ({ ...t, province: true }));
+              }}
+            >
+              <Text style={[
+                styles.dropdownItemText,
+                province === provinceItem.id && styles.dropdownItemTextSelected
+              ]}>
+                {getProvinceName(provinceItem)}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
       </View>
-    );
-  };
+    )}
+  </View>
+);
 
   return (
     <SafeAreaView style={styles.safe}>
@@ -379,9 +496,9 @@ export default function RegisterScreen({ navigation }) {
 
               {/* Form */}
               <View style={styles.card}>
-                <Input
+                <GeneralInput
                   label="Full Name *"
-                  placeholder="e.g. John Smith"
+                  placeholder="e.g. Khan"
                   value={fullName}
                   onChangeText={setFullName}
                   onBlur={() => setTouched(t => ({ ...t, fullName: true }))}
@@ -390,9 +507,9 @@ export default function RegisterScreen({ navigation }) {
                   icon="👤"
                 />
 
-                <Input
+                <GeneralInput
                   label="Email Address *"
-                  placeholder="john@example.com"
+                  placeholder="example@email.com"
                   value={email}
                   onChangeText={setEmail}
                   onBlur={() => setTouched(t => ({ ...t, email: true }))}
@@ -403,9 +520,9 @@ export default function RegisterScreen({ navigation }) {
                   icon="📧"
                 />
 
-                <Input
+                <GeneralInput
                   label="Mobile Number *"
-                  placeholder="+1 604 123 4567"
+                  placeholder="0712345678"
                   value={phone}
                   onChangeText={setPhone}
                   onBlur={() => setTouched(t => ({ ...t, phone: true }))}
@@ -415,7 +532,7 @@ export default function RegisterScreen({ navigation }) {
                   icon="📱"
                 />
 
-                <Input
+                <GeneralInput
                   label="Password *"
                   placeholder="••••••"
                   value={password}
@@ -449,8 +566,8 @@ export default function RegisterScreen({ navigation }) {
             <View style={styles.stepContainer}>
               <View style={styles.card}>
                 {/* Blood Group Selection */}
+                <Text style={styles.label}>Blood Group *</Text>
                 <View style={styles.fieldContainer}>
-                  <Text style={styles.label}>Blood Group *</Text>
                   <ScrollView 
                     horizontal 
                     showsHorizontalScrollIndicator={false} 
@@ -481,10 +598,15 @@ export default function RegisterScreen({ navigation }) {
                   {step2Errors.bloodGroup && <Text style={styles.error}>{step2Errors.bloodGroup}</Text>}
                 </View>
 
+                {/* Province Dropdown */}
+
+                <ProvinceDropdown />
+
                 {/* Location Text */}
-                <Input
+                
+                <GeneralInput
                   label="Your Location *"
-                  placeholder="e.g. Downtown Medical Center, New York"
+                  placeholder="Kandahar District #3"
                   value={locationText}
                   onChangeText={setLocationText}
                   onBlur={() => setTouched(t => ({ ...t, locationText: true }))}
@@ -584,7 +706,7 @@ export default function RegisterScreen({ navigation }) {
                   {loading ? (
                     <ActivityIndicator color="#FFFFFF" size="small" />
                   ) : (
-                    <Text style={styles.primaryBtnText}>Complete Registration</Text>
+                    <Text style={styles.primaryBtnText}>Register</Text>
                   )}
                 </TouchableOpacity>
               </View>
@@ -594,7 +716,7 @@ export default function RegisterScreen({ navigation }) {
           {/* Footer */}
           <View style={styles.footer}>
             <Text style={styles.footerText}>Already have an account? </Text>
-            <TouchableOpacity onPress={() => navigation?.navigate?.('LoginScreen')}>
+            <TouchableOpacity onPress={() => navigation?.navigate?.('login')}>
               <Text style={[styles.footerText, styles.footerLink]}>
                 Sign In
               </Text>
