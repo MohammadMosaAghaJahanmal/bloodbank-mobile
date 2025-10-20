@@ -13,14 +13,12 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Input from '../../components/GeneralInput';
 import { useRTLStyles } from '../../contexts/useRTLStyles';
 const PRIMARY = '#E73C3C';
-const PRIMARY_DARK = '#C42525';
 const BG = '#FDF2F2';
 const TEXT = '#1E1E1E';
 const MUTED = '#7E7E7E';
-const BORDER = '#E8E8E8';
 
 export default function LoginScreen({ navigation }) {
-  const { createRTLStyles, isRTL, writingDirection } = useRTLStyles();
+  const { createRTLStyles } = useRTLStyles();
   const styles = createRTLStyles(baseStyles);
 
   const [loginIdentifier, setLoginIdentifier] = useState('');

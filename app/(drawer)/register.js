@@ -18,12 +18,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRTLStyles } from '../../contexts/useRTLStyles'; // Adjust path as needed
 import { globalStyle } from '../../utils/styles';
 
-const PRIMARY = '#E73C3C';
-const PRIMARY_DARK = '#C42525';
-const BG = '#FDF2F2';
-const TEXT = '#1E1E1E';
 const MUTED = '#7E7E7E';
-const BORDER = '#E8E8E8';
 
 export default function RegisterScreen({ navigation }) {
   const { createRTLStyles, isRTL } = useRTLStyles();
@@ -286,7 +281,7 @@ export default function RegisterScreen({ navigation }) {
           ]
         );
       }, 2000);
-    } catch (error) {
+    } catch (e) {
       setLoading(false);
       Alert.alert('Registration Failed', 'Please try again later.');
     }

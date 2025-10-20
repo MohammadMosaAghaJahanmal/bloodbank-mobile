@@ -1,16 +1,17 @@
 // app/(drawer)/(tabs)/_layout.tsx
-import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import { DrawerToggleButton } from '@react-navigation/drawer';
+import { Ionicons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
-import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
+import { useEffect, useRef } from 'react';
+import { Animated, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useLanguage } from '../../../contexts/LanguageContext';
 import i18n from '../../../utils/i18n';
 
 const COLORS = {
-  primary: '#E73C3C',
-  text: '#1E1E1E',
-  muted: '#9CA3AF',
+  primary: '#E73C3C', // header red
+  text: '#FFFFFF',
+  muted: 'rgba(255,255,255,0.7)',
   barBg: '#FFFFFF',
   shadow: '#000000',
 };
@@ -20,63 +21,373 @@ export default function TabsLayout() {
 
   return (
     <Tabs
-      // ⬇️ Use the prop, not screenOptions
       tabBar={(props) => <CustomTabBar {...props} />}
       screenOptions={{
-        headerLeft: isRTL ? undefined : () => <DrawerToggleButton />,
-        headerRight: isRTL ? () => <DrawerToggleButton /> : undefined,
-        headerTitleAlign: isRTL ? 'right' : 'left',
+        header: (props) => <RedHeader {...props} />,
         tabBarShowLabel: false,
         tabBarHideOnKeyboard: true,
       }}
     >
-      <Tabs.Screen name="index"   options={{ title: i18n.t('HOME') }} />
-      {/* ⬇️ Add the middle tab so the center button exists */}
+      <Tabs.Screen name="index" options={{ title: i18n.t('HOME') }} />
       <Tabs.Screen name="profile" options={{ title: i18n.t('PROFILE') }} />
     </Tabs>
   );
 }
 
+/* =========================
+   Enhanced RED Header with Animations
+   ========================= */
+function RedHeader({ options, navigation, route }) {
+  const insets = useSafeAreaInsets();
+  const { isRTL } = useLanguage();
+  
+  // Animation values
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const slideAnim = useRef(new Animated.Value(-50)).current;
+  const circleScale = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    // Staggered animations for header entrance
+    Animated.sequence([
+      // First animate circles
+      Animated.timing(circleScale, {
+        toValue: 1,
+        duration: 600,
+        useNativeDriver: true,
+      }),
+      // Then header content
+      Animated.parallel([
+        Animated.timing(fadeAnim, {
+          toValue: 1,
+          duration: 400,
+          useNativeDriver: true,
+        }),
+        Animated.timing(slideAnim, {
+          toValue: 0,
+          duration: 500,
+          useNativeDriver: true,
+        }),
+      ]),
+    ]).start();
+  }, []);
+
+  const title =
+    typeof options.title === 'string'
+      ? options.title
+      : route?.name === 'index'
+      ? i18n.t('HOME')
+      : i18n.t('PROFILE');
+
+  const openDrawer = () => {
+    // Add press animation
+    Animated.sequence([
+      Animated.timing(fadeAnim, {
+        toValue: 0.8,
+        duration: 100,
+        useNativeDriver: true,
+      }),
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 100,
+        useNativeDriver: true,
+      }),
+    ]).start();
+    navigation?.openDrawer?.();
+  };
+
+  const onBell = () => {
+    // TODO: navigate to notifications
+  };
+
+  return (
+    <Animated.View 
+      style={[
+        styles.headerWrap, 
+        { 
+          opacity: fadeAnim,
+          transform: [{ translateY: slideAnim }] 
+        }
+      ]}
+    >
+      <StatusBar style="light" />
+      <View
+        style={[
+          styles.header,
+          {
+            paddingTop: insets.top + 8,
+            flexDirection: isRTL ? 'row-reverse' : 'row',
+            borderBottomLeftRadius: 24,
+            borderBottomRightRadius: 24,
+          },
+        ]}
+      >
+        {/* Animated decorative translucent circles */}
+        <Animated.View 
+          style={[
+            styles.decoCircleBig, 
+            { 
+              transform: [{ 
+                scale: circleScale.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [0.5, 1]
+                }) 
+              }],
+              opacity: circleScale
+            }
+          ]} 
+        />
+        <Animated.View 
+          style={[
+            styles.decoCircleSmall,
+            { 
+              transform: [{ 
+                scale: circleScale.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [0.5, 1]
+                }) 
+              }],
+              opacity: circleScale
+            }
+          ]} 
+        />
+
+        {/* Left: menu with press animation */}
+        <Pressable 
+          onPress={openDrawer} 
+          style={({ pressed }) => [
+            styles.iconBtn, 
+            { marginHorizontal: 16 },
+            pressed && styles.iconBtnPressed
+          ]}
+        >
+          {({ pressed }) => (
+            <Animated.View style={[
+              styles.iconContainer,
+              {
+                transform: [{ scale: pressed ? 0.9 : 1 }]
+              }
+            ]}>
+              <Ionicons name="menu" size={22} color="#fff" />
+            </Animated.View>
+          )}
+        </Pressable>
+
+        {/* Center title with fade animation */}
+        <Animated.View 
+          style={[
+            styles.titleBox,
+            {
+              opacity: fadeAnim,
+              transform: [{
+                translateY: fadeAnim.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [10, 0]
+                })
+              }]
+            }
+          ]}
+        >
+          <Text numberOfLines={1} style={styles.headerTitle}>
+            {title}
+          </Text>
+        </Animated.View>
+
+        {/* Right: bell with pulse animation */}
+        <Pressable 
+          onPress={onBell} 
+          style={({ pressed }) => [
+            styles.iconBtn, 
+            { marginHorizontal: 16 },
+            pressed && styles.iconBtnPressed
+          ]}
+        >
+          {/* {({ pressed }) => (
+            <Animated.View style={[
+              styles.bellBadge,
+              {
+                transform: [{ scale: pressed ? 0.9 : 1 }]
+              }
+            ]}>
+              <Ionicons name="notifications-outline" size={18} color="#fff" />
+            </Animated.View>
+          )} */}
+        </Pressable>
+      </View>
+    </Animated.View>
+  );
+}
+
+/* =========================
+   Enhanced Bottom Tab Bar with Smooth Animations
+   ========================= */
 function CustomTabBar({ state, navigation }) {
   const insets = useSafeAreaInsets();
   const { isRTL } = useLanguage();
+  
+  // Animation refs for each tab
+  const tabAnimations = useRef(
+    state.routes.map(() => ({
+      scale: new Animated.Value(1),
+      opacity: new Animated.Value(0.7),
+      dotScale: new Animated.Value(0),
+    }))
+  ).current;
+
+  useEffect(() => {
+    // Animate the active tab
+    const currentIndex = state.index;
+    
+    tabAnimations.forEach((anim, index) => {
+      const isActive = index === currentIndex;
+      
+      Animated.parallel([
+        // Scale animation for active tab
+        Animated.spring(anim.scale, {
+          toValue: isActive ? 1.15 : 1,
+          tension: 150,
+          friction: 12,
+          useNativeDriver: true,
+        }),
+        // Opacity animation for labels
+        Animated.timing(anim.opacity, {
+          toValue: isActive ? 1 : 0.7,
+          duration: 200,
+          useNativeDriver: true,
+        }),
+        // Active dot animation
+        Animated.spring(anim.dotScale, {
+          toValue: isActive ? 1 : 0,
+          tension: 200,
+          friction: 15,
+          useNativeDriver: true,
+        }),
+      ]).start();
+    });
+  }, [state.index]);
 
   const getLabel = (name) =>
-    name === 'index' ? i18n.t('HOME')
-    : name === 'profile' ? i18n.t('PROFILE')
-    : name;
+    name === 'index' ? i18n.t('HOME') :
+    name === 'profile' ? i18n.t('PROFILE') : name;
+
+  const handleTabPress = (route, index, isFocused) => {
+    // Ripple effect animation
+    const rippleAnim = new Animated.Value(0);
+    
+    Animated.sequence([
+      Animated.timing(rippleAnim, {
+        toValue: 1,
+        duration: 300,
+        useNativeDriver: true,
+      }),
+      Animated.timing(rippleAnim, {
+        toValue: 0,
+        duration: 200,
+        useNativeDriver: true,
+      }),
+    ]).start();
+
+    if (!isFocused) {
+      navigation.navigate(route.name);
+    }
+  };
 
   return (
     <View style={[styles.wrapper, { paddingBottom: Math.max(insets.bottom, 10) }]}>
-      <View style={[styles.bar, isRTL && { flexDirection: 'row-reverse' }]}>
+      <View style={[styles.barRed, isRTL && { flexDirection: 'row-reverse' }]}>
+        {/* Animated decorative translucent circles */}
+        <Animated.View 
+          style={[
+            styles.tabDecoCircleBig,
+            {
+              transform: [{
+                rotate: tabAnimations[state.index]?.scale.interpolate({
+                  inputRange: [1, 1.15],
+                  outputRange: ['0deg', '5deg']
+                })
+              }]
+            }
+          ]} 
+        />
+        <Animated.View 
+          style={[
+            styles.tabDecoCircleSmall,
+            {
+              transform: [{
+                rotate: tabAnimations[state.index]?.scale.interpolate({
+                  inputRange: [1, 1.15],
+                  outputRange: ['0deg', '-3deg']
+                })
+              }]
+            }
+          ]} 
+        />
+
         {state.routes.map((route, index) => {
           const isFocused = state.index === index;
-          const onPress = () => {
-            const e = navigation.emit({ type: 'tabPress', target: route.key, canPreventDefault: true });
-            if (!isFocused && !e.defaultPrevented) navigation.navigate(route.name);
-          };
+          const anim = tabAnimations[index];
 
-          if (route.name === 'request') {
-            return (
-              <Pressable key={route.key} onPress={onPress} style={styles.centerBtn}>
-                <View style={styles.centerIconWrap}>
-                  <MaterialCommunityIcons name="blood-bag" size={22} color="#fff" />
-                </View>
-                <Text style={styles.centerLabel} numberOfLines={1}>{getLabel(route.name)}</Text>
-              </Pressable>
-            );
-          }
+          const onPress = () => handleTabPress(route, index, isFocused);
 
           const icon = route.name === 'index' ? 'home' : 'person';
+
           return (
-            <Pressable key={route.key} onPress={onPress} style={styles.sideItem}>
-              <Ionicons name={icon} size={22} color={isFocused ? COLORS.primary : COLORS.muted} />
-              <Text
-                numberOfLines={1}
-                style={[styles.sideLabel, { color: isFocused ? COLORS.primary : COLORS.muted }, isRTL && { textAlign: 'right' }]}
+            <Pressable 
+              key={route.key} 
+              onPress={onPress} 
+              style={({ pressed }) => [
+                styles.sideItem,
+                pressed && styles.tabPressed
+              ]}
+            >
+              <Animated.View
+                style={[
+                  styles.tabContent,
+                  {
+                    transform: [{ scale: anim.scale }],
+                  },
+                ]}
               >
-                {getLabel(route.name)}
-              </Text>
+                {/* Icon with animation */}
+                <Animated.View style={{ opacity: anim.opacity }}>
+                  <Ionicons
+                    name={icon}
+                    size={19}
+                    color={isFocused ? '#fff' : 'rgba(255,255,255,0.75)'}
+                  />
+                </Animated.View>
+
+                {/* Label with fade animation */}
+                <Animated.Text
+                  numberOfLines={1}
+                  style={[
+                    styles.sideLabelRed,
+                    { 
+                      color: isFocused ? '#fff' : 'rgba(255,255,255,0.8)',
+                      opacity: anim.opacity,
+                      transform: [{
+                        translateY: anim.opacity.interpolate({
+                          inputRange: [0.7, 1],
+                          outputRange: [2, 0]
+                        })
+                      }]
+                    },
+                    isRTL && { textAlign: 'right' },
+                  ]}
+                >
+                  {getLabel(route.name)}
+                </Animated.Text>
+
+                {/* Animated active indicator */}
+                <Animated.View 
+                  style={[
+                    styles.activeDot,
+                    {
+                      transform: [{ scale: anim.dotScale }],
+                      opacity: anim.dotScale,
+                    }
+                  ]} 
+                />
+              </Animated.View>
             </Pressable>
           );
         })}
@@ -85,39 +396,157 @@ function CustomTabBar({ state, navigation }) {
   );
 }
 
+/* =========================
+   Enhanced Styles with Animation Support
+   ========================= */
 const styles = StyleSheet.create({
-  wrapper: {
-    position: 'absolute',
-    left: 0, right: 0, bottom: 0,
+  /* Header */
+  headerWrap: {
     backgroundColor: 'transparent',
   },
-  bar: {
+  header: {
+    backgroundColor: COLORS.primary,
+    minHeight: 96,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingBottom: 12,
+    // soft shadow under curved header
+    ...Platform.select({
+      ios: {
+        shadowColor: COLORS.shadow,
+        shadowOpacity: 0.15,
+        shadowRadius: 14,
+        shadowOffset: { width: 0, height: 6 },
+      },
+      android: { elevation: 6 },
+    }),
+  },
+  titleBox: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  headerTitle: {
+    color: COLORS.text,
+    fontWeight: '700',
+    fontSize: 18,
+  },
+  iconBtn: {
+    width: 36,
+    height: 36,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  iconBtnPressed: {
+    opacity: 0.7,
+  },
+  iconContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  bellBadge: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: 'rgba(255,255,255,0.18)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  // circles for the light shapes on the right side of the header
+  decoCircleBig: {
+    position: 'absolute',
+    right: -30,
+    top: -10,
+    width: 140,
+    height: 140,
+    borderRadius: 70,
+    backgroundColor: 'rgba(255,255,255,0.12)',
+  },
+  decoCircleSmall: {
+    position: 'absolute',
+    right: 8,
+    top: 28,
+    width: 54,
+    height: 54,
+    borderRadius: 27,
+    backgroundColor: 'rgba(255,255,255,0.16)',
+  },
+
+  /* Bottom bar */
+  wrapper: {
+    position: 'absolute',
+    left: 0, 
+    right: 0, 
+    bottom: 0,
+    backgroundColor: 'transparent',
+  },
+
+  // Red, rounded, with soft shadow and decorative circles
+  barRed: {
     marginHorizontal: 14,
-    backgroundColor: COLORS.barBg,
-    borderRadius: 5,
+    backgroundColor: COLORS.primary,
+    borderRadius: 10,
     paddingHorizontal: 18,
-    paddingTop: 10,
-    paddingBottom: 6,
+    paddingTop: 7,
+    paddingBottom: 5,
     flexDirection: 'row',
     alignItems: 'flex-end',
     justifyContent: 'space-between',
+    overflow: 'hidden',
     ...Platform.select({
-      ios: { shadowColor: COLORS.shadow, shadowOpacity: 0.08, shadowRadius: 10, shadowOffset: { width: 0, height: 6 } },
-      android: { elevation: 10 },
-    }),
-  },
-  sideItem: { flex: 1, alignItems: 'center', justifyContent: 'flex-end', paddingVertical: 4 },
-  sideLabel: { fontSize: 12, marginTop: 4, fontWeight: '600' },
-
-  centerBtn: { width: 120, alignItems: 'center', justifyContent: 'flex-end' },
-  centerIconWrap: {
-    width: 52, height: 52, borderRadius: 26, backgroundColor: COLORS.primary,
-    alignItems: 'center', justifyContent: 'center',
-    transform: [{ translateY: -14 }],
-    ...Platform.select({
-      ios: { shadowColor: COLORS.shadow, shadowOpacity: 0.15, shadowRadius: 12, shadowOffset: { width: 0, height: 8 } },
+      ios: {
+        shadowColor: COLORS.shadow,
+        shadowOpacity: 0.12,
+        shadowRadius: 12,
+        shadowOffset: { width: 0, height: 8 },
+      },
       android: { elevation: 12 },
     }),
   },
-  centerLabel: { fontSize: 12, marginTop: -6, fontWeight: '700', color: COLORS.text, textAlign: 'center' },
+
+  // translucent shapes like header
+  tabDecoCircleBig: {
+    position: 'absolute',
+    right: -24,
+    top: -26,
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    backgroundColor: 'rgba(255,255,255,0.12)',
+  },
+  tabDecoCircleSmall: {
+    position: 'absolute',
+    right: 6,
+    top: 18,
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: 'rgba(255,255,255,0.16)',
+  },
+
+  sideItem: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    paddingVertical: 4,
+  },
+  tabPressed: {
+    opacity: 0.8,
+  },
+  tabContent: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  sideLabelRed: {
+    fontSize: 10,
+    marginTop: 1,
+    fontWeight: '700',
+  },
+  activeDot: {
+    marginTop: 6,
+    width: 24,
+    height: 3,
+    borderRadius: 2,
+    backgroundColor: 'rgba(255,255,255,0.9)',
+  },
 });

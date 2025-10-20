@@ -50,7 +50,7 @@ export default function DrawerLayout() {
 }
 
 function CustomDrawerContent(props) {
-  const { state, navigation } = props;
+  const { navigation } = props;
   const { isRTL, currentLocale, toggleLanguage } = useLanguage();
   const insets = useSafeAreaInsets();
   const version = `${Constants.expoConfig?.version ?? ''} (${Constants.expoConfig?.android?.versionCode ?? Constants.expoConfig?.ios?.buildNumber ?? ''})`;
