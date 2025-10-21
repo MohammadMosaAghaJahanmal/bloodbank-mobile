@@ -53,7 +53,7 @@ const AuthProvider = (props) => {
       setAuth((prev) => ({ ...prev, loading: true }));
 
       try {
-        const objData = await fetchJSON(serverPath('/token'), {
+        const objData = await fetchJSON(serverPath('/auth/token'), {
           method: 'POST',
           headers: { Authorization: `bearer ${authtoken}` },
         });
@@ -118,10 +118,18 @@ const AuthProvider = (props) => {
   }, [auth.login, auth.token]);
 
   // (Optional) helpers you can call from screens
-  const saveTokenAndLogin = useCallback(async (token, user) => {
-    await AsyncStorage.setItem(A_TOKEN, token);
-    setAuth((p) => ({ ...p, login: true, token, user }));
-  }, []);
+ const saveTokenAndLogin = useCallback(async (token, user) => {
+   await AsyncStorage.setItem(A_TOKEN, token);
+   // (optional) persist user if you like:
+   // await AsyncStorage.setItem('A_USER', JSON.stringify(user));
+   setAuth((p) => ({
+     ...p,
+     login: true,
+     token,
+     user: user || null,
+     role: user?.role || null,
+   }));
+ }, []);
 
   const logout = useCallback(async () => {
     await AsyncStorage.removeItem(A_TOKEN);

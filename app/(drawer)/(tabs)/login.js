@@ -1,5 +1,5 @@
-import { useNavigation } from 'expo-router';
-import { useMemo, useState } from 'react';
+import { router, useNavigation } from 'expo-router';
+import { useContext, useMemo, useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -12,8 +12,9 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Input from '../../../components/GeneralInput';
+import { AuthContext } from '../../../contexts/authContext';
 import { useRTLStyles } from '../../../contexts/useRTLStyles';
-
+import serverPath from '../../../utils/serverPath';
 
 const PRIMARY = '#E73C3C';
 const BG = '#FDF2F2';
@@ -29,6 +30,7 @@ export default function LoginScreen() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [touched, setTouched] = useState({});
+    const { saveTokenAndLogin } = useContext(AuthContext);
 
   // Validation
   const errors = useMemo(() => {
@@ -61,79 +63,58 @@ export default function LoginScreen() {
 
   // Handle login
   const handleLogin = async () => {
-    if (!isValid) return;
+    if (!isValid || loading) return;
 
     setLoading(true);
     setTouched({ loginIdentifier: true, password: true });
 
     try {
-      // Prepare login data
       const loginData = {
         identifier: loginIdentifier.trim(),
-        password: password,
+        password,
       };
 
-      console.log('Attempting login with:', {
-        identifier: loginIdentifier.trim(),
-        hasPassword: !!password,
-      });
-
-      // Actual API call - replace with your backend endpoint
-      const response = await fetch('https://your-bloodbank-api.com/api/auth/login', {
+      const res = await fetch(serverPath('/auth/login'), {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(loginData),
       });
 
-      const data = await response.json();
+      const data = await res.json();
+      if (!res.ok) throw new Error(data?.message || 'Login failed');
 
-      if (!response.ok) {
-        throw new Error(data.message || 'Login failed');
+      if (data?.status === 'failure') {
+        throw new Error(data?.message || 'Login failed');
       }
 
-      // Login successful
+      // ✅ Update global auth state + persist token
+      if (data?.token && data?.user) {
+        await saveTokenAndLogin(data.token, data.user);
+      } else if (data?.token) {
+        await saveTokenAndLogin(data.token, null);
+      } else {
+        throw new Error('Server did not return a token.');
+      }
+
       setLoading(false);
-      
-      // Store token or user data (you might want to use AsyncStorage or context)
-      if (data.token) {
-        // Save token to storage
-        // await AsyncStorage.setItem('userToken', data.token);
-      }
 
-      if (data.user) {
-        // Save user data to context or storage
-        console.log('Login successful, user:', data.user);
-      }
-
-      // Navigate to main app
       Alert.alert(
         'Welcome Back! 🩸',
         'You have successfully logged in to Blood Donors Network.',
-        [
-          {
-            text: 'Continue',
-            onPress: () => navigation?.navigate?.('HomeScreen'),
-          },
-        ]
+        [{ text: 'Continue', onPress: () => router.replace('/profile') }] // go straight to profile
       );
-
-    } catch (error) {
+    } catch (err) {
+      console.error('Login error:', err);
       setLoading(false);
-      console.error('Login error:', error);
-      
+
+      const msg = String(err?.message || '')
+        .toLowerCase();
+
       let errorMessage = 'Login failed. Please try again.';
-      
-      if (error.message.includes('Network request failed')) {
-        errorMessage = 'Network error. Please check your internet connection.';
-      } else if (error.message.includes('Invalid credentials')) {
-        errorMessage = 'Invalid email/phone or password. Please try again.';
-      } else if (error.message.includes('User not found')) {
-        errorMessage = 'No account found with this email or phone number.';
-      }
-      
+      if (msg.includes('network request failed')) errorMessage = 'Network error. Please check your internet connection.';
+      else if (msg.includes('invalid credentials')) errorMessage = 'Invalid email/phone or password. Please try again.';
+      else if (msg.includes('user not found')) errorMessage = 'No account found with this email or phone number.';
+
       Alert.alert('Login Failed', errorMessage);
     }
   };
