@@ -205,7 +205,7 @@ function CustomDrawerContent(props) {
             <MenuItem
               icon={<Feather name="user" size={18} color={COLORS.text} />}
               label={I18n.t('MY_PROFILE') || 'My Profile'}
-              onPress={() => go('profile')}
+              onPress={() => go('(tabs)', 'profile')}
               isRTL={isRTL}
             />
             <MenuItem
