@@ -3,13 +3,20 @@ import { Feather, Ionicons } from '@expo/vector-icons';
 import { DrawerContentScrollView } from '@react-navigation/drawer';
 import Constants from 'expo-constants';
 import { Drawer } from 'expo-router/drawer';
+import { useContext } from 'react';
 import {
+  Alert,
   Image, Linking,
-  Pressable, StyleSheet, Text, View
+  Pressable,
+  Text, View
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { AuthContext } from '../../contexts/authContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import I18n from '../../utils/i18n';
+import serverPath from '../../utils/serverPath';
+import { globalStyle } from '../../utils/styles';
+const {drawer : styles} = globalStyle
 
 const COLORS = {
   primary: '#E73C3C',
@@ -27,11 +34,10 @@ const LANGUAGES = [
 ];
 
 export default function DrawerLayout() {
-  const { isRTL, currentLocale } = useLanguage(); // <-- also read currentLocale
-
+  const { isRTL, currentLocale } = useLanguage();
   return (
     <Drawer
-      key={currentLocale} // <-- forces remount on language change
+      key={currentLocale}
       screenOptions={{
         drawerPosition: isRTL ? 'right' : 'left',
         headerShown: false,
@@ -43,8 +49,6 @@ export default function DrawerLayout() {
       <Drawer.Screen name="about" options={{ title: I18n.t('ABOUT') }} />
       <Drawer.Screen name="contact" options={{ title: I18n.t('CONTACT_US') }} />
       <Drawer.Screen name="language-settings" options={{ title: I18n.t('LANGUAGE') }} />
-      {/* <Drawer.Screen name="register" options={{ title: I18n.t('REGISTER') }} /> */}
-      {/* <Drawer.Screen name="login" options={{ title: I18n.t('LOGIN') }} /> */}
     </Drawer>
   );
 }
@@ -52,20 +56,53 @@ export default function DrawerLayout() {
 function CustomDrawerContent(props) {
   const { navigation } = props;
   const { isRTL, currentLocale, toggleLanguage } = useLanguage();
+  const { user, login, logout } = useContext(AuthContext); // Get auth context
   const insets = useSafeAreaInsets();
   const version = `${Constants.expoConfig?.version ?? ''} (${Constants.expoConfig?.android?.versionCode ?? Constants.expoConfig?.ios?.buildNumber ?? ''})`;
 
-  // mock user data; swap with real user from your auth store
-  const user = {
-    name: 'Farjana Afrin',
-    email: 'farjana622@gmail.com',
-    avatar:
-      'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=256&auto=format&fit=crop',
+  const go = (name, screen) => {
+    navigation.closeDrawer();
+    if(!screen)
+      navigation.navigate(name);
+    if(screen)
+      navigation.navigate(name, {
+        screen: screen
+      });
   };
 
-  const go = (name) => {
+  const handleLogout = () => {
+    Alert.alert(
+      'Logout',
+      'Are you sure you want to logout?',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        { text: 'Logout', style: 'destructive', onPress: () => {
+          logout()
+          navigation.closeDrawer();
+          navigation.navigate('(tabs)', {
+            screen: "index"
+          }); // Navigate to home after logout
+        } },
+      ]
+    );
+  };
+
+  const handleLogin = () => {
     navigation.closeDrawer();
-    navigation.navigate(name);
+    navigation.navigate('(tabs)', { 
+      screen: 'login' 
+    });
+  };
+
+  // User data based on authentication status
+  const userData = user ? {
+    name: user.fullName || 'User',
+    email: user.email || '',
+    avatar: user.imageUrl ? serverPath(user.imageUrl) : 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=256&auto=format&fit=crop',
+  } : {
+    name: I18n.t('WELCOME') || 'Welcome',
+    email: I18n.t('BLOOD_BANK') || 'Blood Bank',
+    avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=256&auto=format&fit=crop', // Will use default app logo
   };
 
   return (
@@ -83,20 +120,32 @@ function CustomDrawerContent(props) {
         <View
           style={[
             styles.profileRow,
-            isRTL && { flexDirection: 'row-reverse' }  // ⟵ flip row for RTL
+            isRTL && { flexDirection: 'row-reverse' }
           ]}
         >
-          <Image
-            source={{ uri: user.avatar }}
-            style={[
-              styles.avatar,
-              // Fallback spacing if gap isn't supported on your RN build:
+          {userData.avatar ? (
+            <Image
+              source={{ uri: userData.avatar }}
+              style={[
+                styles.avatar,
+                isRTL ? { marginLeft: 0, marginRight: 12 } : { marginLeft: 0, marginRight: 0 }
+              ]}
+            />
+          ) : (
+            <View style={[
+              styles.defaultAvatar,
               isRTL ? { marginLeft: 0, marginRight: 12 } : { marginLeft: 0, marginRight: 0 }
-            ]}
-          />
+            ]}>
+              <Text style={styles.defaultAvatarText}>🩸</Text>
+            </View>
+          )}
           <View style={{ flex: 1, alignItems: isRTL ? 'flex-end' : 'flex-start' }}>
-            <Text numberOfLines={1} style={[styles.name,  isRTL && { textAlign: 'right' }]}>{user.name}</Text>
-            <Text numberOfLines={1} style={[styles.email, isRTL && { textAlign: 'right' }]}>{user.email}</Text>
+            <Text numberOfLines={1} style={[styles.name, isRTL && { textAlign: 'right' }]}>
+              {userData.name}
+            </Text>
+            <Text numberOfLines={1} style={[styles.email, isRTL && { textAlign: 'right' }]}>
+              {userData.email}
+            </Text>
           </View>
         </View>
       </View>
@@ -128,10 +177,7 @@ function CustomDrawerContent(props) {
                 <Pressable
                   key={lng.code}
                   onPress={() => {
-                    // Toggle language (your context should also flip RTL based on code)
                     toggleLanguage(lng.code);
-                    // Optional: close quickly for immediate feel
-                    // navigation.closeDrawer();
                   }}
                   style={[
                     styles.langPill,
@@ -153,23 +199,31 @@ function CustomDrawerContent(props) {
           </View>
         </Section>
 
-        {/* Main menu */}
-        <Section>
-          <MenuItem
-            icon={<Feather name="user" size={18} color={COLORS.text} />}
-            label={I18n.t('MY_PROFILE') || 'My Profile'}
-            onPress={() => go('profile')}
-            isRTL={isRTL}
-          />
-          <MenuItem
-            icon={<Feather name="settings" size={18} color={COLORS.text} />}
-            label={I18n.t('SETTINGS') || 'Settings'}
-            onPress={() => go('settings')}
-            isRTL={isRTL}
-          />
-        </Section>
+        {/* Main menu - Show profile only when logged in */}
+        {user && (
+          <Section>
+            <MenuItem
+              icon={<Feather name="user" size={18} color={COLORS.text} />}
+              label={I18n.t('MY_PROFILE') || 'My Profile'}
+              onPress={() => go('profile')}
+              isRTL={isRTL}
+            />
+            <MenuItem
+              icon={<Feather name="settings" size={18} color={COLORS.text} />}
+              label={I18n.t('SETTINGS') || 'Settings'}
+              onPress={() => go('settings')}
+              isRTL={isRTL}
+            />
+          </Section>
+        )}
 
         <Section>
+          <MenuItem
+            icon={<Feather name="home" size={18} color={COLORS.text} />}
+            label={I18n.t('HOME') || 'Home'}
+            onPress={() => go('(tabs)', 'index')}
+            isRTL={isRTL}
+          />
           <MenuItem
             icon={<Feather name="message-circle" size={18} color={COLORS.text} />}
             label={I18n.t('CONTACT_US') || 'Contact US'}
@@ -205,18 +259,24 @@ function CustomDrawerContent(props) {
 
         <View style={{ height: 12 }} />
 
-        {/* Logout */}
-        <Pressable
-          style={styles.logoutBtn}
-          onPress={() => {
-            // TODO: clear auth, then
-            navigation.closeDrawer();
-            navigation.navigate('login');
-          }}
-        >
-          <Feather name="log-out" size={18} color={COLORS.primary} />
-          <Text style={styles.logoutTxt}>{I18n.t('LOGOUT') || 'Logout'}</Text>
-        </Pressable>
+        {/* Logout/Login Button */}
+        {user ? (
+          <Pressable
+            style={styles.logoutBtn}
+            onPress={handleLogout}
+          >
+            <Feather name="log-out" size={18} color={COLORS.primary} />
+            <Text style={styles.logoutTxt}>{I18n.t('LOGOUT') || 'Logout'}</Text>
+          </Pressable>
+        ) : (
+          <Pressable
+            style={styles.logoutBtn}
+            onPress={handleLogin}
+          >
+            <Feather name="log-in" size={18} color={COLORS.primary} />
+            <Text style={styles.loginTxt}>{I18n.t('LOGIN') || 'Login'}</Text>
+          </Pressable>
+        )}
 
         {/* Footer */}
         <View style={styles.footer}>
@@ -255,105 +315,3 @@ function MenuItem({
     </Pressable>
   );
 }
-
-const styles = StyleSheet.create({
-  sheet: { flex: 1, backgroundColor: COLORS.sheet },
-  header: { marginBottom: 12 },
-  headerBg: {
-    height: 128,
-    backgroundColor: COLORS.primary,
-  },
-  closeBtn: {
-    position: 'absolute',
-    right: 16,
-    top: 12,
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    backgroundColor: 'rgba(255,255,255,0.25)',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  profileRow: {
-    position: 'absolute',
-    left: 16,
-    right: 16,
-    bottom: 5,
-    flexDirection: 'row', 
-    alignItems: 'center',
-    gap: 12,              
-  },
-  avatar: { width: 72, height: 72, borderRadius: 36, borderWidth: 3, borderColor: '#fff', backgroundColor: '#fff' },
-  name: { fontSize: 18, fontWeight: '700', color: '#fff' },
-  email: { fontSize: 13, fontWeight: '500', color: '#ffe9e9', marginTop: 2 },
-
-  section: { paddingHorizontal: 16, paddingTop: 24 },
-  divider: { height: 1, backgroundColor: COLORS.divider, marginTop: 12 },
-
-  // Language selector
-  langTitle: { fontSize: 14, fontWeight: '700', color: COLORS.muted, marginBottom: 10 },
-  langRow: {
-    flexDirection: 'row',
-    gap: 8,
-    flexWrap: 'wrap',
-    alignItems: 'center',
-  },
-  langPill: {
-    paddingHorizontal: 12,
-    height: 36,
-    borderRadius: 18,
-    borderWidth: 1,
-    borderColor: '#e6e6e6',
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    minWidth: 62,
-  },
-  langPillActive: {
-    backgroundColor: '#FFF0F0',
-    borderColor: '#F5C8C8',
-  },
-  langPillText: {
-    fontSize: 13,
-    fontWeight: '700',
-    color: COLORS.text,
-  },
-  langPillTextActive: {
-    color: COLORS.primary,
-  },
-
-  item: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 12,
-  },
-  itemIcon: {
-    width: 28, alignItems: 'center', marginRight: 12,
-  },
-  itemLabel: { flex: 1, fontSize: 15, color: COLORS.text, fontWeight: '600' },
-
-  logoutBtn: {
-    marginTop: 16,
-    marginHorizontal: 16,
-    height: 48,
-    borderRadius: 14,
-    borderWidth: 1,
-    borderColor: '#F5C8C8',
-    backgroundColor: '#FFF6F6',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 8,
-  },
-  logoutTxt: { color: COLORS.primary, fontWeight: '700', fontSize: 15 },
-
-  footer: {
-    paddingHorizontal: 16,
-    marginTop: 16,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    alignItems: 'center',
-  },
-  version: { color: COLORS.muted, fontSize: 12, marginRight: 8 },
-  link: { color: COLORS.primary, fontSize: 12, fontWeight: '700' },
-});

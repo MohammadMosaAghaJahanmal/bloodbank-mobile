@@ -53,7 +53,7 @@ const AuthProvider = (props) => {
       setAuth((prev) => ({ ...prev, loading: true }));
 
       try {
-        const objData = await fetchJSON(serverPath('/auth/token'), {
+        const objData = await fetchJSON(serverPath('/api/auth/token'), {
           method: 'POST',
           headers: { Authorization: `bearer ${authtoken}` },
         });
@@ -94,10 +94,10 @@ const AuthProvider = (props) => {
       try {
         setAuth((p) => ({ ...p, loading: true }));
 
-        const donorsRes = await fetchJSON(serverPath('/donors'), {
+        const donorsRes = await fetchJSON(serverPath('/api/donors'), {
           headers: { Authorization: `bearer ${auth.token}` },
         });
-        const newsRes = await fetchJSON(serverPath('/news'));
+        const newsRes = await fetchJSON(serverPath('/api/news'));
 
         if (aborted) return;
 

@@ -74,7 +74,7 @@ export default function LoginScreen() {
         password,
       };
 
-      const res = await fetch(serverPath('/auth/login'), {
+      const res = await fetch(serverPath('/api/auth/login'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(loginData),
@@ -84,7 +84,9 @@ export default function LoginScreen() {
       if (!res.ok) throw new Error(data?.message || 'Login failed');
 
       if (data?.status === 'failure') {
-        throw new Error(data?.message || 'Login failed');
+        setLoading(false);
+        Alert.alert('Login Failed', data.message);
+        return
       }
 
       // ✅ Update global auth state + persist token
@@ -98,11 +100,14 @@ export default function LoginScreen() {
 
       setLoading(false);
 
-      Alert.alert(
-        'Welcome Back! 🩸',
-        'You have successfully logged in to Blood Donors Network.',
-        [{ text: 'Continue', onPress: () => router.replace('/profile') }] // go straight to profile
-      );
+      // Alert.alert(
+      //   'Welcome Back! 🩸',
+      //   'You have successfully logged in to Blood Donors Network.',
+      //   [{ text: 'Continue', onPress: () => {router.replace('/profile')} }] // go straight to profile
+      // );
+      setLoginIdentifier("");
+      setPassword("");
+      router.replace('/profile');
     } catch (err) {
       console.error('Login error:', err);
       setLoading(false);

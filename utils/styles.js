@@ -8,7 +8,14 @@ const TEXT = '#1E1E1E';
 const MUTED = '#7E7E7E';
 const BORDER = '#E8E8E8';
 
-
+const COLORS = {
+  primary: '#E73C3C',
+  primaryDark: '#C42525',
+  text: '#1E1E1E',
+  muted: '#7E7E7E',
+  sheet: '#FFFFFF',
+  divider: '#EFEFEF',
+};
 
 export const useRTLStyles = () => {
   const { isRTL } = useLanguage();
@@ -79,6 +86,54 @@ export const globalStyle = StyleSheet.create(
     borderColor: PRIMARY,
     position: 'relative',
     overflow: 'hidden',
+  },
+    defaultAvatar: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: '#FDF2F2',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: '#E73C3C',
+  },
+  
+  defaultAvatarText: {
+    fontSize: 20,
+  },
+  
+  verificationBadge: {
+    backgroundColor: '#F0F8F0',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 12,
+    marginTop: 4,
+    alignSelf: 'flex-start',
+  },
+  
+  verificationBadgeText: {
+    fontSize: 12,
+    color: '#27ae60',
+    fontWeight: '600',
+  },
+  
+  loginBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderWidth: 1,
+    borderColor: '#E73C3C',
+    borderRadius: 8,
+    marginHorizontal: 16,
+    marginBottom: 8,
+  },
+  
+  loginTxt: {
+    color: '#E73C3C',
+    fontWeight: '600',
+    marginLeft: 8,
   },
   avatarImage: { width: '100%', height: '100%', borderRadius: 50 },
   avatarPlaceholder: { fontSize: 36 },
@@ -465,6 +520,370 @@ export const globalStyle = StyleSheet.create(
     color: PRIMARY,
     fontWeight: '700',
   },
+    logoutBtn: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    backgroundColor: '#ff4757',
+    borderRadius: 8,
+  },
+  
+  logoutText: {
+    color: '#fff',
+    fontWeight: '600',
+    fontSize: 14,
+  },
+  
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#2c3e50',
+    marginBottom: 16,
+  },
+  
+  cooldownCard: {
+    backgroundColor: '#e8f4fd',
+    padding: 16,
+    borderRadius: 12,
+    marginBottom: 16,
+    borderLeftWidth: 4,
+    borderLeftColor: '#3498db',
+  },
+  
+  cooldownTitle: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#2c3e50',
+    marginBottom: 4,
+  },
+  
+  cooldownText: {
+    fontSize: 14,
+    color: '#e74c3c',
+    fontWeight: '600',
+  },
+  
+  cooldownEligible: {
+    color: '#27ae60',
+  },
+  
+  lastDonationText: {
+    fontSize: 12,
+    color: '#7f8c8d',
+    marginTop: 4,
+  },
+  
+  donationBtn: {
+    backgroundColor: '#e74c3c',
+    padding: 16,
+    borderRadius: 12,
+    alignItems: 'center',
+    marginTop: 12,
+  },
+  
+  donationBtnText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '700',
+  },
+
+  dateInput: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 14,
+    backgroundColor: '#fff',
+    marginTop: 4,
+  },
+  
+  dateInputText: {
+    fontSize: 16,
+    color: '#333',
+  },
+  
+  dateInputPlaceholder: {
+    color: '#999',
+  },
+  
+  datePickerIcon: {
+    fontSize: 18,
+  },
+  
+  fixedCooldownContainer: {
+    borderWidth: 1,
+    borderColor: '#e0e0e0',
+    borderRadius: 8,
+    padding: 12,
+    backgroundColor: '#f8f9fa',
+    marginTop: 4,
+  },
+  
+  fixedCooldownText: {
+    fontSize: 16,
+    color: '#333',
+    fontWeight: '600',
+  },
+  
+  fixedCooldownHelp: {
+    fontSize: 12,
+    color: '#666',
+    marginTop: 2,
+    lineHeight: 16,
+  },
+
+  
+  verificationCard: {
+    padding: 20,
+    borderRadius: 16,
+    borderWidth: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    alignSelf: "center",
+  },
+  
+  verifiedCard: {
+    backgroundColor: '#F0F8F0',
+    borderColor: '#27ae60',
+  },
+  
+  unverifiedCard: {
+    backgroundColor: '#FFF5F5',
+    borderColor: '#E73C3C',
+  },
+  
+  verificationHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    marginBottom: 12,
+  },
+  
+  verificationTitleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  
+  verificationIcon: {
+    fontSize: 24,
+    marginRight: 12,
+  },
+  
+  verificationTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#1E1E1E',
+    marginBottom: 2,
+  },
+  
+  verificationSubtitle: {
+    fontSize: 14,
+    color: '#7E7E7E',
+    fontWeight: '500',
+  },
+  
+  verifiedBadge: {
+    backgroundColor: '#27ae60',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 20,
+    marginLeft: 12,
+  },
+  
+  verifiedText: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: '700',
+  },
+  
+  verifyButton: {
+    backgroundColor: '#E73C3C',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: 12,
+    shadowColor: '#E73C3C',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  
+  verifyButtonDisabled: {
+    backgroundColor: '#7E7E7E',
+    shadowOpacity: 0,
+  },
+  
+  verifyButtonText: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: '700',
+    marginRight: 8,
+  },
+  
+  verifyButtonIcon: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '700',
+  },
+  
+  verificationBody: {
+    marginTop: 8,
+  },
+  
+  verificationDescription: {
+    fontSize: 14,
+    color: '#1E1E1E',
+    lineHeight: 20,
+    marginBottom: 12,
+  },
+  
+  verificationBenefits: {
+    backgroundColor: '#FFFFFF',
+    padding: 16,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#E8E8E8',
+  },
+  
+  benefitsTitle: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#1E1E1E',
+    marginBottom: 8,
+  },
+  
+  benefitItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 6,
+  },
+  
+  benefitIcon: {
+    color: '#27ae60',
+    fontSize: 14,
+    fontWeight: '700',
+    marginRight: 8,
+    width: 16,
+  },
+  
+  benefitText: {
+    fontSize: 13,
+    color: '#7E7E7E',
+    flex: 1,
+  },
+
+
+  drawer: {
+  sheet: { flex: 1, backgroundColor: COLORS.sheet },
+  header: { marginBottom: 12 },
+  headerBg: {
+    height: 128,
+    backgroundColor: COLORS.primary,
+  },
+  closeBtn: {
+    position: 'absolute',
+    right: 16,
+    top: 12,
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: 'rgba(255,255,255,0.25)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  profileRow: {
+    position: 'absolute',
+    left: 16,
+    right: 16,
+    bottom: 5,
+    flexDirection: 'row', 
+    alignItems: 'center',
+    gap: 12,              
+  },
+  avatar: { width: 72, height: 72, borderRadius: 36, borderWidth: 3, borderColor: '#fff', backgroundColor: '#fff' },
+  name: { fontSize: 18, fontWeight: '700', color: '#fff' },
+  email: { fontSize: 13, fontWeight: '500', color: '#ffe9e9', marginTop: 2 },
+
+  section: { paddingHorizontal: 16, paddingTop: 24 },
+  divider: { height: 1, backgroundColor: COLORS.divider, marginTop: 12 },
+
+  // Language selector
+  langTitle: { fontSize: 14, fontWeight: '700', color: COLORS.muted, marginBottom: 10 },
+  langRow: {
+    flexDirection: 'row',
+    gap: 8,
+    flexWrap: 'wrap',
+    alignItems: 'center',
+  },
+  langPill: {
+    paddingHorizontal: 12,
+    height: 36,
+    borderRadius: 18,
+    borderWidth: 1,
+    borderColor: '#e6e6e6',
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+    minWidth: 62,
+  },
+  langPillActive: {
+    backgroundColor: '#FFF0F0',
+    borderColor: '#F5C8C8',
+  },
+  langPillText: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: COLORS.text,
+  },
+  langPillTextActive: {
+    color: COLORS.primary,
+  },
+
+  item: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 12,
+  },
+  itemIcon: {
+    width: 28, alignItems: 'center', marginRight: 12,
+  },
+  itemLabel: { flex: 1, fontSize: 15, color: COLORS.text, fontWeight: '600' },
+
+  logoutBtn: {
+    marginTop: 16,
+    marginHorizontal: 16,
+    height: 48,
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: '#F5C8C8',
+    backgroundColor: '#FFF6F6',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+  },
+  logoutTxt: { color: COLORS.primary, fontWeight: '700', fontSize: 15 },
+
+  footer: {
+    paddingHorizontal: 16,
+    marginTop: 16,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'center',
+  },
+  version: { color: COLORS.muted, fontSize: 12, marginRight: 8 },
+  link: { color: COLORS.primary, fontSize: 12, fontWeight: '700' },
+}
+  
   
 }
 );

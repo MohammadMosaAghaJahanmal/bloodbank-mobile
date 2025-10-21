@@ -22,6 +22,7 @@ const translations = {
     CONTACT_US: 'Contact Us',
     LOGOUT: 'Log Out',
     NEWS_FEED: 'News Feed',
+    BLOOD_BANK: "Blood Bank"
   },
   ar: {
     HOME: 'الرئيسية',
@@ -39,6 +40,7 @@ const translations = {
     CONTACT_US: 'Contact Us',
     LOGOUT: 'Log Out',
     NEWS_FEED: 'News Feed',
+    BLOOD_BANK: "Blood Bank"
   },
     ps: {
     HOME: 'کورپاڼه',
@@ -56,6 +58,7 @@ const translations = {
     CONTACT_US: 'اړیکه ونیسئ',
     LOGOUT: 'وتل',
     NEWS_FEED: 'خبرونه',
+    BLOOD_BANK: "Blood Bank"
   },
 
   pa: {
@@ -74,6 +77,7 @@ const translations = {
     CONTACT_US: 'تماس با ما',
     LOGOUT: 'خروج',
     NEWS_FEED: 'اخبار',
+    BLOOD_BANK: "Blood Bank"
   },
 };
 

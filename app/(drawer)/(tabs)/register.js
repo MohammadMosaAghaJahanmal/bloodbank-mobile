@@ -15,21 +15,19 @@ import {
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import GeneralInput from '../../../components/GeneralInput';
+import ProvinceDropdown from '../../../components/ProvinceDropdown';
 import { useRTLStyles } from '../../../contexts/useRTLStyles';
 import serverPath from '../../../utils/serverPath';
 import { globalStyle } from '../../../utils/styles';
-// Afghanistan provinces in multiple languages
-import { AFGHANISTAN_PROVINCES } from '../../../constants/theme';
 
 export default function RegisterScreen() {
-  const { createRTLStyles, isRTL, language } = useRTLStyles();
+  const { createRTLStyles, isRTL } = useRTLStyles();
   const styles = createRTLStyles(globalStyle);
   
   const navigation = useNavigation();
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [locationLoading, setLocationLoading] = useState(false);
-  const [showProvinceDropdown, setShowProvinceDropdown] = useState(false);
 
   // Step 1 fields
   const [profileImage, setProfileImage] = useState(null);
@@ -52,21 +50,7 @@ export default function RegisterScreen() {
   // Blood group options
   const bloodGroups = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
 
-  // Get province name based on current language
-  const getProvinceName = (provinceData) => {
-    switch (language) {
-      case 'ps': return provinceData.ps;
-      case 'prs': return provinceData.prs;
-      default: return provinceData.en;
-    }
-  };
 
-  // Get selected province display name
-  const getSelectedProvinceName = () => {
-    if (!province) return '';
-    const selectedProvince = AFGHANISTAN_PROVINCES.find(p => p.id === province);
-    return selectedProvince ? getProvinceName(selectedProvince) : '';
-  };
 
   // Check location permission on component mount
   useEffect(() => {
@@ -266,6 +250,7 @@ export default function RegisterScreen() {
   const handleNextStep = () => {
     if (step === 1 && isStep1Valid) {
       setStep(2);
+      getCurrentLocation()
     }
   };
 
@@ -316,7 +301,7 @@ export default function RegisterScreen() {
 
     try {
       // Replace with your actual API endpoint
-      const response = await fetch(serverPath('/user'), {
+      const response = await fetch(serverPath('/api/user'), {
         method: 'POST',
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -326,19 +311,34 @@ export default function RegisterScreen() {
 
       const result = await response.json();
 
-      if (response.ok) {
+      if(!response.ok)
+        Alert.alert('Registration Failed', result.message || 'Please try again later.');
+      else if(result.status === "failure")
+        Alert.alert('Registration Failed', result.message || 'Please try again later.');
+      else if (response.ok) {
         Alert.alert(
           'Registration Successful! 🎉',
           'Thank you for joining our blood donor community. You can now save lives!',
           [
             {
               text: 'Get Started',
-              onPress: () => navigation?.navigate?.('index'),
+              onPress: () => {
+                navigation?.navigate?.('login')
+                setProfileImage(null)
+                setStep(1)
+                setFullName('')
+                setEmail('')
+                setPhone('')
+                setPassword('')
+                setProvince('')
+                setBloodGroup('')
+                setLocationText('')
+                setLatitude('')
+                setLongitude('')
+              },
             },
           ]
         );
-      } else {
-        Alert.alert('Registration Failed', result.message || 'Please try again later.');
       }
     } catch (e) {
       console.log('Registration error:', e);
@@ -350,71 +350,6 @@ export default function RegisterScreen() {
 
   // Custom Province Dropdown Component
 // Custom Province Dropdown Component
-const ProvinceDropdown = () => (
-  <View style={{marginBottom: 16}}>
-    <Text style={styles.label}>Province *</Text>
-    <TouchableOpacity
-      style={[
-        styles.dropdownButton,
-        touched.province && !province && styles.dropdownError,
-        isRTL && styles.dropdownButtonRTL
-      ]}
-      onPress={() => setShowProvinceDropdown(!showProvinceDropdown)}
-    >
-      <Text style={[
-        styles.dropdownButtonText,
-        !province && styles.dropdownPlaceholder
-      ]}>
-        {province ? getSelectedProvinceName() : 'Select your province'}
-      </Text>
-      <Text style={[
-        styles.dropdownArrow,
-        isRTL && styles.dropdownArrowRTL
-      ]}>
-        {showProvinceDropdown ? '▲' : '▼'}
-      </Text>
-    </TouchableOpacity>
-    
-    {step1Errors.province && <Text style={styles.error}>{step1Errors.province}</Text>}
-
-    {showProvinceDropdown && (
-      <View style={[
-        styles.dropdownList,
-        isRTL && styles.dropdownListRTL
-      ]}>
-        <ScrollView 
-          style={styles.dropdownScroll}
-          nestedScrollEnabled={true}
-          showsVerticalScrollIndicator={false}
-        >
-          {AFGHANISTAN_PROVINCES.map((provinceItem) => (
-            <TouchableOpacity
-              key={provinceItem.id}
-              style={[
-                styles.dropdownItem,
-                province === provinceItem.id && styles.dropdownItemSelected,
-                isRTL && styles.dropdownItemRTL,
-                province === provinceItem.id && isRTL && styles.dropdownItemSelectedRTL
-              ]}
-              onPress={() => {
-                setProvince(provinceItem.id);
-                setShowProvinceDropdown(false);
-                setTouched(t => ({ ...t, province: true }));
-              }}
-            >
-              <Text style={[
-                styles.dropdownItemText,
-                province === provinceItem.id && styles.dropdownItemTextSelected
-              ]}>
-                {getProvinceName(provinceItem)}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
-      </View>
-    )}
-  </View>
-);
 
   return (
     <SafeAreaView style={styles.safe}>
@@ -567,8 +502,13 @@ const ProvinceDropdown = () => (
                 </View>
 
                 {/* Province Dropdown */}
-
-                <ProvinceDropdown />
+                {step1Errors.province && <Text style={styles.error}>{step1Errors.province}</Text>}
+                <ProvinceDropdown
+                  setTouched={setTouched}
+                  setProvince={setProvince}
+                  touched={touched}
+                  province={province}
+                />
 
                 {/* Location Text */}
                 
