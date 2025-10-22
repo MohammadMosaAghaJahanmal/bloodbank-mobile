@@ -61,6 +61,13 @@ export default function TabsLayout() {
           headerShown: true,
         }} 
       />
+      <Tabs.Screen 
+        name="forgot-password" 
+        options={{ 
+          href: null, // Hide from tab bar
+          headerShown: true,
+        }} 
+      />
     </Tabs>
   );
 }

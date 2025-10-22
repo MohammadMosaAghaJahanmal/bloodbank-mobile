@@ -126,7 +126,7 @@ export default function LoginScreen() {
 
   // Handle forgot password
   const handleForgotPassword = () => {
-    navigation?.navigate?.('ForgotPasswordScreen');
+    navigation?.navigate?.('forgot-password');
   };
 
   // Handle sign up navigation
