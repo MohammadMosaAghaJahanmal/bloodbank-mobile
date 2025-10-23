@@ -24,7 +24,13 @@ const COLORS = {
   divider: '#EFEFEF',
 };
 
-
+const TABCOLORS = {
+  primary: '#E73C3C', // header red
+  text: '#FFFFFF',
+  muted: 'rgba(255,255,255,0.7)',
+  barBg: '#FFFFFF',
+  shadow: '#000000',
+};
 
 
 export const globalStyle = StyleSheet.create(
@@ -1687,6 +1693,164 @@ export const globalStyle = StyleSheet.create(
     fontWeight: '700',
     fontSize: 14,
   },
+  },
+  tabs: {
+  /* Header */
+    headerWrap: {
+      backgroundColor: 'transparent',
+    },
+    header: {
+      backgroundColor: TABCOLORS.primary,
+      minHeight: 96,
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingBottom: 12,
+      // soft shadow under curved header
+      ...Platform.select({
+        ios: {
+          shadowColor: TABCOLORS.shadow,
+          shadowOpacity: 0.15,
+          shadowRadius: 14,
+          shadowOffset: { width: 0, height: 6 },
+        },
+        android: { elevation: 6 },
+      }),
+    },
+    titleBox: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    headerTitle: {
+      color: TABCOLORS.text,
+      fontWeight: '700',
+      fontSize: 18,
+      textAlign: 'center',
+    },
+    userName: {
+      color: 'rgba(255,255,255,0.8)',
+      fontSize: 12,
+      fontWeight: '500',
+      marginTop: 2,
+    },
+    iconBtn: {
+      width: 36,
+      height: 36,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    iconBtnPressed: {
+      opacity: 0.7,
+    },
+    iconContainer: {
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    bellBadge: {
+      width: 28,
+      height: 28,
+      borderRadius: 14,
+      backgroundColor: 'rgba(255,255,255,0.18)',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    // circles for the light shapes on the right side of the header
+    decoCircleBig: {
+      position: 'absolute',
+      right: -30,
+      top: -10,
+      width: 140,
+      height: 140,
+      borderRadius: 70,
+      backgroundColor: 'rgba(255,255,255,0.12)',
+    },
+    decoCircleSmall: {
+      position: 'absolute',
+      right: 8,
+      top: 28,
+      width: 54,
+      height: 54,
+      borderRadius: 27,
+      backgroundColor: 'rgba(255,255,255,0.16)',
+    },
+
+    /* Bottom bar */
+    wrapper: {
+      position: 'absolute',
+      left: 0, 
+      right: 0, 
+      bottom: 0,
+      backgroundColor: 'transparent',
+    },
+
+    // Red, rounded, with soft shadow and decorative circles
+    barRed: {
+      marginHorizontal: 14,
+      backgroundColor: TABCOLORS.primary,
+      borderRadius: 10,
+      paddingHorizontal: 18,
+      paddingTop: 7,
+      paddingBottom: 5,
+      flexDirection: 'row',
+      alignItems: 'flex-end',
+      justifyContent: 'space-between',
+      overflow: 'hidden',
+      ...Platform.select({
+        ios: {
+          shadowColor: TABCOLORS.shadow,
+          shadowOpacity: 0.12,
+          shadowRadius: 12,
+          shadowOffset: { width: 0, height: 8 },
+        },
+        android: { elevation: 12 },
+      }),
+    },
+
+    // translucent shapes like header
+    tabDecoCircleBig: {
+      position: 'absolute',
+      right: -24,
+      top: -26,
+      width: 120,
+      height: 120,
+      borderRadius: 60,
+      backgroundColor: 'rgba(255,255,255,0.12)',
+    },
+    tabDecoCircleSmall: {
+      position: 'absolute',
+      right: 6,
+      top: 18,
+      width: 44,
+      height: 44,
+      borderRadius: 22,
+      backgroundColor: 'rgba(255,255,255,0.16)',
+    },
+
+    sideItem: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'flex-end',
+      paddingVertical: 4,
+    },
+    tabPressed: {
+      opacity: 0.8,
+    },
+    tabContent: {
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    sideLabelRed: {
+      fontSize: 10,
+      marginTop: 1,
+      fontWeight: '700',
+    },
+    activeDot: {
+      marginTop: 6,
+      width: 24,
+      height: 3,
+      borderRadius: 2,
+      backgroundColor: 'rgba(255,255,255,0.9)',
+    },
   }
 }
 );

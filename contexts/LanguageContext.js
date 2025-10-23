@@ -2,7 +2,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { I18nManager, Platform } from 'react-native';
-import { changeLanguage, getSystemLanguage, isRTL } from '../utils/i18n';
+import { changeLanguage, isRTL } from '../utils/i18n';
 
 const LanguageContext = createContext();
 
@@ -13,74 +13,52 @@ export const LanguageProvider = ({ children }) => {
   const [rtl, setRTL] = useState(false);
   const [isReady, setIsReady] = useState(false);
 
-  // Load saved language on app start
+  // Apply LTR settings immediately when component mounts
+  useEffect(() => {
+    // Force LTR on app start
+    I18nManager.forceRTL(false);
+    I18nManager.allowRTL(false);
+    if (Platform.OS === 'android') {
+      I18nManager.swapLeftAndRightInRTL(false);
+    }
+  }, []);
+
+  // Load language on app start - ALWAYS START WITH EN
   useEffect(() => {
     loadSavedLanguage();
   }, []);
 
-  // Apply RTL settings when RTL state changes
-  useEffect(() => {
-    if (isReady) {
-      applyRTLSettings();
-    }
-  }, [rtl, isReady]);
-
   const loadSavedLanguage = async () => {
     try {
-      const savedLanguage = await AsyncStorage.getItem(STORAGE_KEY);
+      // Always start with English, ignore saved language on startup
+      await applyLanguage('en', false);
       
-      if (savedLanguage) {
-        // Use saved language
-        const newRTL = isRTL(savedLanguage);
-        setCurrentLocale(savedLanguage);
-        setRTL(newRTL);
-        changeLanguage(savedLanguage);
-      } else {
-        // Use system language
-        const systemLanguage = getSystemLanguage();
-        const systemRTL = isRTL(systemLanguage);
-        setCurrentLocale(systemLanguage);
-        setRTL(systemRTL);
-        changeLanguage(systemLanguage);
-      }
+      console.log('App started with forced EN language');
     } catch (error) {
       console.log('Error loading language:', error);
-      // Fallback to system language
-      const systemLanguage = getSystemLanguage();
-      const systemRTL = isRTL(systemLanguage);
-      setCurrentLocale(systemLanguage);
-      setRTL(systemRTL);
-      changeLanguage(systemLanguage);
+      // Fallback to English
+      await applyLanguage('en', false);
     } finally {
       setIsReady(true);
     }
   };
 
-  const applyRTLSettings = () => {
-    // Force RTL/LTR layout
-    I18nManager.forceRTL(rtl);
+  const applyLanguage = async (locale, isRTLValue) => {
+    // Update i18n
+    changeLanguage(locale);
     
-    // This is important for some Android devices
-    if (Platform.OS === 'android') {
-      // You might need to restart the app on Android for RTL to take full effect
-      console.log('RTL settings applied:', { rtl, currentLocale });
-    }
+    // Update state
+    setCurrentLocale(locale);
+    setRTL(isRTLValue);
+    
+    // Save to storage for future use (user can still change it)
+    await AsyncStorage.setItem(STORAGE_KEY, locale);
   };
 
   const toggleLanguage = async (locale) => {
     try {
       const newRTL = isRTL(locale);
-      
-      // Save to storage
-      await AsyncStorage.setItem(STORAGE_KEY, locale);
-      
-      // Update state
-      setCurrentLocale(locale);
-      setRTL(newRTL);
-      changeLanguage(locale);
-      
-      // Force re-render of all components
-      applyRTLSettings();
+      await applyLanguage(locale, newRTL);
       
       console.log('Language changed to:', locale, 'RTL:', newRTL);
     } catch (error) {

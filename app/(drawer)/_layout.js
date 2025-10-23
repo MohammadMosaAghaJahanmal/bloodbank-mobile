@@ -1,9 +1,8 @@
-// app/(drawer)/_layout.tsx
 import { Feather, Ionicons } from '@expo/vector-icons';
 import { DrawerContentScrollView } from '@react-navigation/drawer';
 import Constants from 'expo-constants';
 import { Drawer } from 'expo-router/drawer';
-import { useContext } from 'react';
+import { useContext } from 'react'; // Add useEffect
 import {
   Alert,
   Image, Linking,
@@ -14,9 +13,10 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import IMAGE from '../../assets/images/icon.png';
 import { AuthContext } from '../../contexts/authContext';
 import { useLanguage } from '../../contexts/LanguageContext';
-import I18n from '../../utils/i18n';
+import { t } from '../../utils/i18n';
 import serverPath from '../../utils/serverPath';
 import { globalStyle } from '../../utils/styles';
+
 const {drawer : styles} = globalStyle
 
 const COLORS = {
@@ -36,9 +36,10 @@ const LANGUAGES = [
 
 export default function DrawerLayout() {
   const { isRTL, currentLocale } = useLanguage();
+
   return (
     <Drawer
-      key={currentLocale}
+      key={`drawer_${currentLocale}`} // Force re-render with key
       screenOptions={{
         drawerPosition: isRTL ? 'right' : 'left',
         headerShown: false,
@@ -46,20 +47,53 @@ export default function DrawerLayout() {
       }}
       drawerContent={(props) => <CustomDrawerContent {...props} />}
     >
-      <Drawer.Screen name="(tabs)" options={{ title: I18n.t('HOME') }} />
-      <Drawer.Screen name="about" options={{ title: I18n.t('ABOUT') }} />
-      <Drawer.Screen name="contact" options={{ title: I18n.t('CONTACT_US') }} />
-      <Drawer.Screen name="language-settings" options={{ title: I18n.t('LANGUAGE') }} />
+      <Drawer.Screen 
+        name="(tabs)" 
+        options={{ 
+          title: t('HOME'),
+          drawerLabel: t('HOME')
+        }} 
+      />
+      <Drawer.Screen 
+        name="about" 
+        options={{ 
+          title: t('ABOUT'),
+          drawerLabel: t('ABOUT')
+        }} 
+      />
+      <Drawer.Screen 
+        name="contact" 
+        options={{ 
+          title: t('CONTACT_US'),
+          drawerLabel: t('CONTACT_US')
+        }} 
+      />
+      <Drawer.Screen 
+        name="language-settings" 
+        options={{ 
+          title: t('LANGUAGE'),
+          drawerLabel: t('LANGUAGE')
+        }} 
+      />
     </Drawer>
   );
 }
 
 function CustomDrawerContent(props) {
   const { navigation } = props;
-  const { isRTL, currentLocale, toggleLanguage } = useLanguage();
-  const { user, login, logout } = useContext(AuthContext); // Get auth context
+  const { isRTL, currentLocale, toggleLanguage, isReady } = useLanguage();
+  const { user, login, logout } = useContext(AuthContext);
   const insets = useSafeAreaInsets();
   const version = `${Constants.expoConfig?.version ?? ''} (${Constants.expoConfig?.android?.versionCode ?? Constants.expoConfig?.ios?.buildNumber ?? ''})`;
+
+  // Don't render until language is ready
+  if (!isReady) {
+    return (
+      <View style={[styles.sheet, { justifyContent: 'center', alignItems: 'center' }]}>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
 
   const go = (name, screen) => {
     navigation.closeDrawer();
@@ -73,17 +107,24 @@ function CustomDrawerContent(props) {
 
   const handleLogout = () => {
     Alert.alert(
-      'Logout',
-      'Are you sure you want to logout?',
+      t('LOGOUT_CONFIRMATION_TITLE') || 'Logout',
+      t('LOGOUT_CONFIRMATION_MESSAGE') || 'Are you sure you want to logout?',
       [
-        { text: 'Cancel', style: 'cancel' },
-        { text: 'Logout', style: 'destructive', onPress: () => {
-          logout()
-          navigation.closeDrawer();
-          navigation.navigate('(tabs)', {
-            screen: "index"
-          }); // Navigate to home after logout
-        } },
+        { 
+          text: t('CANCEL') || 'Cancel', 
+          style: 'cancel' 
+        },
+        { 
+          text: t('LOGOUT') || 'Logout', 
+          style: 'destructive', 
+          onPress: () => {
+            logout()
+            navigation.closeDrawer();
+            navigation.navigate('(tabs)', {
+              screen: "index"
+            });
+          } 
+        },
       ]
     );
   };
@@ -97,13 +138,13 @@ function CustomDrawerContent(props) {
 
   // User data based on authentication status
   const userData = user ? {
-    name: user.fullName || 'User',
+    name: user.fullName || t('USER') || 'User',
     email: user.email || '',
     avatar: user.imageUrl ? serverPath(user.imageUrl) : IMAGE,
   } : {
-    name: I18n.t('WELCOME') || 'Welcome',
-    email: I18n.t('BLOOD_BANK') || 'Blood Bank',
-    avatar: IMAGE, // Will use default app logo
+    name: t('WELCOME') || 'Welcome',
+    email: t('BLOOD_BANK') || 'Blood Bank',
+    avatar: IMAGE,
   };
 
   const avatarSource =
@@ -117,7 +158,11 @@ function CustomDrawerContent(props) {
       <View style={[styles.header]}>
         <View style={[styles.headerBg, { paddingTop: insets.top }]} />
         <Pressable
-          style={[{ ...styles.closeBtn, top: (insets.top + 3) }, isRTL && { left: 16, right: 'auto' }]}
+          style={[
+            styles.closeBtn, 
+            { top: (insets.top + 3) },
+            isRTL ? { left: 16, right: 'auto' } : { right: 16, left: 'auto' }
+          ]}
           onPress={() => navigation.closeDrawer()}
         >
           <Feather name="x" size={20} color="#fff" />
@@ -134,22 +179,37 @@ function CustomDrawerContent(props) {
               source={avatarSource}
               style={[
                 styles.avatar,
-                isRTL ? { marginLeft: 0, marginRight: 12 } : { marginLeft: 0, marginRight: 0 }
+                isRTL ? { marginLeft: 12, marginRight: 0 } : { marginLeft: 0, marginRight: 12 }
               ]}
             />
           ) : (
             <View style={[
               styles.defaultAvatar,
-              isRTL ? { marginLeft: 0, marginRight: 12 } : { marginLeft: 0, marginRight: 0 }
+              isRTL ? { marginLeft: 12, marginRight: 0 } : { marginLeft: 0, marginRight: 12 }
             ]}>
               <Text style={styles.defaultAvatarText}>🩸</Text>
             </View>
           )}
-          <View style={{ flex: 1, alignItems: isRTL ? 'flex-end' : 'flex-start' }}>
-            <Text numberOfLines={1} style={[styles.name, isRTL && { textAlign: 'right' }]}>
+          <View style={{ 
+            flex: 1, 
+            alignItems: isRTL ? 'flex-end' : 'flex-start' 
+          }}>
+            <Text 
+              numberOfLines={1} 
+              style={[
+                styles.name, 
+                { textAlign: isRTL ? 'right' : 'left' }
+              ]}
+            >
               {userData.name}
             </Text>
-            <Text numberOfLines={1} style={[styles.email, isRTL && { textAlign: 'right' }]}>
+            <Text 
+              numberOfLines={1} 
+              style={[
+                styles.email, 
+                { textAlign: isRTL ? 'right' : 'left' }
+              ]}
+            >
               {userData.email}
             </Text>
           </View>
@@ -158,17 +218,22 @@ function CustomDrawerContent(props) {
 
       <DrawerContentScrollView
         {...props}
-        contentContainerStyle={{ paddingTop: 8, paddingBottom: 16 }}
+        contentContainerStyle={{ 
+          paddingTop: 8, 
+          paddingBottom: 16,
+          flexGrow: 1 
+        }}
+        showsVerticalScrollIndicator={false}
       >
         {/* Language Section */}
-        <Section>
+        <Section isRTL={isRTL}>
           <Text
             style={[
               styles.langTitle,
               { textAlign: isRTL ? 'right' : 'left' }
             ]}
           >
-            {I18n.t('LANGUAGE') || 'Language'}
+            {t('LANGUAGE')}
           </Text>
 
           <View
@@ -207,100 +272,120 @@ function CustomDrawerContent(props) {
 
         {/* Main menu - Show profile only when logged in */}
         {user && (
-          <Section>
+          <Section isRTL={isRTL}>
             <MenuItem
               icon={<Feather name="user" size={18} color={COLORS.text} />}
-              label={I18n.t('MY_PROFILE') || 'My Profile'}
+              label={t('MY_PROFILE')}
               onPress={() => go('(tabs)', 'profile')}
               isRTL={isRTL}
             />
             <MenuItem
               icon={<Feather name="settings" size={18} color={COLORS.text} />}
-              label={I18n.t('SETTINGS') || 'Settings'}
+              label={t('SETTINGS')}
               onPress={() => go('settings')}
               isRTL={isRTL}
             />
           </Section>
         )}
 
-        <Section>
+        <Section isRTL={isRTL}>
           <MenuItem
             icon={<Feather name="home" size={18} color={COLORS.text} />}
-            label={I18n.t('HOME') || 'Home'}
+            label={t('HOME')}
             onPress={() => go('(tabs)', 'index')}
             isRTL={isRTL}
           />
           <MenuItem
             icon={<Feather name="message-circle" size={18} color={COLORS.text} />}
-            label={I18n.t('CONTACT_US') || 'Contact US'}
+            label={t('CONTACT_US')}
             onPress={() => go('contact')}
             isRTL={isRTL}
           />
           <MenuItem
             icon={<Feather name="globe" size={18} color={COLORS.text} />}
-            label={I18n.t('NEWS_FEED') || 'News Feed'}
+            label={t('NEWS_FEED')}
             onPress={() => go('news')}
             isRTL={isRTL}
           />
           <MenuItem
             icon={<Feather name="info" size={18} color={COLORS.text} />}
-            label={I18n.t('ABOUT') || 'About Us'}
+            label={t('ABOUT')}
             onPress={() => go('about')}
             isRTL={isRTL}
           />
           <MenuItem
             icon={<Ionicons name="shield-checkmark-outline" size={18} color={COLORS.text} />}
-            label={I18n.t('PRIVACY_POLICY') || 'Privacy Policy'}
+            label={t('PRIVACY_POLICY')}
             onPress={() => Linking.openURL('https://your-site.com/privacy')}
             isRTL={isRTL}
           />
 
           <MenuItem
-            icon={<Ionicons name="shield-checkmark-outline" size={18} color={COLORS.text} />}
-            label={I18n.t('LANGUAGE') || 'LANGUAGE'}
+            icon={<Ionicons name="language-outline" size={18} color={COLORS.text} />}
+            label={t('LANGUAGE')}
             onPress={() => go('language-settings')}
             isRTL={isRTL}
           />
         </Section>
 
-        <View style={{ height: 12 }} />
+        <View style={{ flex: 1 }} />
 
         {/* Logout/Login Button */}
         {user ? (
           <Pressable
-            style={styles.logoutBtn}
+            style={[
+              styles.logoutBtn,
+              isRTL && { flexDirection: 'row-reverse' }
+            ]}
             onPress={handleLogout}
           >
             <Feather name="log-out" size={18} color={COLORS.primary} />
-            <Text style={styles.logoutTxt}>{I18n.t('LOGOUT') || 'Logout'}</Text>
+            <Text style={styles.logoutTxt}>{t('LOGOUT')}</Text>
           </Pressable>
         ) : (
           <Pressable
-            style={styles.logoutBtn}
+            style={[
+              styles.logoutBtn,
+              isRTL && { flexDirection: 'row-reverse' }
+            ]}
             onPress={handleLogin}
           >
             <Feather name="log-in" size={18} color={COLORS.primary} />
-            <Text style={styles.loginTxt}>{I18n.t('LOGIN') || 'Login'}</Text>
+            <Text style={styles.loginTxt}>{t('LOGIN')}</Text>
           </Pressable>
         )}
 
         {/* Footer */}
-        <View style={styles.footer}>
-          <Text style={styles.version}>App Version: {version}</Text>
-          <Pressable onPress={() => Linking.openURL('https://your-site.com/privacy')}>
-            <Text style={styles.link}>Privacy Policy</Text>
-          </Pressable>
-          <Text style={{ color: COLORS.muted, marginHorizontal: 4 }}> & </Text>
-          <Pressable onPress={() => Linking.openURL('https://your-site.com/terms')}>
-            <Text style={styles.link}>Terms of Service</Text>
-          </Pressable>
+        <View style={[
+          styles.footer,
+          isRTL && { flexDirection: 'row-reverse' }
+        ]}>
+          <Text style={styles.version}>
+            {t('APP_VERSION') || 'App Version'}: {version}
+          </Text>
+          <View style={[
+            styles.footerLinks,
+            isRTL && { flexDirection: 'row-reverse' }
+          ]}>
+            <Pressable onPress={() => Linking.openURL('https://your-site.com/privacy')}>
+              <Text style={styles.link}>
+                {t('PRIVACY_POLICY')}
+              </Text>
+            </Pressable>
+            <Text style={{ color: COLORS.muted, marginHorizontal: 4 }}> & </Text>
+            <Pressable onPress={() => Linking.openURL('https://your-site.com/terms')}>
+              <Text style={styles.link}>
+                {t('TERMS_OF_SERVICE') || 'Terms of Service'}
+              </Text>
+            </Pressable>
+          </View>
         </View>
       </DrawerContentScrollView>
     </View>
   );
 }
 
-function Section({ children }) {
+function Section({ children, isRTL }) {
   return (
     <View style={styles.section}>
       {children}
@@ -313,9 +398,26 @@ function MenuItem({
   icon, label, onPress, isRTL,
 }) {
   return (
-    <Pressable onPress={onPress} style={[styles.item, isRTL && { flexDirection: 'row-reverse' }]}>
-      <View style={[styles.itemIcon, isRTL && { marginRight: 0, marginLeft: 12 }]}>{icon}</View>
-      <Text style={[styles.itemLabel, isRTL && { textAlign: 'right' }]} numberOfLines={1}>
+    <Pressable 
+      onPress={onPress} 
+      style={[
+        styles.item, 
+        isRTL && { flexDirection: 'row-reverse' }
+      ]}
+    >
+      <View style={[
+        styles.itemIcon, 
+        isRTL ? { marginRight: 0, marginLeft: 12 } : { marginRight: 12, marginLeft: 0 }
+      ]}>
+        {icon}
+      </View>
+      <Text 
+        style={[
+          styles.itemLabel, 
+          { textAlign: isRTL ? 'right' : 'left' }
+        ]} 
+        numberOfLines={1}
+      >
         {label}
       </Text>
     </Pressable>

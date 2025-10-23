@@ -1,0 +1,35 @@
+// components/RTLInitializer.js
+import { useEffect } from 'react';
+import { I18nManager, Platform } from 'react-native';
+import { useLanguage } from '../contexts/LanguageContext';
+
+export default function RTLInitializer({ children }) {
+  const { isRTL, isReady } = useLanguage();
+
+  useEffect(() => {
+    if (isReady) {
+      console.log('Applying RTL settings:', { isRTL, platform: Platform.OS });
+      
+      // Force RTL settings - this is crucial
+      I18nManager.forceRTL(isRTL);
+      I18nManager.allowRTL(isRTL);
+      
+      if (Platform.OS === 'android') {
+        I18nManager.swapLeftAndRightInRTL(isRTL);
+      }
+
+      // Sometimes we need to force a layout update
+      // This helps with the initial render
+      setTimeout(() => {
+        // Force a re-render by updating a state if needed
+      }, 100);
+    }
+  }, [isRTL, isReady]);
+
+  // Don't render children until RTL is properly configured
+  if (!isReady) {
+    return null;
+  }
+
+  return children;
+}
