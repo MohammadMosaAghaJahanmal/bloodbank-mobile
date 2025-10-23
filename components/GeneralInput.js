@@ -1,13 +1,10 @@
-import React from "react";
 import { Text, TextInput, View } from "react-native";
-import { useRTLStyles } from "../contexts/useRTLStyles";
-import { globalStyle } from "../utils/styles";
 
 
 const MUTED = '#7E7E7E';
 
 
-const Input = React.memo(function Input({
+const Input = function Input({
   label,
   value,
   onChangeText,
@@ -21,10 +18,10 @@ const Input = React.memo(function Input({
   right,
   autoCapitalize = 'none',
   onSubmitEditing,
-  blurOnSubmit,
+  isRTL,
+  writingDirection,
+  styles
 }) {
-    const { createRTLStyles, isRTL, writingDirection } = useRTLStyles();
-    const styles = createRTLStyles(globalStyle);
   return (
     <View style={{ marginBottom: 20 }}>
       <Text style={styles.label}>{label}</Text>
@@ -53,7 +50,7 @@ const Input = React.memo(function Input({
       {!!error && <Text style={styles.error}>{error}</Text>}
     </View>
   );
-});
+};
 
 
 export default Input;

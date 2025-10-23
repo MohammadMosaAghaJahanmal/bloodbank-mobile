@@ -11,6 +11,7 @@ import {
   Text, View
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import IMAGE from '../../assets/images/icon.png';
 import { AuthContext } from '../../contexts/authContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import I18n from '../../utils/i18n';
@@ -98,12 +99,17 @@ function CustomDrawerContent(props) {
   const userData = user ? {
     name: user.fullName || 'User',
     email: user.email || '',
-    avatar: user.imageUrl ? serverPath(user.imageUrl) : 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=256&auto=format&fit=crop',
+    avatar: user.imageUrl ? serverPath(user.imageUrl) : IMAGE,
   } : {
     name: I18n.t('WELCOME') || 'Welcome',
     email: I18n.t('BLOOD_BANK') || 'Blood Bank',
-    avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=256&auto=format&fit=crop', // Will use default app logo
+    avatar: IMAGE, // Will use default app logo
   };
+
+  const avatarSource =
+  typeof userData.avatar === 'string'
+    ? { uri: userData.avatar }
+    : userData.avatar;
 
   return (
     <View style={[styles.sheet]}>
@@ -125,7 +131,7 @@ function CustomDrawerContent(props) {
         >
           {userData.avatar ? (
             <Image
-              source={{ uri: userData.avatar }}
+              source={avatarSource}
               style={[
                 styles.avatar,
                 isRTL ? { marginLeft: 0, marginRight: 12 } : { marginLeft: 0, marginRight: 0 }

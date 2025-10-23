@@ -1,5 +1,4 @@
 import { Platform, StyleSheet } from 'react-native';
-import { useLanguage } from '../contexts/LanguageContext';
 
 const PRIMARY = '#E73C3C';
 const PRIMARY_DARK = '#C42525';
@@ -25,38 +24,6 @@ const COLORS = {
   divider: '#EFEFEF',
 };
 
-export const useRTLStyles = () => {
-  const { isRTL } = useLanguage();
-
-  const createRTLStyles = (styles) => {
-    return StyleSheet.create(
-      Object.keys(styles).reduce((acc, key) => {
-        const style = styles[key];
-        
-        // Handle margin and padding for RTL
-        if (style.marginLeft || style.marginRight) {
-          acc[key] = {
-            ...style,
-            marginLeft: isRTL ? style.marginRight : style.marginLeft,
-            marginRight: isRTL ? style.marginLeft : style.marginRight,
-          };
-        } else if (style.paddingLeft || style.paddingRight) {
-          acc[key] = {
-            ...style,
-            paddingLeft: isRTL ? style.paddingRight : style.paddingLeft,
-            paddingRight: isRTL ? style.paddingLeft : style.paddingRight,
-          };
-        } else {
-          acc[key] = style;
-        }
-        
-        return acc;
-      }, {})
-    );
-  };
-
-  return { createRTLStyles, isRTL };
-};
 
 
 
@@ -902,15 +869,15 @@ export const globalStyle = StyleSheet.create(
       top: 0,
       left: 0,
       right: 0,
-      height: 185,
+      height: 190,
       backgroundColor: PRIMARY,
       borderBottomLeftRadius: 24,
       borderBottomRightRadius: 24,
     },
     topPad: { 
       paddingHorizontal: 20, 
-      paddingTop: 15,
-      paddingBottom: 16,
+      paddingTop: 0,
+      paddingBottom: 10,
       zIndex: 10,
     },
     row: { 
@@ -1358,7 +1325,368 @@ export const globalStyle = StyleSheet.create(
       fontWeight: '600',
       textAlign: 'center',
     },
-  })
-  
+  }),
+  login: {
+    safe: { 
+      flex: 1, 
+      backgroundColor: BG 
+    },
+    container: { 
+      flexGrow: 1,
+      padding: 20,
+      paddingTop: 0,
+      justifyContent: 'center',
+    },
+    header: { 
+      alignItems: 'center', 
+      marginBottom: 40 
+    },
+    logoContainer: {
+      marginBottom: 20,
+    },
+    bloodDropLogo: {
+      width: 80,
+      height: 80,
+      borderRadius: 40,
+      backgroundColor: '#FFE6E6',
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderWidth: 3,
+      borderColor: PRIMARY,
+    },
+    bloodDropText: { 
+      fontSize: 36 
+    },
+    title: { 
+      fontSize: 28, 
+      fontWeight: '800', 
+      color: TEXT, 
+      textAlign: 'center',
+      marginBottom: 8,
+    },
+    subtitle: { 
+      fontSize: 16, 
+      color: MUTED, 
+      textAlign: 'center',
+      fontWeight: '500',
+    },
+    card: {
+      backgroundColor: '#FFFFFF',
+      borderRadius: 20,
+      padding: 24,
+      marginBottom: 24,
+      borderWidth: 1,
+      borderColor: '#FFE6E6',
+      shadowColor: PRIMARY,
+      shadowOpacity: 0.1,
+      shadowRadius: 16,
+      shadowOffset: { width: 0, height: 6 },
+      elevation: 6,
+    },
+    label: { 
+      color: TEXT, 
+      marginBottom: 8, 
+      fontWeight: '600', 
+      fontSize: 14,
+      textAlign: 'left'
+    },
+    inputWrap: {
+      borderWidth: 1.5,
+      borderColor: '#FFE6E6',
+      borderRadius: 14,
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: '#FFFBFB',
+    },
+    inputError: { 
+      borderColor: '#EF4444' 
+    },
+    inputIcon: { 
+      paddingHorizontal: 16, 
+      fontSize: 16 
+    },
+    input: {
+      flex: 1,
+      paddingHorizontal: 0,
+      paddingVertical: 16,
+      color: TEXT,
+      fontSize: 16,
+      fontWeight: '500',
+    },
+    inputRight: { 
+      paddingHorizontal: 16 
+    },
+    error: { 
+      color: '#EF4444', 
+      marginTop: 6, 
+      fontSize: 12, 
+      fontWeight: '500',
+      textAlign: 'left'
+    },
+    eyeButton: {
+      paddingHorizontal: 8,
+      paddingVertical: 4,
+    },
+    eyeText: { 
+      fontWeight: '700', 
+      color: PRIMARY, 
+      fontSize: 14 
+    },
+    forgotPasswordButton: {
+      alignSelf: 'flex-end',
+      marginBottom: 24,
+      marginTop: -8,
+    },
+    forgotPasswordText: {
+      color: PRIMARY,
+      fontWeight: '600',
+      fontSize: 14,
+    },
+    loginButton: {
+      backgroundColor: PRIMARY,
+      paddingVertical: 16,
+      borderRadius: 14,
+      alignItems: 'center',
+      shadowColor: PRIMARY,
+      shadowOpacity: 0.3,
+      shadowRadius: 8,
+      shadowOffset: { width: 0, height: 4 },
+      elevation: 4,
+    },
+    disabledButton: {
+      opacity: 0.5,
+      shadowOpacity: 0.1,
+    },
+    loginButtonText: {
+      color: 'white',
+      fontWeight: '800',
+      fontSize: 16,
+    },
+    dividerContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 24,
+    },
+    dividerLine: {
+      flex: 1,
+      height: 1,
+      backgroundColor: '#FFE6E6',
+    },
+    dividerText: {
+      color: MUTED,
+      fontWeight: '600',
+      fontSize: 14,
+      marginHorizontal: 16,
+    },
+    socialContainer: {
+      marginBottom: 32,
+    },
+    socialTitle: {
+      color: MUTED,
+      fontSize: 14,
+      fontWeight: '600',
+      textAlign: 'center',
+      marginBottom: 16,
+    },
+    socialButtons: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      gap: 12,
+    },
+    socialButton: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: '#FFFFFF',
+      paddingHorizontal: 16,
+      paddingVertical: 12,
+      borderRadius: 12,
+      borderWidth: 1,
+      borderColor: '#FFE6E6',
+      gap: 8,
+    },
+    socialIcon: {
+      fontSize: 16,
+    },
+    socialText: {
+      color: TEXT,
+      fontWeight: '600',
+      fontSize: 14,
+    },
+    signUpContainer: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      marginBottom: 24,
+    },
+    signUpText: {
+      color: MUTED,
+      fontSize: 14,
+    },
+    signUpLink: {
+      color: PRIMARY,
+      fontWeight: '700',
+      fontSize: 14,
+    },
+    emergencyContainer: {
+      backgroundColor: '#FFF0F0',
+      padding: 16,
+      borderRadius: 12,
+      borderLeftWidth: 4,
+      borderLeftColor: PRIMARY,
+    },
+    emergencyText: {
+      color: TEXT,
+      fontSize: 12,
+      fontWeight: '500',
+      textAlign: 'center',
+      lineHeight: 16,
+    },
+    emergencyNumber: {
+      color: PRIMARY,
+      fontWeight: '700',
+    },
+  },
+  forgot: {
+  safe: { 
+    flex: 1, 
+    backgroundColor: BG 
+  },
+  container: { 
+    flexGrow: 1,
+    padding: 20,
+    paddingTop: 0,
+    justifyContent: 'center',
+  },
+  header: { 
+    alignItems: 'center', 
+    marginBottom: 40 
+  },
+  title: { 
+    fontSize: 28, 
+    fontWeight: '800', 
+    color: TEXT, 
+    textAlign: 'center',
+    marginBottom: 8,
+  },
+  subtitle: { 
+    fontSize: 16, 
+    color: MUTED, 
+    textAlign: 'center',
+    fontWeight: '500',
+    lineHeight: 22,
+  },
+  card: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 20,
+    padding: 24,
+    marginBottom: 24,
+    borderWidth: 1,
+    borderColor: '#FFE6E6',
+    shadowColor: PRIMARY,
+    shadowOpacity: 0.1,
+    shadowRadius: 16,
+    shadowOffset: { width: 0, height: 6 },
+    elevation: 6,
+  },
+  resetButton: {
+    backgroundColor: PRIMARY,
+    paddingVertical: 16,
+    borderRadius: 14,
+    alignItems: 'center',
+    shadowColor: PRIMARY,
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 4,
+  },
+  disabledButton: {
+    opacity: 0.5,
+    shadowOpacity: 0.1,
+  },
+  resetButtonText: {
+    color: 'white',
+    fontWeight: '800',
+    fontSize: 16,
+  },
+  successContainer: {
+    alignItems: 'center',
+    paddingVertical: 10,
+  },
+  successIcon: {
+    fontSize: 48,
+    marginBottom: 16,
+  },
+  successTitle: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: TEXT,
+    marginBottom: 12,
+    textAlign: 'center',
+  },
+  successText: {
+    fontSize: 14,
+    color: MUTED,
+    textAlign: 'center',
+    lineHeight: 20,
+    marginBottom: 24,
+  },
+  emailText: {
+    color: PRIMARY,
+    fontWeight: '600',
+  },
+  resendButton: {
+    backgroundColor: PRIMARY,
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    borderRadius: 12,
+    alignItems: 'center',
+    minWidth: 140,
+  },
+  resendButtonText: {
+    color: 'white',
+    fontWeight: '700',
+    fontSize: 14,
+  },
+  linksContainer: {
+    alignItems: 'center',
+  },
+  linkButton: {
+    marginBottom: 16,
+  },
+  linkText: {
+    color: PRIMARY,
+    fontWeight: '600',
+    fontSize: 14,
+  },
+  dividerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+    width: '100%',
+  },
+  dividerLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: '#FFE6E6',
+  },
+  dividerText: {
+    color: MUTED,
+    fontWeight: '600',
+    fontSize: 14,
+    marginHorizontal: 16,
+  },
+  signUpContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  signUpText: {
+    color: MUTED,
+    fontSize: 14,
+  },
+  signUpLink: {
+    color: PRIMARY,
+    fontWeight: '700',
+    fontSize: 14,
+  },
+  }
 }
 );

@@ -21,7 +21,7 @@ import serverPath from '../../../utils/serverPath';
 import { globalStyle } from '../../../utils/styles';
 
 export default function RegisterScreen() {
-  const { createRTLStyles, isRTL } = useRTLStyles();
+  const { createRTLStyles, isRTL, writingDirection } = useRTLStyles();
   const styles = createRTLStyles(globalStyle);
   
   const navigation = useNavigation();
@@ -407,6 +407,9 @@ export default function RegisterScreen() {
                   onBlur={() => setTouched(t => ({ ...t, fullName: true }))}
                   error={step1Errors.fullName}
                   returnKeyType="next"
+                  isRTL={isRTL}
+                  writingDirection={writingDirection}
+                  styles={styles}
                   icon="👤"
                 />
 
@@ -418,6 +421,9 @@ export default function RegisterScreen() {
                   onBlur={() => setTouched(t => ({ ...t, email: true }))}
                   keyboardType="email-address"
                   autoCapitalize="none"
+                  isRTL={isRTL}
+                  writingDirection={writingDirection}
+                  styles={styles}
                   error={step1Errors.email}
                   returnKeyType="next"
                   icon="📧"
@@ -431,6 +437,9 @@ export default function RegisterScreen() {
                   onBlur={() => setTouched(t => ({ ...t, phone: true }))}
                   keyboardType="phone-pad"
                   error={step1Errors.phone}
+                  isRTL={isRTL}
+                  writingDirection={writingDirection}
+                  styles={styles}
                   returnKeyType="next"
                   icon="📱"
                 />
@@ -443,6 +452,9 @@ export default function RegisterScreen() {
                   onBlur={() => setTouched(t => ({ ...t, password: true }))}
                   error={step1Errors.password}
                   secureTextEntry={!showPass}
+                  isRTL={isRTL}
+                  writingDirection={writingDirection}
+                  styles={styles}
                   icon="🔒"
                   right={
                     <TouchableOpacity onPress={() => setShowPass(s => !s)}>
@@ -520,6 +532,9 @@ export default function RegisterScreen() {
                   onBlur={() => setTouched(t => ({ ...t, locationText: true }))}
                   error={step2Errors.locationText}
                   icon="📍"
+                  isRTL={isRTL}
+                  writingDirection={writingDirection}
+                  styles={styles}
                 />
 
                 {/* Location Permission Section */}

@@ -1,11 +1,24 @@
 // hooks/useRTLStyles.js
+import { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { useLanguage } from '../contexts/LanguageContext';
 
 export const useRTLStyles = () => {
-  const { isRTL, currentLocale } = useLanguage();
+  const { isRTL, currentLocale, isReady } = useLanguage();
+  const [forceUpdate, setForceUpdate] = useState(0);
+
+  // Force re-render when RTL changes
+  useEffect(() => {
+    if (isReady) {
+      setForceUpdate(prev => prev + 1);
+    }
+  }, [isRTL, currentLocale, isReady]);
 
   const createRTLStyles = (styles) => {
+    if (!isReady) {
+      return StyleSheet.create(styles); // Return original styles while loading
+    }
+
     return StyleSheet.create(
       Object.keys(styles).reduce((acc, key) => {
         const style = styles[key];
@@ -15,22 +28,21 @@ export const useRTLStyles = () => {
           return acc;
         }
 
-        // Handle RTL transformations
         const transformedStyle = { ...style };
 
-        // Transform margin
-        if (style.marginLeft || style.marginRight) {
+        // Handle horizontal margins
+        if (style.marginLeft !== undefined || style.marginRight !== undefined) {
           transformedStyle.marginLeft = isRTL ? style.marginRight : style.marginLeft;
           transformedStyle.marginRight = isRTL ? style.marginLeft : style.marginRight;
         }
 
-        // Transform padding
-        if (style.paddingLeft || style.paddingRight) {
+        // Handle horizontal padding
+        if (style.paddingLeft !== undefined || style.paddingRight !== undefined) {
           transformedStyle.paddingLeft = isRTL ? style.paddingRight : style.paddingLeft;
           transformedStyle.paddingRight = isRTL ? style.paddingLeft : style.paddingRight;
         }
 
-        // Transform text alignment
+        // Handle text alignment
         if (style.textAlign) {
           if (style.textAlign === 'left') {
             transformedStyle.textAlign = isRTL ? 'right' : 'left';
@@ -39,7 +51,7 @@ export const useRTLStyles = () => {
           }
         }
 
-        // Transform flex direction for row layouts
+        // Handle flex direction
         if (style.flexDirection) {
           if (style.flexDirection === 'row') {
             transformedStyle.flexDirection = isRTL ? 'row-reverse' : 'row';
@@ -48,12 +60,26 @@ export const useRTLStyles = () => {
           }
         }
 
-        // Transform position for absolute positioning
+        // Handle absolute positioning
         if (style.position === 'absolute') {
           if (style.left !== undefined || style.right !== undefined) {
             transformedStyle.left = isRTL ? style.right : style.left;
             transformedStyle.right = isRTL ? style.left : style.right;
           }
+        }
+
+        // Handle alignSelf for RTL
+        if (style.alignSelf === 'flex-start') {
+          transformedStyle.alignSelf = isRTL ? 'flex-end' : 'flex-start';
+        } else if (style.alignSelf === 'flex-end') {
+          transformedStyle.alignSelf = isRTL ? 'flex-start' : 'flex-end';
+        }
+
+        // Handle alignItems for RTL
+        if (style.alignItems === 'flex-start') {
+          transformedStyle.alignItems = isRTL ? 'flex-end' : 'flex-start';
+        } else if (style.alignItems === 'flex-end') {
+          transformedStyle.alignItems = isRTL ? 'flex-start' : 'flex-end';
         }
 
         acc[key] = transformedStyle;
@@ -66,6 +92,7 @@ export const useRTLStyles = () => {
     createRTLStyles, 
     isRTL, 
     currentLocale,
-    writingDirection: isRTL ? 'rtl' : 'ltr'
+    writingDirection: isRTL ? 'rtl' : 'ltr',
+    forceUpdate // This can be used to force re-renders
   };
 };

@@ -1,6 +1,7 @@
 // app/profile.js
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { router, useNavigation } from 'expo-router';
+import * as Location from 'expo-location';
+import { router } from 'expo-router';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import {
   ActivityIndicator,
@@ -23,15 +24,15 @@ import serverPath from '../../../utils/serverPath';
 import { globalStyle } from '../../../utils/styles';
 
 export default function ProfileScreen() {
-  const { createRTLStyles, isRTL } = useRTLStyles();
+  const { createRTLStyles, isRTL, writingDirection } = useRTLStyles();
   const styles = createRTLStyles(globalStyle);
   
-  const navigation = useNavigation();
   const { user, token, logout, saveTokenAndLogin } = useContext(AuthContext);
   
   const [loading, setLoading] = useState(false);
   const [updatingDonation, setUpdatingDonation] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [locationLoading, setLocationLoading] = useState(false);
 
   // Form fields - initialized with user data
   const [profileImage, setProfileImage] = useState(null);
@@ -87,6 +88,21 @@ export default function ProfileScreen() {
     }
   }, [user]);
 
+  // Check location permission on component mount
+  useEffect(() => {
+    checkLocationPermission();
+  }, []);
+
+  const checkLocationPermission = async () => {
+    try {
+      const { status } = await Location.getForegroundPermissionsAsync();
+      return status === 'granted';
+    } catch (error) {
+      console.log('Permission check error:', error);
+      return false;
+    }
+  };
+
   // Format date for display
   const formatDate = (date) => {
     return date.toISOString().split('T')[0]; // YYYY-MM-DD format
@@ -104,6 +120,89 @@ export default function ProfileScreen() {
   // Show date picker
   const showDatepicker = () => {
     setShowDatePicker(true);
+  };
+
+  // Get current location using Expo Location
+  const getCurrentLocation = async () => {
+    setLocationLoading(true);
+
+    try {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      
+      if (status !== 'granted') {
+        setLocationLoading(false);
+        Alert.alert(
+          'Permission Denied',
+          'Location permission is required to get your current location. Please enable it in your device settings.',
+          [{ text: 'OK' }]
+        );
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.Balanced,
+        timeout: 20000,
+      });
+
+      const { latitude: lat, longitude: lng } = location.coords;
+      setLatitude(lat.toString());
+      setLongitude(lng.toString());
+      
+      console.log('Location found:', { lat, lng });
+
+      await getAddressFromCoordinates(lat, lng);
+      
+      setLocationLoading(false);
+      
+    } catch (error) {
+      setLocationLoading(false);
+      console.log('Location error:', error);
+      
+      if (latitude && longitude) {
+        Alert.alert(
+          'Location Found', 
+          'Coordinates saved successfully, but could not get exact address. You can manually enter your location.',
+          [{ text: 'OK' }]
+        );
+      } else {
+        Alert.alert(
+          'Location Error', 
+          'Unable to get your current location. Please make sure location services are enabled and try again.',
+          [{ text: 'OK' }]
+        );
+      }
+    }
+  };
+
+  // Reverse geocoding to get address from coordinates using Expo Location
+  const getAddressFromCoordinates = async (lat, lng) => {
+    try {
+      let address = await Location.reverseGeocodeAsync({
+        latitude: lat,
+        longitude: lng,
+      });
+
+      if (address.length > 0) {
+        const firstAddress = address[0];
+        const addressParts = [
+          firstAddress.street,
+          firstAddress.city,
+          firstAddress.region,
+          firstAddress.country
+        ].filter(part => part).join(', ');
+        
+        if (addressParts) {
+          setLocationText(addressParts);
+          return;
+        }
+      }
+      
+      setLocationText(`Location at ${lat.toFixed(6)}, ${lng.toFixed(6)}`);
+      
+    } catch (error) {
+      console.log('Reverse geocoding error:', error);
+      setLocationText(`Location at ${lat.toFixed(6)}, ${lng.toFixed(6)}`);
+    }
   };
 
   // Validation
@@ -437,7 +536,6 @@ const handleRecordDonation = async () => {
             </TouchableOpacity>
           </View>
 
-
           {/* Profile Image */}
           <View style={styles.avatarWrap}>
             <TouchableOpacity onPress={handleImageUpload} style={styles.avatarTouchable}>
@@ -479,7 +577,7 @@ const handleRecordDonation = async () => {
           )}
 
           {/* Personal Information Card */}
-                    {/* Verification Status */}
+          {/* Verification Status */}
           <View style={[
             styles.verificationCard,
             user?.isVerified ? styles.verifiedCard : styles.unverifiedCard
@@ -524,6 +622,7 @@ const handleRecordDonation = async () => {
               )}
             </View>
           </View>
+
           <View style={styles.card}>
             <Text style={styles.sectionTitle}>Personal Information</Text>
 
@@ -535,6 +634,9 @@ const handleRecordDonation = async () => {
               onBlur={() => setTouched(t => ({ ...t, fullName: true }))}
               error={errors.fullName}
               returnKeyType="next"
+              isRTL={isRTL}
+              writingDirection={writingDirection}
+              styles={styles}
               icon="👤"
             />
 
@@ -546,6 +648,9 @@ const handleRecordDonation = async () => {
               onBlur={() => setTouched(t => ({ ...t, email: true }))}
               keyboardType="email-address"
               autoCapitalize="none"
+              isRTL={isRTL}
+              writingDirection={writingDirection}
+              styles={styles}
               error={errors.email}
               returnKeyType="next"
               icon="📧"
@@ -559,6 +664,9 @@ const handleRecordDonation = async () => {
               onBlur={() => setTouched(t => ({ ...t, phone: true }))}
               keyboardType="phone-pad"
               error={errors.phone}
+              isRTL={isRTL}
+              writingDirection={writingDirection}
+              styles={styles}
               returnKeyType="next"
               icon="📱"
             />
@@ -571,6 +679,9 @@ const handleRecordDonation = async () => {
               onBlur={() => setTouched(t => ({ ...t, password: true }))}
               error={errors.password}
               secureTextEntry={!showPass}
+              isRTL={isRTL}
+              writingDirection={writingDirection}
+              styles={styles}
               icon="🔒"
               right={
                 <TouchableOpacity onPress={() => setShowPass(s => !s)}>
@@ -634,7 +745,54 @@ const handleRecordDonation = async () => {
               onBlur={() => setTouched(t => ({ ...t, locationText: true }))}
               error={errors.locationText}
               icon="📍"
+              isRTL={isRTL}
+              writingDirection={writingDirection}
+              styles={styles}
             />
+
+            {/* Location Permission Section */}
+            <View style={styles.locationPermissionCard}>
+              <Text style={styles.permissionTitle}>Update Location Coordinates</Text>
+              <Text style={styles.permissionText}>
+                Get your exact coordinates automatically to help people find donors nearby accurately.
+              </Text>
+              
+              <TouchableOpacity
+                style={styles.locationBtn}
+                onPress={getCurrentLocation}
+                disabled={locationLoading}
+              >
+                {locationLoading ? (
+                  <ActivityIndicator color="#FFFFFF" size="small" />
+                ) : (
+                  <View style={styles.locationBtnContent}>
+                    <Text style={styles.locationBtnText}>
+                      {latitude ? 'Update My Location' : 'Get My Location'}
+                    </Text>
+                    <Text style={styles.locationBtnIcon}>📍</Text>
+                  </View>
+                )}
+              </TouchableOpacity>
+
+              {/* Coordinates Display */}
+              {(latitude || longitude) && (
+                <View style={[
+                  styles.coordinatesContainer,
+                  isRTL && styles.coordinatesContainerRTL
+                ]}>
+                  <Text style={styles.coordinatesTitle}>📍 Current Coordinates:</Text>
+                  <Text style={styles.coordinatesText}>
+                    Latitude: {Number(latitude).toFixed(6)}
+                  </Text>
+                  <Text style={styles.coordinatesText}>
+                    Longitude: {Number(longitude).toFixed(6)}
+                  </Text>
+                  <Text style={styles.coordinatesHelp}>
+                    These coordinates will help people find you accurately
+                  </Text>
+                </View>
+              )}
+            </View>
 
             {/* Search Visibility Toggle */}
             <View style={styles.toggleContainer}>
@@ -665,7 +823,7 @@ const handleRecordDonation = async () => {
             <Text style={styles.sectionTitle}>Record Blood Donation</Text>
             
             {/* Donation Date with Date Picker */}
-            <View style={styles.fieldContainer}>
+            <View style={{marginBottom: 16}}>
               <Text style={styles.label}>Donation Date *</Text>
               <TouchableOpacity 
                 style={styles.dateInput}
@@ -693,6 +851,9 @@ const handleRecordDonation = async () => {
               onBlur={() => setTouched(t => ({ ...t, amountMl: true }))}
               keyboardType="numeric"
               error={errors.amountMl}
+              isRTL={isRTL}
+              writingDirection={writingDirection}
+              styles={styles}
               icon="💉"
             />
 
@@ -705,6 +866,9 @@ const handleRecordDonation = async () => {
               multiline={true}
               numberOfLines={2}
               icon="🏥"
+              isRTL={isRTL}
+              writingDirection={writingDirection}
+              styles={styles}
             />
 
             {/* Notes */}
@@ -716,6 +880,9 @@ const handleRecordDonation = async () => {
               multiline={true}
               numberOfLines={3}
               icon="📝"
+              isRTL={isRTL}
+              writingDirection={writingDirection}
+              styles={styles}
             />
 
             {/* Fixed Cooldown Period Info */}

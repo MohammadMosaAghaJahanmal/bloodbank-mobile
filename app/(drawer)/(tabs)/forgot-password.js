@@ -14,15 +14,11 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Input from '../../../components/GeneralInput';
 import { useRTLStyles } from '../../../contexts/useRTLStyles';
 import serverPath from '../../../utils/serverPath';
-
-const PRIMARY = '#E73C3C';
-const BG = '#FDF2F2';
-const TEXT = '#1E1E1E';
-const MUTED = '#7E7E7E';
+import { globalStyle } from '../../../utils/styles';
 
 export default function ForgotPasswordScreen() {
-  const { createRTLStyles } = useRTLStyles();
-  const styles = createRTLStyles(baseStyles);
+  const { createRTLStyles, isRTL, writingDirection } = useRTLStyles();
+  const styles = createRTLStyles(globalStyle.forgot);
   const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
@@ -148,7 +144,7 @@ export default function ForgotPasswordScreen() {
                 <Text style={styles.successIcon}>📧</Text>
                 <Text style={styles.successTitle}>Check Your Email</Text>
                 <Text style={styles.successText}>
-                  We've sent password reset instructions to {'\n'}
+                  We&apos;ve sent password reset instructions to {'\n'}
                   <Text style={styles.emailText}>{email}</Text>
                 </Text>
                 
@@ -178,6 +174,9 @@ export default function ForgotPasswordScreen() {
                   autoCapitalize="none"
                   autoComplete="email"
                   icon="📧"
+                  isRTL={isRTL}
+                  writingDirection={writingDirection}
+                  styles={styles}
                 />
 
                 {/* Reset Button */}
@@ -213,7 +212,7 @@ export default function ForgotPasswordScreen() {
             </View>
 
             <View style={styles.signUpContainer}>
-              <Text style={styles.signUpText}>Don't have an account? </Text>
+              <Text style={styles.signUpText}>Don&apos;t have an account? </Text>
               <TouchableOpacity onPress={handleCreateAccount}>
                 <Text style={styles.signUpLink}>Create Account</Text>
               </TouchableOpacity>
@@ -226,148 +225,3 @@ export default function ForgotPasswordScreen() {
     </SafeAreaView>
   );
 }
-
-// Base styles for RTL transformation
-const baseStyles = {
-  safe: { 
-    flex: 1, 
-    backgroundColor: BG 
-  },
-  container: { 
-    flexGrow: 1,
-    padding: 20,
-    paddingTop: 0,
-    justifyContent: 'center',
-  },
-  header: { 
-    alignItems: 'center', 
-    marginBottom: 40 
-  },
-  title: { 
-    fontSize: 28, 
-    fontWeight: '800', 
-    color: TEXT, 
-    textAlign: 'center',
-    marginBottom: 8,
-  },
-  subtitle: { 
-    fontSize: 16, 
-    color: MUTED, 
-    textAlign: 'center',
-    fontWeight: '500',
-    lineHeight: 22,
-  },
-  card: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 20,
-    padding: 24,
-    marginBottom: 24,
-    borderWidth: 1,
-    borderColor: '#FFE6E6',
-    shadowColor: PRIMARY,
-    shadowOpacity: 0.1,
-    shadowRadius: 16,
-    shadowOffset: { width: 0, height: 6 },
-    elevation: 6,
-  },
-  resetButton: {
-    backgroundColor: PRIMARY,
-    paddingVertical: 16,
-    borderRadius: 14,
-    alignItems: 'center',
-    shadowColor: PRIMARY,
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    shadowOffset: { width: 0, height: 4 },
-    elevation: 4,
-  },
-  disabledButton: {
-    opacity: 0.5,
-    shadowOpacity: 0.1,
-  },
-  resetButtonText: {
-    color: 'white',
-    fontWeight: '800',
-    fontSize: 16,
-  },
-  successContainer: {
-    alignItems: 'center',
-    paddingVertical: 10,
-  },
-  successIcon: {
-    fontSize: 48,
-    marginBottom: 16,
-  },
-  successTitle: {
-    fontSize: 20,
-    fontWeight: '700',
-    color: TEXT,
-    marginBottom: 12,
-    textAlign: 'center',
-  },
-  successText: {
-    fontSize: 14,
-    color: MUTED,
-    textAlign: 'center',
-    lineHeight: 20,
-    marginBottom: 24,
-  },
-  emailText: {
-    color: PRIMARY,
-    fontWeight: '600',
-  },
-  resendButton: {
-    backgroundColor: PRIMARY,
-    paddingHorizontal: 24,
-    paddingVertical: 12,
-    borderRadius: 12,
-    alignItems: 'center',
-    minWidth: 140,
-  },
-  resendButtonText: {
-    color: 'white',
-    fontWeight: '700',
-    fontSize: 14,
-  },
-  linksContainer: {
-    alignItems: 'center',
-  },
-  linkButton: {
-    marginBottom: 16,
-  },
-  linkText: {
-    color: PRIMARY,
-    fontWeight: '600',
-    fontSize: 14,
-  },
-  dividerContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 16,
-    width: '100%',
-  },
-  dividerLine: {
-    flex: 1,
-    height: 1,
-    backgroundColor: '#FFE6E6',
-  },
-  dividerText: {
-    color: MUTED,
-    fontWeight: '600',
-    fontSize: 14,
-    marginHorizontal: 16,
-  },
-  signUpContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-  },
-  signUpText: {
-    color: MUTED,
-    fontSize: 14,
-  },
-  signUpLink: {
-    color: PRIMARY,
-    fontWeight: '700',
-    fontSize: 14,
-  },
-};
