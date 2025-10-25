@@ -18,8 +18,6 @@ export default function RTLInitializer({ children }) {
         I18nManager.swapLeftAndRightInRTL(isRTL);
       }
 
-      // Sometimes we need to force a layout update
-      // This helps with the initial render
       setTimeout(() => {
         // Force a re-render by updating a state if needed
       }, 100);
