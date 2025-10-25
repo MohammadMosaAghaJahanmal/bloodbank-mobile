@@ -1,8 +1,6 @@
 import { Text, TextInput, View } from "react-native";
 
-
 const MUTED = '#7E7E7E';
-
 
 const Input = function Input({
   label,
@@ -20,19 +18,37 @@ const Input = function Input({
   onSubmitEditing,
   isRTL,
   writingDirection,
-  styles
+  styles,
+  // New props for textarea support
+  multiline = false,
+  numberOfLines = 4,
+  textAlignVertical = 'top',
+  // Additional styling props
+  inputStyle,
+  containerStyle
 }) {
   return (
-    <View style={{ marginBottom: 20 }}>
-      <Text style={styles.label}>{label}</Text>
-      <View style={[styles.inputWrap, !!error && styles.inputError]}>
-        {icon && <Text style={styles.inputIcon}>{icon}</Text>}
+    <View style={[{ marginBottom: 20 }, containerStyle]}>
+      {label && <Text style={styles.label}>{label}</Text>}
+      <View style={[
+        styles.inputWrap, 
+        multiline && styles.textareaWrap, // Additional style for textarea
+        !!error && styles.inputError
+      ]}>
+        {icon && <Text style={[
+          styles.inputIcon,
+          multiline && styles.textareaIcon // Additional style for textarea icon
+        ]}>{icon}</Text>}
         <TextInput
           value={value}
           onChangeText={onChangeText}
           placeholder={placeholder}
           placeholderTextColor={MUTED}
-          style={styles.input}
+          style={[
+            styles.input,
+            multiline && styles.textarea, // Additional style for textarea
+            inputStyle // Allow custom input styling
+          ]}
           keyboardType={keyboardType}
           secureTextEntry={secureTextEntry}
           returnKeyType={returnKeyType}
@@ -42,15 +58,22 @@ const Input = function Input({
           writingDirection={writingDirection}
           autoCorrect={false}
           spellCheck={false}
-          // helpful extras
+          // Multiline props
+          multiline={multiline}
+          numberOfLines={multiline ? numberOfLines : undefined}
+          textAlignVertical={multiline ? textAlignVertical : 'center'}
+          // Helpful extras
           onSubmitEditing={onSubmitEditing}
+          blurOnSubmit={!multiline} // Don't blur on submit when multiline
         />
-        {right ? <View style={styles.inputRight}>{right}</View> : null}
+        {right ? <View style={[
+          styles.inputRight,
+          multiline && styles.textareaRight // Additional style for textarea right element
+        ]}>{right}</View> : null}
       </View>
       {!!error && <Text style={styles.error}>{error}</Text>}
     </View>
   );
 };
-
 
 export default Input;

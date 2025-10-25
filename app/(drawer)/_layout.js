@@ -68,13 +68,6 @@ export default function DrawerLayout() {
           drawerLabel: t('CONTACT_US')
         }} 
       />
-      <Drawer.Screen 
-        name="language-settings" 
-        options={{ 
-          title: t('LANGUAGE'),
-          drawerLabel: t('LANGUAGE')
-        }} 
-      />
     </Drawer>
   );
 }

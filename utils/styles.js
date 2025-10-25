@@ -22,6 +22,15 @@ const COLORS = {
   muted: '#7E7E7E',
   sheet: '#FFFFFF',
   divider: '#EFEFEF',
+  primaryLight: '#FEF2F2',
+  textLight: '#4A4A4A',
+  bg: '#FFFFFF',
+  border: '#E8E8E8',
+  borderLight: '#F0F0F0',
+  success: '#16a34a',
+  error: '#dc2626',
+  errorLight: '#FEF2F2',
+  
 };
 
 const TABCOLORS = {
@@ -1851,6 +1860,150 @@ export const globalStyle = StyleSheet.create(
       borderRadius: 2,
       backgroundColor: 'rgba(255,255,255,0.9)',
     },
-  }
-}
-);
+  },
+  headerWrap: {
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 4,
+  },
+
+  decoCircleBig: {
+    position: 'absolute',
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    top: -30,
+    left: -30,
+  },
+  decoCircleSmall: {
+    position: 'absolute',
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    top: -20,
+    right: -20,
+  },
+  iconBtn: {
+    width: 40,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  iconBtnPressed: {
+    opacity: 0.7,
+  },
+  iconContainer: {
+    width: 40,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 20,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+  },
+  titleBox: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  headerTitle: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: '700',
+    textAlign: 'center',
+    letterSpacing: 0.5,
+  },
+  headerSubtitle: {
+    color: 'rgba(255,255,255,0.8)',
+    fontSize: 13,
+    textAlign: 'center',
+    marginTop: 2,
+  },
+  content: { 
+    padding: 20,
+    paddingBottom: 40,
+  },
+  contactIconContainer: {
+    alignItems: 'center',
+    marginBottom: 24,
+    marginTop: 8,
+  },
+  contactIconBackground: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 2,
+    borderColor: "rgba(0, 0, 0, 0.2)",
+  },
+  formContainer: {
+    backgroundColor: '#fff',
+    borderRadius: 20,
+    padding: 24,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.05,
+    shadowRadius: 12,
+    elevation: 3,
+    borderWidth: 1,
+    borderColor: COLORS.borderLight,
+  },
+  inputContainer: {
+    marginBottom: 20,
+  },
+
+  textarea: {
+    minHeight: 120,
+    textAlignVertical: 'top',
+  },
+  button: {
+    marginTop: 8,
+    borderRadius: 14,
+    overflow: 'hidden',
+    shadowColor: COLORS.primary,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 6,
+  },
+  buttonGradient: {
+    height: 56,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+    gap: 8,
+  },
+  buttonPressed: {
+    transform: [{ scale: 0.98 }],
+  },
+  buttonDisabled: {
+    opacity: 0.6,
+    shadowOpacity: 0.1,
+  },
+  buttonText: { 
+    color: '#fff', 
+    fontSize: 17, 
+    fontWeight: '700',
+    letterSpacing: 0.5,
+  },
+  buttonIcon: {
+    marginRight: 4,
+  },
+  helperContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 20,
+    gap: 6,
+  },
+  helperText: { 
+    color: COLORS.muted, 
+    fontSize: 13, 
+    textAlign: 'center',
+    fontWeight: '500',
+  },
+});
