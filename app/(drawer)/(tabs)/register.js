@@ -173,11 +173,11 @@ export default function RegisterScreen() {
         }
       }
       
-      setLocationText(`Location at ${lat.toFixed(6)}, ${lng.toFixed(6)}`);
+      // setLocationText(`Location at ${lat.toFixed(6)}, ${lng.toFixed(6)}`);
       
     } catch (error) {
       console.log('Reverse geocoding error:', error);
-      setLocationText(`Location at ${lat.toFixed(6)}, ${lng.toFixed(6)}`);
+      // setLocationText(`Location at ${lat.toFixed(6)}, ${lng.toFixed(6)}`);
     }
   };
 
