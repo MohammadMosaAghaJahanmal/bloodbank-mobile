@@ -32,7 +32,6 @@ export default function TabsLayout() {
         }} 
       />
       
-      {/* Conditionally show profile or login based on auth status */}
       <Tabs.Screen 
         name="profile" 
         options={{ 
@@ -41,7 +40,6 @@ export default function TabsLayout() {
         }}
       />
       
-      {/* Keep login and register as hidden tabs for navigation */}
       <Tabs.Screen 
         name="login" 
         options={{ 
@@ -67,9 +65,7 @@ export default function TabsLayout() {
   );
 }
 
-/* =========================
-   Enhanced RED Header with Animations
-   ========================= */
+
 function RedHeader({ options, navigation, route }) {
   const insets = useSafeAreaInsets();
   const { login, user } = useContext(AuthContext);
