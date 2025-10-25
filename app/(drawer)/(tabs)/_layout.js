@@ -250,9 +250,8 @@ function RedHeader({ options, navigation, route }) {
   );
 }
 
-/* =========================
-   Enhanced Bottom Tab Bar with Auth Logic
-   ========================= */
+
+
 function CustomTabBar({ state, navigation }) {
   const insets = useSafeAreaInsets();
   const { login, logout } = useContext(AuthContext);
