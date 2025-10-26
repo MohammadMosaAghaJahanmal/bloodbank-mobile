@@ -82,6 +82,11 @@ export const useRTLStyles = () => {
           transformedStyle.alignItems = isRTL ? 'flex-start' : 'flex-end';
         }
 
+        // Handle writing direction for text
+        if (style.writingDirection === undefined) {
+          transformedStyle.writingDirection = isRTL ? 'rtl' : 'ltr';
+        }
+
         acc[key] = transformedStyle;
         return acc;
       }, {})

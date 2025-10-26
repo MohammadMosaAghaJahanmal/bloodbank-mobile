@@ -1,195 +1,113 @@
+
 // utils/i18n.js
 import * as Localization from 'expo-localization';
 import { I18n } from 'i18n-js';
 import { I18nManager, Platform } from 'react-native';
-
+import { translations } from './dictionary';
 // Initialize i18n
 const i18n = new I18n();
 
 const STORAGE_KEY = 'app_language';
 
+
 // Your translations object remains the same...
-const translations = {
-  en: {
-    // General
-    HOME: 'Home',
-    SETTINGS: 'Settings',
-    PROFILE: 'Profile',
-    ABOUT: 'About',
-    DETAILS: 'Details',
-    LANGUAGE: 'Language',
-    DIRECTION: 'Layout Direction',
-    WELCOME: 'Welcome to the app',
-    REGISTER: 'Register',
-    LOGIN: 'Login',
-    MY_PROFILE: 'My Profile',
-    PRIVACY_POLICY: 'Privacy Policy',
-    CONTACT_US: 'Contact Us',
-    LOGOUT: 'Log Out',
-    NEWS_FEED: 'News Feed',
-    BLOOD_BANK: "Blood Bank",
-    JOIN_BLOOD_DONORS: "Join Blood Donors",
-    STEP: "Step",
-    CONTINUE_TO_BLOOD_DETAILS: "Continue to Blood Details",
-    UPDATE_PROFILE: "Update Profile",
-    LOGOUT_CONFIRMATION_TITLE: 'Logout',
-    LOGOUT_CONFIRMATION_MESSAGE: 'Are you sure you want to logout?',
-    CANCEL: 'Cancel',
-    USER: 'User',
-    APP_VERSION: 'App Version',
-    TERMS_OF_SERVICE: 'Terms of Service',
 
-    // Contact Us Screen
-    FULL_NAME: 'Full Name',
-    EMAIL: 'Email',
-    SUBJECT: 'Subject',
-    MESSAGE: 'Message',
-    ENTER_NAME: 'Enter your full name',
-    ENTER_EMAIL: 'Enter your email',
-    ENTER_SUBJECT: 'What is your message about?',
-    ENTER_MESSAGE: 'Write your message',
-    SEND: 'Send',
-    SEND_MESSAGE: 'Send Message',
-    THANK_YOU: 'Thank you!',
-    CONTACT_SENT: 'Your message has been sent.',
-    ERROR: 'Error',
-    TRY_AGAIN: 'Please try again.',
-    WE_REPLY_SOON: 'We will get back to you soon.',
-    GET_IN_TOUCH: 'Get in touch with us',
-
-    // Validation messages
-    NAME_TOO_SHORT: 'Name is too short',
-    NAME_TOO_LONG: 'Name is too long',
-    EMAIL_REQUIRED: 'Email is required',
-    EMAIL_TOO_LONG: 'Email is too long',
-    EMAIL_INVALID: 'Invalid email address',
-    SUBJECT_TOO_SHORT: 'Subject is too short',
-    MESSAGE_TOO_SHORT: 'Message is too short',
-    SOMETHING_WENT_WRONG: 'Something went wrong, please try again later.',
-  },
-
-  ps: {
-    // عمومي
-    HOME: 'کورپاڼه',
-    SETTINGS: 'تنظیمات',
-    PROFILE: 'پروفایل',
-    ABOUT: 'په اړه',
-    DETAILS: 'تفصیلات',
-    LANGUAGE: 'ژبه',
-    DIRECTION: 'د ترتیب لوری',
-    WELCOME: 'اپ ته ښه راغلاست',
-    REGISTER: 'راجستر',
-    LOGIN: 'ننوتل',
-    MY_PROFILE: 'زما پروفایل',
-    PRIVACY_POLICY: 'د محرمیت تګلاره',
-    CONTACT_US: 'اړیکه ونیسئ',
-    LOGOUT: 'وتل',
-    NEWS_FEED: 'خبرونه',
-    BLOOD_BANK: "د وینې بانک",
-    JOIN_BLOOD_DONORS: "د وینې ورکوونکو سره یوځای شئ",
-    STEP: "ګام",
-    CONTINUE_TO_BLOOD_DETAILS: "د وینې تفصیلاتو ته لاړ شئ",
-    UPDATE_PROFILE: "پروفایل تازه کړئ",
-    LOGOUT_CONFIRMATION_TITLE: 'وتل',
-    LOGOUT_CONFIRMATION_MESSAGE: 'آیا ډاډه یاست چې وتل غواړئ؟',
-    CANCEL: 'لغوه کول',
-    USER: 'کارن',
-    APP_VERSION: 'د اپ نسخه',
-    TERMS_OF_SERVICE: 'د خدمت شرطونه',
-
-    // د اړیکې فورم
-    FULL_NAME: 'بشپړ نوم',
-    EMAIL: 'برېښنالیک',
-    SUBJECT: 'موضوع',
-    MESSAGE: 'پیغام',
-    ENTER_NAME: 'خپل بشپړ نوم ولیکئ',
-    ENTER_EMAIL: 'خپل برېښنالیک ولیکئ',
-    ENTER_SUBJECT: 'ستاسې د پیغام موضوع څه ده؟',
-    ENTER_MESSAGE: 'خپل پیغام ولیکئ',
-    SEND: 'ولیږئ',
-    SEND_MESSAGE: 'پیغام ولیږئ',
-    THANK_YOU: 'مننه!',
-    CONTACT_SENT: 'ستاسې پیغام واستول شو.',
-    ERROR: 'تېروتنه',
-    TRY_AGAIN: 'بیا هڅه وکړئ.',
-    WE_REPLY_SOON: 'موږ به ژر له تاسو سره اړیکه ونیسو.',
-    GET_IN_TOUCH: 'له موږ سره اړیکه ونیسئ',
-
-    // د اعتبار پیغامونه
-    NAME_TOO_SHORT: 'نوم ډیر لنډ دی',
-    NAME_TOO_LONG: 'نوم ډیر اوږد دی',
-    EMAIL_REQUIRED: 'برېښنالیک اړین دی',
-    EMAIL_TOO_LONG: 'برېښنالیک ډیر اوږد دی',
-    EMAIL_INVALID: 'ناسم برېښنالیک',
-    SUBJECT_TOO_SHORT: 'موضوع لنډه ده',
-    MESSAGE_TOO_SHORT: 'پیغام لنډ دی',
-    SOMETHING_WENT_WRONG: 'یوه تېروتنه وشوه، مهرباني وکړئ بیا هڅه وکړئ.',
-  },
-
-  pa: {
-    // عمومی
-    HOME: 'خانه',
-    SETTINGS: 'تنظیمات',
-    PROFILE: 'پروفایل',
-    ABOUT: 'درباره ما',
-    DETAILS: 'جزئیات',
-    LANGUAGE: 'زبان',
-    DIRECTION: 'جهت صفحه',
-    WELCOME: 'به برنامه خوش آمدید',
-    REGISTER: 'ثبت‌نام',
-    LOGIN: 'ورود',
-    MY_PROFILE: 'پروفایل من',
-    PRIVACY_POLICY: 'سیاست محرمانگی',
-    CONTACT_US: 'تماس با ما',
-    LOGOUT: 'خروج',
-    NEWS_FEED: 'اخبار',
-    BLOOD_BANK: "بانک خون",
-    JOIN_BLOOD_DONORS: "به اهداکنندگان خون بپیوندید",
-    STEP: "مرحله",
-    CONTINUE_TO_BLOOD_DETAILS: "ادامه به جزئیات خون",
-    UPDATE_PROFILE: "بروزرسانی پروفایل",
-    LOGOUT_CONFIRMATION_TITLE: 'خروج',
-    LOGOUT_CONFIRMATION_MESSAGE: 'آیا مطمئن هستید که می‌خواهید خارج شوید؟',
-    CANCEL: 'لغو',
-    USER: 'کاربر',
-    APP_VERSION: 'نسخه برنامه',
-    TERMS_OF_SERVICE: 'شرایط خدمات',
-
-    // فرم تماس
-    FULL_NAME: 'نام کامل',
-    EMAIL: 'ایمیل',
-    SUBJECT: 'موضوع',
-    MESSAGE: 'پیام',
-    ENTER_NAME: 'نام کامل خود را وارد کنید',
-    ENTER_EMAIL: 'ایمیل خود را وارد کنید',
-    ENTER_SUBJECT: 'موضوع پیام شما چیست؟',
-    ENTER_MESSAGE: 'پیام خود را بنویسید',
-    SEND: 'ارسال',
-    SEND_MESSAGE: 'ارسال پیام',
-    THANK_YOU: 'متشکرم!',
-    CONTACT_SENT: 'پیام شما با موفقیت ارسال شد.',
-    ERROR: 'خطا',
-    TRY_AGAIN: 'دوباره تلاش کنید.',
-    WE_REPLY_SOON: 'به زودی با شما تماس خواهیم گرفت.',
-    GET_IN_TOUCH: 'با ما در تماس باشید',
-
-    // پیام‌های اعتبارسنجی
-    NAME_TOO_SHORT: 'نام خیلی کوتاه است',
-    NAME_TOO_LONG: 'نام خیلی طولانی است',
-    EMAIL_REQUIRED: 'ایمیل الزامی است',
-    EMAIL_TOO_LONG: 'ایمیل خیلی طولانی است',
-    EMAIL_INVALID: 'آدرس ایمیل نامعتبر است',
-    SUBJECT_TOO_SHORT: 'موضوع خیلی کوتاه است',
-    MESSAGE_TOO_SHORT: 'پیام خیلی کوتاه است',
-    SOMETHING_WENT_WRONG: 'مشکلی پیش آمد، لطفاً دوباره تلاش کنید.',
-  },
-};
 
 i18n.translations = translations;
 i18n.enableFallback = true;
 i18n.defaultLocale = 'en';
+
+// Enhanced missing translation handler
 i18n.missingTranslation = (scope, options) => {
-  return scope;
+  console.warn(`🌐 Missing translation for key: "${scope}" in locale: "${i18n.locale}"`);
+  
+  // Option 1: Return the key itself (cleaner)
+  // return scope;
+  
+  // Option 2: Return "missing_key" prefix (more visible for debugging)
+  return `missing_${scope}`;
+  
+  // Option 3: Try to return from default locale (English)
+  // if (i18n.locale !== 'en' && translations.en && translations.en[scope]) {
+  //   return translations.en[scope];
+  // }
+  // return scope;
+};
+
+// Enhanced translation function with fallback
+export const t = (key, options = {}) => {
+  if (!key || typeof key !== 'string') {
+    console.warn('🌐 Invalid translation key:', key);
+    return 'invalid_key';
+  }
+  
+  try {
+    const result = i18n.t(key, options);
+    
+    // Check if the result indicates a missing translation
+    if (result === key || result.startsWith('missing_')) {
+      // Try to get from default locale (English)
+      if (i18n.locale !== 'en' && translations.en && translations.en[key]) {
+        return translations.en[key];
+      }
+      
+      // If still not found, return the key or missing indicator based on preference
+      if (options.returnKeyOnMissing !== false) {
+        return key; // Return the original key
+      }
+    }
+    
+    return result;
+  } catch (error) {
+    console.error('🌐 Translation error:', error, 'for key:', key);
+    
+    // Fallback strategies
+    if (translations.en && translations.en[key]) {
+      return translations.en[key]; // Fallback to English
+    }
+    
+    return key; // Return the key as last resort
+  }
+};
+
+// Safe translation function that never throws
+export const safeT = (key, options = {}) => {
+  try {
+    return t(key, options);
+  } catch (error) {
+    console.error('🌐 Safe translation error:', error);
+    return key || 'translation_error';
+  }
+};
+
+// Check if a translation exists
+export const hasTranslation = (key, locale = i18n.locale) => {
+  try {
+    const translation = translations[locale]?.[key];
+    return translation && translation !== key && !translation.startsWith('missing_');
+  } catch (error) {
+    return false;
+  }
+};
+
+// Get all missing translations for current locale
+export const getMissingTranslations = (locale = i18n.locale) => {
+  const missing = [];
+  const allKeys = new Set();
+  
+  // Collect all unique keys from all languages
+  Object.values(translations).forEach(lang => {
+    Object.keys(lang).forEach(key => allKeys.add(key));
+  });
+  
+  // Check which keys are missing in the target locale
+  allKeys.forEach(key => {
+    if (!hasTranslation(key, locale)) {
+      missing.push(key);
+    }
+  });
+  
+  return missing;
 };
 
 // Always start with English
@@ -206,10 +124,17 @@ export const initializeI18n = async () => {
       I18nManager.swapLeftAndRightInRTL(false);
     }
 
-    console.log('App initialized with forced EN language and LTR layout');
+    console.log('🌐 App initialized with forced EN language and LTR layout');
+    
+    // Log missing translations for debugging
+    const missing = getMissingTranslations('en');
+    if (missing.length > 0) {
+      console.log('🌐 Missing EN translations:', missing);
+    }
+    
     return 'en';
   } catch (error) {
-    console.log('Error initializing i18n:', error);
+    console.log('🌐 Error initializing i18n:', error);
     // Fallback to English
     i18n.locale = 'en';
     return 'en';
@@ -225,20 +150,34 @@ export const isRTL = (locale = i18n.locale) => {
 };
 
 export const changeLanguage = (locale) => {
-  const newLocale = locale || 'en';
-  i18n.locale = newLocale;
-  return isRTL(newLocale);
+  try {
+    const newLocale = locale || 'en';
+    i18n.locale = newLocale;
+    
+    // Log missing translations when changing language
+    const missing = getMissingTranslations(newLocale);
+    if (missing.length > 0) {
+      console.log(`🌐 Missing ${newLocale} translations:`, missing);
+    }
+    
+    return isRTL(newLocale);
+  } catch (error) {
+    console.error('🌐 Error changing language:', error);
+    i18n.locale = 'en';
+    return false;
+  }
 };
 
 export const getSystemLocales = () => Localization.getLocales();
 
 export const getSystemLanguage = () => {
-  const locales = Localization.getLocales();
-  return locales[0]?.languageCode || 'en';
+  try {
+    const locales = Localization.getLocales();
+    return locales[0]?.languageCode || 'en';
+  } catch (error) {
+    return 'en';
+  }
 };
 
-export const t = (key, options = {}) => {
-  return i18n.t(key, options);
-};
-
+// Export the enhanced i18n instance
 export default i18n;

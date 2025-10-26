@@ -1,8 +1,8 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Modal, Pressable, Text, View } from "react-native";
 import { useRTLStyles } from "../contexts/useRTLStyles";
+import { t } from "../utils/i18n";
 import { globalStyle } from "../utils/styles";
-
 
 const MUTED = "#7E7E7E";
 const PRIMARY = "#E73C3C";
@@ -13,13 +13,12 @@ const SortModal = ({
   SORT_OPTIONS,
   handleSortSelect,
   sortBy,
-  }) => {
+}) => {
 
-    const { createRTLStyles, writingDirection } = useRTLStyles();
-    const s = createRTLStyles(globalStyle.home(writingDirection));
-        
-    
-    return (
+  const { createRTLStyles, writingDirection } = useRTLStyles();
+  const s = createRTLStyles(globalStyle.home(writingDirection));
+      
+  return (
     <Modal
       visible={showSortModal}
       animationType="slide"
@@ -29,7 +28,7 @@ const SortModal = ({
       <View style={s.modalOverlay}>
         <View style={s.modalContent}>
           <View style={s.modalHeader}>
-            <Text style={s.modalTitle}>Sort By</Text>
+            <Text style={s.modalTitle}>{t('SORT_BY')}</Text>
             <Pressable
               onPress={() => setShowSortModal(false)}
               style={({ pressed }) => ({ opacity: pressed ? 0.7 : 1 })}
@@ -56,7 +55,7 @@ const SortModal = ({
                 s.sortOptionText,
                 sortBy === option.id && s.sortOptionSelected
               ]}>
-                {option.label}
+                {t(option.translationKey) || option.label}
               </Text>
               {sortBy === option.id && (
                 <Ionicons name="checkmark" size={22} color={PRIMARY} />
@@ -68,5 +67,4 @@ const SortModal = ({
     </Modal>
   )};
 
-
-  export default SortModal;
+export default SortModal;

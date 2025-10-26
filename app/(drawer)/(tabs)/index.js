@@ -18,6 +18,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import FilterModal from "../../../components/FilterModal";
 import SortModal from "../../../components/SortModal";
 import { useRTLStyles } from "../../../contexts/useRTLStyles";
+import { t } from "../../../utils/i18n";
 import serverPath from "../../../utils/serverPath";
 import { globalStyle } from "../../../utils/styles";
 
@@ -27,14 +28,41 @@ const CARD_BG = "#FFFFFF";
 const TEXT = "#1E1E1E";
 const MUTED = "#7E7E7E";
 
-const SORT_OPTIONS = [
-  { id: "recent", label: "Most Recent", icon: "time" },
-  { id: "name", label: "Name", icon: "person" },
-  { id: "blood", label: "Blood Type", icon: "water" },
-  { id: "location", label: "Location", icon: "location" },
-];
 
 export default function HomeScreen() {
+  
+const SORT_OPTIONS = [
+  { 
+    id: "recent", 
+    label: t('SORT_RECENT'), 
+    icon: "time", 
+    translationKey: "SORT_RECENT" 
+  },
+  { 
+    id: "name", 
+    label: t('SORT_NAME_ASC'), 
+    icon: "person", 
+    translationKey: "SORT_NAME_ASC" 
+  },
+  { 
+    id: "blood", 
+    label: t('SORT_BLOOD_TYPE'), 
+    icon: "water", 
+    translationKey: "SORT_BLOOD_TYPE" 
+  },
+  { 
+    id: "location", 
+    label: t('LOCATION'), 
+    icon: "location", 
+    translationKey: "LOCATION" 
+  },
+  { 
+    id: "distance", 
+    label: t('SORT_DISTANCE'), 
+    icon: "navigate", 
+    translationKey: "SORT_DISTANCE" 
+  },
+];
   const { createRTLStyles, isRTL, writingDirection } = useRTLStyles();
   const [query, setQuery] = useState("");
   const [selectedBloodTypes, setSelectedBloodTypes] = useState([]);
@@ -95,9 +123,9 @@ export default function HomeScreen() {
       
       if (status !== 'granted') {
         Alert.alert(
-          "Permission Denied",
-          "Location permission is required to find nearby donors.",
-          [{ text: "OK" }]
+          t('PERMISSION_DENIED'),
+          t('LOCATION_PERMISSION_REQUIRED'),
+          [{ text: t('OK') }]
         );
         setLocationLoading(false);
         return null;
@@ -114,9 +142,9 @@ export default function HomeScreen() {
     } catch (error) {
       console.error('Error getting location:', error);
       Alert.alert(
-        "Location Error",
-        "Unable to get your location. Please try again.",
-        [{ text: "OK" }]
+        t('LOCATION_ERROR'),
+        t('UNABLE_TO_GET_LOCATION'),
+        [{ text: t('OK') }]
       );
       return null;
     } finally {
@@ -162,7 +190,7 @@ export default function HomeScreen() {
       }
     } catch (error) {
       console.error('Error fetching filter options:', error);
-      Alert.alert("Error", "Failed to load filter options");
+      Alert.alert(t('ERROR'), t('FAILED_TO_LOAD_FILTERS'));
     }
   };
 
@@ -217,11 +245,11 @@ export default function HomeScreen() {
         }
         setPagination(result.data.pagination);
       } else {
-        Alert.alert("Error", result.message || "Failed to fetch donors");
+        Alert.alert(t('ERROR'), result.message || t('FAILED_TO_FETCH_DONORS'));
       }
     } catch (error) {
       console.error('Error fetching donors:', error);
-      Alert.alert("Connection Error", "Please check your internet connection and try again.");
+      Alert.alert(t('CONNECTION_ERROR'), t('CHECK_INTERNET_CONNECTION'));
     } finally {
       setLoading(false);
       setLoadingMore(false);
@@ -303,33 +331,33 @@ export default function HomeScreen() {
 
   const handleViewDetails = (donor) => {
     Alert.alert(
-      "Donor Details",
-      `🩸 Blood Type: ${donor.blood}\n📍 Location: ${donor.location}\n⏰ Last Donation: ${donor.lastDonation}\n📏 Distance: ${donor.distance}\n📞 Contact: ${donor.phone}\n\nStatus: ${donor.availability}`,
-      [{ text: "Close", style: "cancel" }]
+      t('DONOR_DETAILS'),
+      `${t('BLOOD_TYPE')}: ${donor.blood}\n${t('LOCATION')}: ${donor.location}\n${t('LAST_DONATION')}: ${donor.lastDonation}\n${t('DISTANCE')}: ${donor.distance}\n${t('CONTACT')}: ${donor.phone}\n\n${t('STATUS')}: ${donor.availability}`,
+      [{ text: t('CLOSE'), style: "cancel" }]
     );
   };
 
-const handleCall = (donor) => {
-  Alert.alert(
-    "Call Donor",
-    `Call ${donor.name} at ${donor.phone}?`,
-    [
-      { text: "Cancel", style: "cancel" },
-      {
-        text: "Call",
-        onPress: async () => {
-          const phoneNumber = `tel:${donor.phone}`;
-          const supported = await Linking.canOpenURL(phoneNumber);
-          if (supported) {
-            await Linking.openURL(phoneNumber);
-          } else {
-            Alert.alert("Error", "Your device cannot make phone calls.");
-          }
+  const handleCall = (donor) => {
+    Alert.alert(
+      t('CALL_DONOR'),
+      t('CALL_DONOR_CONFIRMATION', { name: donor.name, phone: donor.phone }),
+      [
+        { text: t('CANCEL'), style: "cancel" },
+        {
+          text: t('CALL'),
+          onPress: async () => {
+            const phoneNumber = `tel:${donor.phone}`;
+            const supported = await Linking.canOpenURL(phoneNumber);
+            if (supported) {
+              await Linking.openURL(phoneNumber);
+            } else {
+              Alert.alert(t('ERROR'), t('CANNOT_MAKE_CALLS'));
+            }
+          },
         },
-      },
-    ]
-  );
-};
+      ]
+    );
+  };
 
   const s = createRTLStyles(globalStyle.home(writingDirection));
 
@@ -399,7 +427,7 @@ const handleCall = (donor) => {
             >
               <Ionicons name="information-circle" size={18} color="#fff" />
               <Text style={[s.actionText, { color: "#fff", writingDirection }]}>
-                Details
+                {t('DETAILS')}
               </Text>
             </Pressable>
 
@@ -427,7 +455,7 @@ const handleCall = (donor) => {
     return (
       <View style={s.loadingFooter}>
         <ActivityIndicator size="small" color={PRIMARY} />
-        <Text style={s.loadingText}>Loading more donors...</Text>
+        <Text style={s.loadingText}>{t('LOADING_MORE_DONORS')}</Text>
       </View>
     );
   };
@@ -465,7 +493,7 @@ const handleCall = (donor) => {
             ref={searchInputRef}
             value={query}
             onChangeText={setQuery}
-            placeholder="Search donors by name, blood type, or location..."
+            placeholder={t('SEARCH_DONORS_PLACEHOLDER')}
             placeholderTextColor={MUTED}
             style={[s.searchInput, { writingDirection }]}
             returnKeyType="search"
@@ -496,7 +524,7 @@ const handleCall = (donor) => {
               color={sortBy !== 'recent' ? CARD_BG : TEXT} 
             />
             <Text style={[s.chipText, sortBy !== 'recent' && s.chipTextActive]}>
-              {SORT_OPTIONS.find(opt => opt.id === sortBy)?.label || 'Sort'}
+              {SORT_OPTIONS.find(opt => opt.id === sortBy)?.label || t('SORT')}
             </Text>
           </Pressable>
 
@@ -527,7 +555,7 @@ const handleCall = (donor) => {
               s.chipText, 
               activeFiltersCount > 0 && s.chipTextActive
             ]}>
-              Filter
+              {t('FILTER')}
             </Text>
           </Pressable>
 
@@ -556,7 +584,7 @@ const handleCall = (donor) => {
               s.chipText, 
               isNearbyActive && s.chipTextActive
             ]}>
-              {locationLoading ? "Finding..." : (isNearbyActive ? "Nearby" : "Nearby")}
+              {locationLoading ? t('FINDING') : (isNearbyActive ? t('NEARBY') : t('NEARBY'))}
             </Text>
           </Pressable>
         </View>
@@ -567,7 +595,7 @@ const handleCall = (donor) => {
         <View style={s.loadingFooter}>
           <ActivityIndicator size="large" color={PRIMARY} />
           <Text style={s.loadingText}>
-            {isNearbyActive ? "Finding nearby donors..." : "Loading donors..."}
+            {isNearbyActive ? t('FINDING_NEARBY_DONORS') : t('LOADING_DONORS')}
           </Text>
         </View>
       ) : (
@@ -599,10 +627,10 @@ const handleCall = (donor) => {
               <Ionicons name="search-outline" size={72} color={MUTED} />
               <Text style={s.emptyStateText}>
                 {isNearbyActive 
-                  ? "No donors found near your location"
+                  ? t('NO_DONORS_NEAR_LOCATION')
                   : query || activeFiltersCount > 0 
-                  ? "No donors found matching your search criteria"
-                  : "No donors available at the moment"
+                  ? t('NO_DONORS_MATCHING_SEARCH')
+                  : t('NO_DONORS_AVAILABLE')
                 }
               </Text>
             </View>

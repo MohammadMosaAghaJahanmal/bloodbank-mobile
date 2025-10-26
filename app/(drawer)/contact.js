@@ -15,24 +15,10 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Input from '../../components/GeneralInput';
-import { useLanguage } from '../../contexts/LanguageContext';
 import { useRTLStyles } from '../../contexts/useRTLStyles';
+import i18n from '../../utils/i18n';
 import serverPath from '../../utils/serverPath';
-import { globalStyle } from '../../utils/styles';
-const COLORS = {
-  primary: '#E73C3C',
-  primaryDark: '#C42525',
-  primaryLight: '#FEF2F2',
-  text: '#1E1E1E',
-  textLight: '#4A4A4A',
-  muted: '#7E7E7E',
-  bg: '#FFFFFF',
-  border: '#E8E8E8',
-  borderLight: '#F0F0F0',
-  success: '#16a34a',
-  error: '#dc2626',
-  errorLight: '#FEF2F2',
-};
+import { COLORS, globalStyle } from '../../utils/styles';
 
 const MIN_NAME = 2;
 const MAX_NAME = 120;
@@ -43,7 +29,6 @@ const MIN_MESSAGE = 3;
 const ContactUsScreen = () => {
   const navigation = useNavigation();
   const { createRTLStyles, isRTL, writingDirection } = useRTLStyles();
-  const { t } = useLanguage();
   
   const styles = createRTLStyles(globalStyle);
   
@@ -59,29 +44,29 @@ const ContactUsScreen = () => {
     const e = {};
     
     if (!fullName.trim() || fullName.trim().length < MIN_NAME) {
-      e.fullName = t?.('NAME_TOO_SHORT', `Must be at least ${MIN_NAME} characters`) || `Must be at least ${MIN_NAME} characters`;
+      e.fullName = i18n.t('NAME_TOO_SHORT', { min: MIN_NAME });
     } else if (fullName.trim().length > MAX_NAME) {
-      e.fullName = t?.('NAME_TOO_LONG', `Must be ≤ ${MAX_NAME} characters`) || `Must be ≤ ${MAX_NAME} characters`;
+      e.fullName = i18n.t('NAME_TOO_LONG', { max: MAX_NAME });
     }
 
     if (!email.trim()) {
-      e.email = t?.('EMAIL_REQUIRED', 'Email is required') || 'Email is required';
+      e.email = i18n.t('EMAIL_REQUIRED');
     } else if (email.trim().length > MAX_EMAIL) {
-      e.email = t?.('EMAIL_TOO_LONG', `Must be ≤ ${MAX_EMAIL} characters`) || `Must be ≤ ${MAX_EMAIL} characters`;
+      e.email = i18n.t('EMAIL_TOO_LONG', { max: MAX_EMAIL });
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
-      e.email = t?.('EMAIL_INVALID', 'Invalid email') || 'Invalid email';
+      e.email = i18n.t('EMAIL_INVALID');
     }
 
     if (!subject.trim() || subject.trim().length < MIN_SUBJECT) {
-      e.subject = t?.('SUBJECT_TOO_SHORT', `Must be at least ${MIN_SUBJECT} characters`) || `Must be at least ${MIN_SUBJECT} characters`;
+      e.subject = i18n.t('SUBJECT_TOO_SHORT', { min: MIN_SUBJECT });
     }
 
     if (!message.trim() || message.trim().length < MIN_MESSAGE) {
-      e.message = t?.('MESSAGE_TOO_SHORT', `Must be at least ${MIN_MESSAGE} characters`) || `Must be at least ${MIN_MESSAGE} characters`;
+      e.message = i18n.t('MESSAGE_TOO_SHORT', { min: MIN_MESSAGE });
     }
     
     return e;
-  }, [fullName, email, subject, message, t]);
+  }, [fullName, email, subject, message]);
 
   const isValid = Object.keys(errors).length === 0;
 
@@ -110,12 +95,12 @@ const ContactUsScreen = () => {
 
       const data = await res.json().catch(() => ({}));
       if (!res.ok || data?.status === 'failure') {
-        throw new Error(data?.message || t?.('SOMETHING_WENT_WRONG', 'Something went wrong') || 'Something went wrong');
+        throw new Error(data?.message || i18n.t('SOMETHING_WENT_WRONG'));
       }
 
       Alert.alert(
-        t?.('THANK_YOU', 'Thank you!') || 'Thank you!',
-        t?.('CONTACT_SENT', 'Your message has been sent.') || 'Your message has been sent.'
+        i18n.t('THANK_YOU'),
+        i18n.t('CONTACT_SENT')
       );
       setFullName('');
       setEmail('');
@@ -124,14 +109,13 @@ const ContactUsScreen = () => {
       setTouched({});
     } catch (err) {
       Alert.alert(
-        t?.('ERROR', 'Error') || 'Error', 
-        err?.message || (t?.('TRY_AGAIN', 'Please try again.') || 'Please try again.')
+        i18n.t('ERROR'), 
+        err?.message || i18n.t('TRY_AGAIN')
       );
     } finally {
       setLoading(false);
     }
   };
-
 
   return (
     <SafeAreaView style={styles.safe} edges={['bottom']}>
@@ -146,7 +130,7 @@ const ContactUsScreen = () => {
               alignItems: 'center',
               position: 'relative',
               overflow: 'hidden',
-            },,
+            },
             {
               flexDirection: isRTL ? 'row-reverse' : 'row',
               borderBottomLeftRadius: 24,
@@ -184,10 +168,10 @@ const ContactUsScreen = () => {
           {/* Center title */}
           <View style={styles.titleBox}>
             <Text numberOfLines={1} style={styles.headerTitle}>
-              {t?.('CONTACT_US', 'Contact Us') || 'Contact Us'}
+              {i18n.t('CONTACT_US')}
             </Text>
             <Text numberOfLines={1} style={styles.headerSubtitle}>
-              {t?.('GET_IN_TOUCH', 'Get in touch with us') || 'Get in touch with us'}
+              {i18n.t('GET_IN_TOUCH')}
             </Text>
           </View>
 
@@ -221,8 +205,8 @@ const ContactUsScreen = () => {
           <View style={styles.formContainer}>
             {/* Full Name */}
             <Input
-              label={t?.('FULL_NAME', 'Full Name') || 'Full Name'}
-              placeholder={t?.('ENTER_NAME', 'Enter your full name') || 'Enter your full name'}
+              label={i18n.t('FULL_NAME')}
+              placeholder={i18n.t('ENTER_NAME')}
               value={fullName}
               onChangeText={setFullName}
               onBlur={() => setTouched(t => ({ ...t, fullName: true }))}
@@ -236,8 +220,8 @@ const ContactUsScreen = () => {
 
             {/* Email */}
             <Input
-              label={t?.('EMAIL', 'Email') || 'Email'}
-              placeholder={t?.('ENTER_EMAIL', 'Enter your email') || 'Enter your email'}
+              label={i18n.t('EMAIL')}
+              placeholder={i18n.t('ENTER_EMAIL')}
               value={email}
               onChangeText={setEmail}
               onBlur={() => setTouched(t => ({ ...t, email: true }))}
@@ -253,8 +237,8 @@ const ContactUsScreen = () => {
 
             {/* Subject */}
             <Input
-              label={t?.('SUBJECT', 'Subject') || 'Subject'}
-              placeholder={t?.('ENTER_SUBJECT', 'What is your message about?') || 'What is your message about?'}
+              label={i18n.t('SUBJECT')}
+              placeholder={i18n.t('ENTER_SUBJECT')}
               value={subject}
               onChangeText={setSubject}
               onBlur={() => setTouched(t => ({ ...t, subject: true }))}
@@ -266,13 +250,12 @@ const ContactUsScreen = () => {
               styles={styles}
             />
 
-            {/* Message - Using custom textarea style since GeneralInput might not support multiline by default */}
             <View style={styles.inputContainer}>
               <Text style={styles.label}>
-                {t?.('MESSAGE', 'Message') || 'Message'} *
+                {i18n.t('MESSAGE')} *
               </Text>
               <Input
-                placeholder={t?.('ENTER_MESSAGE', 'Write your message...') || 'Write your message...'}
+                placeholder={i18n.t('ENTER_MESSAGE')}
                 value={message}
                 onChangeText={setMessage}
                 onBlur={() => setTouched(t => ({ ...t, message: true }))}
@@ -310,7 +293,7 @@ const ContactUsScreen = () => {
                   <>
                     <Ionicons name="send-outline" size={18} color="#fff" style={styles.buttonIcon} />
                     <Text style={styles.buttonText}>
-                      {t?.('SEND_MESSAGE', 'Send Message') || 'Send Message'}
+                      {i18n.t('SEND_MESSAGE')}
                     </Text>
                   </>
                 )}
@@ -321,7 +304,7 @@ const ContactUsScreen = () => {
             <View style={styles.helperContainer}>
               <Ionicons name="time-outline" size={14} color={COLORS.muted} />
               <Text style={styles.helperText}>
-                {t?.('WE_REPLY_SOON', 'We typically reply within 24 hours') || 'We typically reply within 24 hours'}
+                {i18n.t('WE_REPLY_SOON')}
               </Text>
             </View>
           </View>

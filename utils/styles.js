@@ -15,7 +15,7 @@ const CARD_BG = "#FFFFFF";
 const TEXT_SECONDARY = "#5A5A5A";
 
 
-const COLORS = {
+export const COLORS = {
   primary: '#E73C3C',
   primaryDark: '#C42525',
   text: '#1E1E1E',
@@ -30,7 +30,6 @@ const COLORS = {
   success: '#16a34a',
   error: '#dc2626',
   errorLight: '#FEF2F2',
-  
 };
 
 const TABCOLORS = {
@@ -351,7 +350,7 @@ export const globalStyle = StyleSheet.create(
     transform: [{ translateX: 24 }],
   },
   toggleKnobActiveRTL: {
-    transform: [{ translateX: -24 }],
+    transform: [{ translateX: 24 }],
   },
   primaryBtn: {
     backgroundColor: PRIMARY,
