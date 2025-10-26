@@ -204,7 +204,9 @@ export const translations = {
     LOADING_DONORS: "Loading donors...",
     NO_DONORS_NEAR_LOCATION: "No donors found near your location",
     NO_DONORS_MATCHING_SEARCH: "No donors found matching your search criteria",
-    NO_DONORS_AVAILABLE: "No donors available at the moment"
+    NO_DONORS_AVAILABLE: "No donors available at the moment",
+    UNKNOWN: "Unknown",
+    NEVER_DONATED: "Never Donated",
   },
 
   ps: {
@@ -400,7 +402,7 @@ export const translations = {
     STATUS: "حالت",
     CLOSE: "بندول",
     CALL_DONOR: "وینې ورکوونکي ته زنګ ووهئ",
-    CALL_DONOR_CONFIRMATION: "ایا {{name}} ته د {{phone}} په شمېره زنګ ووهئ؟",
+    CALL_DONOR_CONFIRMATION: "ایا {{name}} ته د {{phone}} په شمېره زنګ وهئ؟",
     CALL: "زنګ وهل",
     CANNOT_MAKE_CALLS: "ستاسې وسیله د زنګ وهلو وړتیا نه لري.",
     LOADING_MORE_DONORS: "نور وینې ورکوونکي بارېږي...",
@@ -413,7 +415,9 @@ export const translations = {
     LOADING_DONORS: "وینې ورکوونکي بارېږي...",
     NO_DONORS_NEAR_LOCATION: "په نږدې سیمه کې هیڅ وینې ورکوونکي ونه موندل شول",
     NO_DONORS_MATCHING_SEARCH: "د لټون له معیار سره هیڅ وینې ورکوونکي ونه موندل شول",
-    NO_DONORS_AVAILABLE: "اوس مهال هیڅ وینې ورکوونکي شتون نه لري"
+    NO_DONORS_AVAILABLE: "اوس مهال هیڅ وینې ورکوونکي شتون نه لري",
+    UNKNOWN: "نامعلوم",
+    NEVER_DONATED: "مرسته نه ده کړې",
   },
 
   pa: {
@@ -624,5 +628,7 @@ export const translations = {
     NO_DONORS_NEAR_LOCATION: "هیچ اهداکننده‌ای در نزدیکی موقعیت شما یافت نشد",
     NO_DONORS_MATCHING_SEARCH: "هیچ اهداکننده‌ای مطابق با معیار جستجو یافت نشد",
     NO_DONORS_AVAILABLE: "در حال حاضر هیچ اهداکننده‌ای در دسترس نیست",
+    UNKNOWN: "نامشخص",
+    NEVER_DONATED: "اهدا نکرده است"
   },
 };

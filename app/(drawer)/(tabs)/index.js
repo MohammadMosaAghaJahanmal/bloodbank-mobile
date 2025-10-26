@@ -17,11 +17,11 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import FilterModal from "../../../components/FilterModal";
 import SortModal from "../../../components/SortModal";
+import { AFGHANISTAN_PROVINCES } from '../../../constants/theme';
 import { useRTLStyles } from "../../../contexts/useRTLStyles";
 import { t } from "../../../utils/i18n";
 import serverPath from "../../../utils/serverPath";
 import { globalStyle } from "../../../utils/styles";
-
 
 const PRIMARY = "#E73C3C";
 const CARD_BG = "#FFFFFF";
@@ -332,7 +332,7 @@ const SORT_OPTIONS = [
   const handleViewDetails = (donor) => {
     Alert.alert(
       t('DONOR_DETAILS'),
-      `${t('BLOOD_TYPE')}: ${donor.blood}\n${t('LOCATION')}: ${donor.location}\n${t('LAST_DONATION')}: ${donor.lastDonation}\n${t('DISTANCE')}: ${donor.distance}\n${t('CONTACT')}: ${donor.phone}\n\n${t('STATUS')}: ${donor.availability}`,
+      `${t('BLOOD_TYPE')}: ${donor.blood}\n${t('LOCATION')}: ${donor.location}\n${t('LAST_DONATION')}: ${donor.lastDonation === "Never donated" ? t("NEVER_DONATED") : donor.lastDonation}\n${t('DISTANCE')}: ${donor.distance === 'Unknown' ? t("UNKNOWN") : donor.distance}\n${t('CONTACT')}: ${donor.phone}\n`,
       [{ text: t('CLOSE'), style: "cancel" }]
     );
   };
@@ -400,16 +400,16 @@ const SORT_OPTIONS = [
             </View>
           </View>
           
-          <Text style={s.location} numberOfLines={1}>
-            {item.province?.toUpperCase()}
+          <Text style={[s.location, isRTL && {direction: "rtl"}]} numberOfLines={1}>
+            { AFGHANISTAN_PROVINCES?.find(per => per.id === item.province?.toLowerCase())?.[isRTL ? "ps"  : "en" ] }
           </Text>
 
           <View style={s.infoRow}>
             <View style={s.infoTag}>
-              <Text style={s.infoText}>📍 {item.distance}</Text>
+              <Text style={s.infoText}>📍 {item.distance === 'Unknown' ? t("UNKNOWN") : item.distance}</Text>
             </View>
             <View style={s.infoTag}>
-              <Text style={s.infoText}>⏰ {item.lastDonation}</Text>
+              <Text style={s.infoText}>⏰ {item.lastDonation === "Never donated" ? t("NEVER_DONATED") : item.lastDonation}</Text>
             </View>
           </View>
 
