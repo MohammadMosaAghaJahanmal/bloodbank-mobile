@@ -303,7 +303,7 @@ function CustomDrawerContent(props) {
           <MenuItem
             icon={<Ionicons name="shield-checkmark-outline" size={18} color={COLORS.text} />}
             label={t('PRIVACY_POLICY')}
-            onPress={() => Linking.openURL('https://your-site.com/privacy')}
+            onPress={() => Linking.openURL('https://sites.google.com/view/save-blood-bank-privacy-policy')}
             isRTL={isRTL}
           />
         </Section>
@@ -347,15 +347,9 @@ function CustomDrawerContent(props) {
             styles.footerLinks,
             isRTL && { flexDirection: 'row-reverse' }
           ]}>
-            <Pressable onPress={() => Linking.openURL('https://your-site.com/privacy')}>
+            <Pressable onPress={() => Linking.openURL('https://sites.google.com/view/save-blood-bank-privacy-policy')}>
               <Text style={styles.link}>
                 {t('PRIVACY_POLICY')}
-              </Text>
-            </Pressable>
-            <Text style={{ color: COLORS.muted, marginHorizontal: 4 }}> & </Text>
-            <Pressable onPress={() => Linking.openURL('https://your-site.com/terms')}>
-              <Text style={styles.link}>
-                {t('TERMS_OF_SERVICE') || 'Terms of Service'}
               </Text>
             </Pressable>
           </View>
