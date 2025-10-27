@@ -75,7 +75,7 @@ export default function DrawerLayout() {
 function CustomDrawerContent(props) {
   const { navigation } = props;
   const { isRTL, currentLocale, toggleLanguage, isReady } = useLanguage();
-  const { user, login, logout } = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
   const insets = useSafeAreaInsets();
   const version = `${Constants.expoConfig?.version ?? ''} (${Constants.expoConfig?.android?.versionCode ?? Constants.expoConfig?.ios?.buildNumber ?? ''})`;
 
