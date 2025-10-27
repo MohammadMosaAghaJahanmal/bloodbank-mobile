@@ -272,12 +272,6 @@ function CustomDrawerContent(props) {
               onPress={() => go('(tabs)', 'profile')}
               isRTL={isRTL}
             />
-            <MenuItem
-              icon={<Feather name="settings" size={18} color={COLORS.text} />}
-              label={t('SETTINGS')}
-              onPress={() => go('settings')}
-              isRTL={isRTL}
-            />
           </Section>
         )}
 
@@ -310,13 +304,6 @@ function CustomDrawerContent(props) {
             icon={<Ionicons name="shield-checkmark-outline" size={18} color={COLORS.text} />}
             label={t('PRIVACY_POLICY')}
             onPress={() => Linking.openURL('https://your-site.com/privacy')}
-            isRTL={isRTL}
-          />
-
-          <MenuItem
-            icon={<Ionicons name="language-outline" size={18} color={COLORS.text} />}
-            label={t('LANGUAGE')}
-            onPress={() => go('language-settings')}
             isRTL={isRTL}
           />
         </Section>

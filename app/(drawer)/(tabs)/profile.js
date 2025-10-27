@@ -20,6 +20,7 @@ import GeneralInput from '../../../components/GeneralInput';
 import ProvinceDropdown from '../../../components/ProvinceDropdown';
 import { AuthContext } from '../../../contexts/authContext';
 import { useRTLStyles } from '../../../contexts/useRTLStyles';
+import { t } from '../../../utils/i18n';
 import serverPath from '../../../utils/serverPath';
 import { globalStyle } from '../../../utils/styles';
 
@@ -132,9 +133,9 @@ export default function ProfileScreen() {
       if (status !== 'granted') {
         setLocationLoading(false);
         Alert.alert(
-          'Permission Denied',
-          'Location permission is required to get your current location. Please enable it in your device settings.',
-          [{ text: 'OK' }]
+          t('PERMISSION_DENIED'),
+          t('LOCATION_PERMISSION_REQUIRED'),
+          [{ text: t('OK') }]
         );
         return;
       }
@@ -160,15 +161,15 @@ export default function ProfileScreen() {
       
       if (latitude && longitude) {
         Alert.alert(
-          'Location Found', 
-          'Coordinates saved successfully, but could not get exact address. You can manually enter your location.',
-          [{ text: 'OK' }]
+          t('LOCATION_FOUND'), 
+          t('COORDINATES_SAVED_MANUAL_LOCATION'),
+          [{ text: t('OK') }]
         );
       } else {
         Alert.alert(
-          'Location Error', 
-          'Unable to get your current location. Please make sure location services are enabled and try again.',
-          [{ text: 'OK' }]
+          t('LOCATION_ERROR'), 
+          t('UNABLE_GET_LOCATION'),
+          [{ text: t('OK') }]
         );
       }
     }
@@ -197,35 +198,35 @@ export default function ProfileScreen() {
         }
       }
       
-      setLocationText(`Location at ${lat.toFixed(6)}, ${lng.toFixed(6)}`);
+      setLocationText(t('LOCATION_AT_COORDINATES', { lat: lat.toFixed(6), lng: lng.toFixed(6) }));
       
     } catch (error) {
       console.log('Reverse geocoding error:', error);
-      setLocationText(`Location at ${lat.toFixed(6)}, ${lng.toFixed(6)}`);
+      setLocationText(t('LOCATION_AT_COORDINATES', { lat: lat.toFixed(6), lng: lng.toFixed(6) }));
     }
   };
 
   // Validation
   const errors = useMemo(() => {
     const e = {};
-    if (touched.fullName && fullName.trim().length < 3) e.fullName = 'Enter your full name';
-    if (touched.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) e.email = 'Enter a valid email';
-    if (touched.phone && !/^\+?\d{8,15}$/.test(phone)) e.phone = 'Enter a valid mobile number';
-    if (touched.password && password && password.length < 6) e.password = 'Minimum 6 characters required';
-    if (touched.bloodGroup && !bloodGroup) e.bloodGroup = 'Please select your blood group';
-    if (touched.locationText && locationText.trim().length < 3) e.locationText = 'Enter your location';
-    if (touched.province && !province) e.province = 'Please select your province';
+    if (touched.fullName && fullName.trim().length < 3) e.fullName = t('FULL_NAME_TOO_SHORT');
+    if (touched.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) e.email = t('INVALID_EMAIL');
+    if (touched.phone && !/^\+?\d{8,15}$/.test(phone)) e.phone = t('PHONE_REQUIRED');
+    if (touched.password && password && password.length < 6) e.password = t('PASSWORD_TOO_SHORT', { min: 6 });
+    if (touched.bloodGroup && !bloodGroup) e.bloodGroup = t('SELECT_BLOOD_GROUP');
+    if (touched.locationText && locationText.trim().length < 3) e.locationText = t('LOCATION_TOO_SHORT');
+    if (touched.province && !province) e.province = t('SELECT_PROVINCE');
     if (touched.amountMl) {
       const amount = parseInt(amountMl);
       if (!amountMl || isNaN(amount)) {
-        e.amountMl = 'Please enter blood amount';
+        e.amountMl = t('ENTER_BLOOD_AMOUNT');
       } else if (amount < 1 || amount > 1000) {
-        e.amountMl = 'Blood amount must be between 1-1000 ml';
+        e.amountMl = t('BLOOD_AMOUNT_RANGE');
       }
     }
       
     if (touched.lastDonationDate && !lastDonationDate) {
-      e.lastDonationDate = 'Please select donation date';
+      e.lastDonationDate = t('SELECT_DONATION_DATE');
     }
     return e;
   }, [fullName, email, phone, password, bloodGroup, locationText, province, touched, amountMl, lastDonationDate]);
@@ -242,24 +243,24 @@ export default function ProfileScreen() {
   // Handle image selection with react-native-image-picker
   const handleImageUpload = () => {
     Alert.alert(
-      'Update Profile Photo',
-      'Choose an option',
+      t('UPDATE_PROFILE_PHOTO'),
+      t('CHOOSE_OPTION'),
       [
         {
-          text: 'Take Photo',
+          text: t('TAKE_PHOTO'),
           onPress: () => takePhotoFromCamera(),
         },
         {
-          text: 'Choose from Gallery',
+          text: t('CHOOSE_FROM_GALLERY'),
           onPress: () => selectPhotoFromGallery(),
         },
         {
-          text: 'Remove Photo',
+          text: t('REMOVE_PHOTO'),
           onPress: () => setProfileImage(null),
           style: 'destructive',
         },
         {
-          text: 'Cancel',
+          text: t('CANCEL'),
           style: 'cancel',
         },
       ]
@@ -281,7 +282,7 @@ export default function ProfileScreen() {
       if (response.didCancel) {
         console.log('User cancelled camera');
       } else if (response.error) {
-        Alert.alert('Error', 'Failed to take photo: ' + response.error);
+        Alert.alert(t('ERROR'), t('FAILED_TAKE_PHOTO') + response.error);
       } else if (response.assets && response.assets[0]) {
         const imageUri = response.assets[0].uri;
         setProfileImage(imageUri);
@@ -302,7 +303,7 @@ export default function ProfileScreen() {
       if (response.didCancel) {
         console.log('User cancelled image picker');
       } else if (response.error) {
-        Alert.alert('Error', 'Failed to select image: ' + response.error);
+        Alert.alert(t('ERROR'), t('FAILED_SELECT_IMAGE') + response.error);
       } else if (response.assets && response.assets[0]) {
         const imageUri = response.assets[0].uri;
         setProfileImage(imageUri);
@@ -379,19 +380,19 @@ export default function ProfileScreen() {
       const result = await response.json();
 
       if (!response.ok) {
-        Alert.alert('Update Failed', result.message || 'Please try again later.');
+        Alert.alert(t('UPDATE_FAILED'), result.message || t('TRY_AGAIN_LATER'));
       } else if (result.status === "failure") {
-        Alert.alert('Update Failed', result.message || 'Please try again later.');
+        Alert.alert(t('UPDATE_FAILED'), result.message || t('TRY_AGAIN_LATER'));
       } else 
       {
-        Alert.alert('Success', 'Profile updated successfully!');
+        Alert.alert(t('SUCCESS'), t('PROFILE_UPDATED_SUCCESS'));
         if (result.user) {
           saveTokenAndLogin(token, result.user);
         }
       }
     } catch (e) {
       console.log('Update error:', e);
-      Alert.alert('Update Failed', 'Please check your connection and try again.');
+      Alert.alert(t('UPDATE_FAILED'), t('CHECK_CONNECTION_TRY_AGAIN'));
     } finally {
       setLoading(false);
     }
@@ -413,35 +414,36 @@ const handleSendVerification = async () => {
     const result = await response.json();
 
       if (!response.ok) {
-        Alert.alert('Verification Failed', result.message || 'Failed to send verification email. Please try again.');
+        Alert.alert(t('VERIFICATION_FAILED'), result.message || t('FAILED_SEND_VERIFICATION'));
       } else if (result.status === "failure") {
-        Alert.alert('Verification Failed', result.message || 'Failed to send verification email. Please try again.');
+        Alert.alert(t('VERIFICATION_FAILED'), result.message || t('FAILED_SEND_VERIFICATION'));
       } else 
       {
         Alert.alert(
-          'Verification Sent', 
-          'A verification email has been sent to your email address. Please check your inbox and follow the instructions to verify your account.',
-          [{ text: 'OK' }]
+          t('VERIFICATION_SENT'), 
+          t('VERIFICATION_EMAIL_SENT'),
+          [{ text: t('OK') }]
         );
       }
 
   } catch (e) {
     console.log('Verification error:', e);
-    Alert.alert('Verification Failed', 'Please check your connection and try again.');
+    Alert.alert(t('VERIFICATION_FAILED'), t('CHECK_CONNECTION_TRY_AGAIN'));
   } finally {
     setSendingVerification(false);
   }
 };
+
   // Record blood donation
 const handleRecordDonation = async () => {
   if (!lastDonationDate || !amountMl) {
-    Alert.alert('Error', 'Please fill all required donation fields.');
+    Alert.alert(t('ERROR'), t('FILL_ALL_DONATION_FIELDS'));
     return;
   }
 
   const amount = parseInt(amountMl);
   if (isNaN(amount) || amount < 1 || amount > 1000) {
-    Alert.alert('Error', 'Blood amount must be between 1-1000 ml');
+    Alert.alert(t('ERROR'), t('BLOOD_AMOUNT_RANGE'));
     return;
   }
 
@@ -466,12 +468,12 @@ const handleRecordDonation = async () => {
     const result = await response.json();
 
       if (!response.ok) {
-        Alert.alert('Failed', result.message || 'Failed to record donation.');
+        Alert.alert(t('FAILED'), result.message || t('FAILED_RECORD_DONATION'));
       } else if (result.status === "failure") {
-        Alert.alert('Failed', result.message || 'Failed to record donation.');
+        Alert.alert(t('FAILED'), result.message || t('FAILED_RECORD_DONATION'));
       } else 
       {
-        Alert.alert('Success', 'Blood donation recorded successfully!');
+        Alert.alert(t('SUCCESS'), t('DONATION_RECORDED_SUCCESS'));
         setAmountMl('450')
         setNotes('')
         setDonationLocation("")
@@ -479,7 +481,7 @@ const handleRecordDonation = async () => {
       }
   } catch (e) {
     console.log('Donation record error:', e);
-    Alert.alert('Failed', 'Please check your connection and try again.');
+    Alert.alert(t('FAILED'), t('CHECK_CONNECTION_TRY_AGAIN'));
   } finally {
     setUpdatingDonation(false);
   }
@@ -488,11 +490,11 @@ const handleRecordDonation = async () => {
   // Handle logout
   const handleLogout = () => {
     Alert.alert(
-      'Logout',
-      'Are you sure you want to logout?',
+      t('LOGOUT_CONFIRMATION_TITLE'),
+      t('LOGOUT_CONFIRMATION_MESSAGE'),
       [
-        { text: 'Cancel', style: 'cancel' },
-        { text: 'Logout', style: 'destructive', onPress: () => {
+        { text: t('CANCEL'), style: 'cancel' },
+        { text: t('LOGOUT'), style: 'destructive', onPress: () => {
           logout()
           router.replace("login");
         } },
@@ -510,10 +512,12 @@ const handleRecordDonation = async () => {
     if (now < cooldownEnd) {
       const diffTime = cooldownEnd - now;
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      return `You can donate blood again in ${diffDays} day${diffDays !== 1 ? 's' : ''}`;
+      let a = t('CAN_DONATE_IN_DAYS', { days: diffDays + (isRTL ? "" : ` day${(diffDays !== 1 ? 's' : '')}`) })
+      console.log(a)
+      return a;
     }
     
-    return 'You are eligible to donate blood now!';
+    return t('ELIGIBLE_TO_DONATE');
   }, [user?.cooldownEndsAt]);
 
   const cooldownStatus = getCooldownStatus();
@@ -530,9 +534,9 @@ const handleRecordDonation = async () => {
         >
           {/* Header */}
           <View style={styles.header}>
-            <Text style={styles.title}>My Profile</Text>
+            <Text style={styles.title}>{t('MY_PROFILE')}</Text>
             <TouchableOpacity onPress={handleLogout} style={styles.logoutBtn}>
-              <Text style={styles.logoutText}>Logout</Text>
+              <Text style={styles.logoutText}>{t('LOGOUT')}</Text>
             </TouchableOpacity>
           </View>
 
@@ -554,14 +558,14 @@ const handleRecordDonation = async () => {
               </View>
             </TouchableOpacity>
             <Text style={styles.avatarLabel}>
-              {profileImage ? 'Change Photo' : 'Add Profile Photo'}
+              {profileImage ? t('CHANGE_PHOTO') : t('ADD_PROFILE_PHOTO')}
             </Text>
           </View>
 
           {/* Blood Donation Status */}
           {cooldownStatus && (
-            <View style={styles.cooldownCard}>
-              <Text style={styles.cooldownTitle}>Donation Status</Text>
+            <View style={[styles.cooldownCard, isRTL && {direction: "rtl"}]}>
+              <Text style={styles.cooldownTitle}>{t('DONATION_STATUS')}</Text>
               <Text style={[
                 styles.cooldownText,
                 cooldownStatus.includes('eligible') && styles.cooldownEligible
@@ -570,13 +574,12 @@ const handleRecordDonation = async () => {
               </Text>
               {user?.lastDonationDate && (
                 <Text style={styles.lastDonationText}>
-                  Last donation: {new Date(user.lastDonationDate).toLocaleDateString()}
+                  {t('LAST_DONATION')}: {(new Date(user.lastDonationDate)).toLocaleDateString()}
                 </Text>
               )}
             </View>
           )}
 
-          {/* Personal Information Card */}
           {/* Verification Status */}
           <View style={[
             styles.verificationCard,
@@ -589,17 +592,17 @@ const handleRecordDonation = async () => {
                 </Text>
                 <View>
                   <Text style={styles.verificationTitle}>
-                    {user?.isVerified ? 'Account Verified' : 'Verify Your Account'}
+                    {user?.isVerified ? t('ACCOUNT_VERIFIED') : t('VERIFY_YOUR_ACCOUNT')}
                   </Text>
                   <Text style={styles.verificationSubtitle}>
-                    {user?.isVerified ? 'Trusted donor' : 'Increase your credibility'}
+                    {user?.isVerified ? t('TRUSTED_DONOR') : t('INCREASE_CREDIBILITY')}
                   </Text>
                 </View>
               </View>
               
               {user?.isVerified ? (
                 <View style={styles.verifiedBadge}>
-                  <Text style={styles.verifiedText}>Verified</Text>
+                  <Text style={styles.verifiedText}>{t('VERIFIED')}</Text>
                 </View>
               ) : (
                 <TouchableOpacity 
@@ -614,7 +617,7 @@ const handleRecordDonation = async () => {
                     <ActivityIndicator color="#FFFFFF" size="small" />
                   ) : (
                     <>
-                      <Text style={styles.verifyButtonText}>Verify Now</Text>
+                      <Text style={styles.verifyButtonText}>{t('VERIFY_NOW')}</Text>
                       <Text style={styles.verifyButtonIcon}>→</Text>
                     </>
                   )}
@@ -623,12 +626,13 @@ const handleRecordDonation = async () => {
             </View>
           </View>
 
+          {/* Personal Information Card */}
           <View style={styles.card}>
-            <Text style={styles.sectionTitle}>Personal Information</Text>
+            <Text style={[styles.sectionTitle, isRTL && {direction: "rtl"}]}>{t('PERSONAL_INFORMATION')}</Text>
 
             <GeneralInput
-              label="Full Name *"
-              placeholder="e.g. Khan"
+              label={t('FULL_NAME') + " *"}
+              placeholder={t('FULL_NAME_PLACEHOLDER')}
               value={fullName}
               onChangeText={setFullName}
               onBlur={() => setTouched(t => ({ ...t, fullName: true }))}
@@ -641,8 +645,8 @@ const handleRecordDonation = async () => {
             />
 
             <GeneralInput
-              label="Email Address *"
-              placeholder="example@email.com"
+              label={t('EMAIL_ADDRESS') + " *"}
+              placeholder={t('EMAIL_PLACEHOLDER')}
               value={email}
               onChangeText={setEmail}
               onBlur={() => setTouched(t => ({ ...t, email: true }))}
@@ -657,8 +661,8 @@ const handleRecordDonation = async () => {
             />
 
             <GeneralInput
-              label="Mobile Number *"
-              placeholder="0712345678"
+              label={t('MOBILE_NUMBER') + " *"}
+              placeholder={t('PHONE_PLACEHOLDER')}
               value={phone}
               onChangeText={setPhone}
               onBlur={() => setTouched(t => ({ ...t, phone: true }))}
@@ -672,7 +676,7 @@ const handleRecordDonation = async () => {
             />
 
             <GeneralInput
-              label="New Password (leave empty to keep current)"
+              label={t('NEW_PASSWORD_OPTIONAL')}
               placeholder="••••••"
               value={password}
               onChangeText={setPassword}
@@ -685,7 +689,7 @@ const handleRecordDonation = async () => {
               icon="🔒"
               right={
                 <TouchableOpacity onPress={() => setShowPass(s => !s)}>
-                  <Text style={styles.eye}>{showPass ? 'Hide' : 'Show'}</Text>
+                  <Text style={styles.eye}>{showPass ? t('HIDE') : t('SHOW')}</Text>
                 </TouchableOpacity>
               }
             />
@@ -693,10 +697,10 @@ const handleRecordDonation = async () => {
 
           {/* Blood & Location Information Card */}
           <View style={styles.card}>
-            <Text style={styles.sectionTitle}>Blood & Location Information</Text>
+            <Text style={[styles.sectionTitle, isRTL && {direction: "rtl"}]}>{t('BLOOD_LOCATION_INFORMATION')}</Text>
 
             {/* Blood Group Selection */}
-            <Text style={styles.label}>Blood Group *</Text>
+            <Text style={styles.label}>{t('BLOOD_GROUP')} *</Text>
             <View style={styles.fieldContainer}>
               <ScrollView 
                 horizontal 
@@ -738,8 +742,8 @@ const handleRecordDonation = async () => {
 
             {/* Location Text */}
             <GeneralInput
-              label="Your Location *"
-              placeholder="Kandahar District #3"
+              label={t('YOUR_LOCATION') + " *"}
+              placeholder={t('LOCATION_PLACEHOLDER')}
               value={locationText}
               onChangeText={setLocationText}
               onBlur={() => setTouched(t => ({ ...t, locationText: true }))}
@@ -752,9 +756,9 @@ const handleRecordDonation = async () => {
 
             {/* Location Permission Section */}
             <View style={styles.locationPermissionCard}>
-              <Text style={styles.permissionTitle}>Update Location Coordinates</Text>
+              <Text style={styles.permissionTitle}>{t('UPDATE_LOCATION_COORDINATES')}</Text>
               <Text style={styles.permissionText}>
-                Get your exact coordinates automatically to help people find donors nearby accurately.
+                {t('LOCATION_SERVICES_DESCRIPTION')}
               </Text>
               
               <TouchableOpacity
@@ -767,7 +771,7 @@ const handleRecordDonation = async () => {
                 ) : (
                   <View style={styles.locationBtnContent}>
                     <Text style={styles.locationBtnText}>
-                      {latitude ? 'Update My Location' : 'Get My Location'}
+                      {latitude ? t('UPDATE_MY_LOCATION') : t('GET_MY_LOCATION')}
                     </Text>
                     <Text style={styles.locationBtnIcon}>📍</Text>
                   </View>
@@ -780,15 +784,15 @@ const handleRecordDonation = async () => {
                   styles.coordinatesContainer,
                   isRTL && styles.coordinatesContainerRTL
                 ]}>
-                  <Text style={styles.coordinatesTitle}>📍 Current Coordinates:</Text>
+                  <Text style={styles.coordinatesTitle}>📍 {t('CURRENT_COORDINATES')}:</Text>
                   <Text style={styles.coordinatesText}>
-                    Latitude: {Number(latitude).toFixed(6)}
+                    {t('LATITUDE')}: {Number(latitude).toFixed(6)}
                   </Text>
                   <Text style={styles.coordinatesText}>
-                    Longitude: {Number(longitude).toFixed(6)}
+                    {t('LONGITUDE')}: {Number(longitude).toFixed(6)}
                   </Text>
                   <Text style={styles.coordinatesHelp}>
-                    These coordinates will help people find you accurately
+                    {t('COORDINATES_HELP')}
                   </Text>
                 </View>
               )}
@@ -797,9 +801,9 @@ const handleRecordDonation = async () => {
             {/* Search Visibility Toggle */}
             <View style={styles.toggleContainer}>
               <View style={styles.toggleTextContainer}>
-                <Text style={styles.toggleLabel}>Show in donor search</Text>
+                <Text style={styles.toggleLabel}>{t('SHOW_IN_DONOR_SEARCH')}</Text>
                 <Text style={styles.toggleDescription}>
-                  Make your profile visible to people searching for blood donors in your area
+                  {t('SEARCH_VISIBILITY_DESCRIPTION')}
                 </Text>
               </View>
               <TouchableOpacity
@@ -820,11 +824,11 @@ const handleRecordDonation = async () => {
           {/* Blood Donation Record Card */}
           {(!user?.cooldownEndsAt || new Date() >= new Date(user.cooldownEndsAt)) && (
           <View style={styles.card}>
-            <Text style={styles.sectionTitle}>Record Blood Donation</Text>
+            <Text style={[styles.sectionTitle, isRTL && {direction: "rtl"}]}>{t('RECORD_BLOOD_DONATION')}</Text>
             
             {/* Donation Date with Date Picker */}
             <View style={{marginBottom: 16}}>
-              <Text style={styles.label}>Donation Date *</Text>
+              <Text style={styles.label}>{t('DONATION_DATE')} *</Text>
               <TouchableOpacity 
                 style={styles.dateInput}
                 onPress={showDatepicker}
@@ -833,18 +837,18 @@ const handleRecordDonation = async () => {
                   styles.dateInputText,
                   !lastDonationDate && styles.dateInputPlaceholder
                 ]}>
-                  {lastDonationDate || 'Select donation date'}
+                  {lastDonationDate || t('SELECT_DONATION_DATE')}
                 </Text>
                 <Text style={styles.datePickerIcon}>📅</Text>
               </TouchableOpacity>
               {touched.lastDonationDate && !lastDonationDate && (
-                <Text style={styles.error}>Please select donation date</Text>
+                <Text style={styles.error}>{t('SELECT_DONATION_DATE')}</Text>
               )}
             </View>
 
             {/* Blood Amount */}
             <GeneralInput
-              label="Blood Amount (ml) *"
+              label={t('BLOOD_AMOUNT_ML') + " *"}
               placeholder="e.g., 450"
               value={amountMl}
               onChangeText={setAmountMl}
@@ -859,8 +863,8 @@ const handleRecordDonation = async () => {
 
             {/* Donation Location */}
             <GeneralInput
-              label="Donation Location"
-              placeholder="e.g., Red Cross Center, City Hospital"
+              label={t('DONATION_LOCATION')}
+              placeholder={t('DONATION_LOCATION_PLACEHOLDER')}
               value={donationLocation}
               onChangeText={setDonationLocation}
               multiline={true}
@@ -873,8 +877,8 @@ const handleRecordDonation = async () => {
 
             {/* Notes */}
             <GeneralInput
-              label="Notes (Optional)"
-              placeholder="Any additional notes about your donation..."
+              label={t('NOTES_OPTIONAL')}
+              placeholder={t('NOTES_PLACEHOLDER')}
               value={notes}
               onChangeText={setNotes}
               multiline={true}
@@ -887,11 +891,11 @@ const handleRecordDonation = async () => {
 
             {/* Fixed Cooldown Period Info */}
             <View style={styles.fieldContainer}>
-              <Text style={styles.label}>Cooldown Period</Text>
+              <Text style={styles.label}>{t('COOLDOWN_PERIOD')}</Text>
               <View style={styles.fixedCooldownContainer}>
-                <Text style={styles.fixedCooldownText}>3 months (fixed)</Text>
+                <Text style={styles.fixedCooldownText}>3 {t('MONTHS')} ({t('FIXED')})</Text>
                 <Text style={styles.fixedCooldownHelp}>
-                  Standard waiting period between blood donations. You will be automatically available for donation search after this period.
+                  {t('COOLDOWN_PERIOD_DESCRIPTION')}
                 </Text>
               </View>
             </View>
@@ -914,7 +918,7 @@ const handleRecordDonation = async () => {
               {updatingDonation ? (
                 <ActivityIndicator color="#FFFFFF" size="small" />
               ) : (
-                <Text style={styles.donationBtnText}>Record Donation</Text>
+                <Text style={styles.donationBtnText}>{t('RECORD_DONATION')}</Text>
               )}
             </TouchableOpacity>
           </View>
@@ -922,11 +926,11 @@ const handleRecordDonation = async () => {
 
         {/* Show message when user is in cooldown period */}
         {user?.cooldownEndsAt && new Date() < new Date(user.cooldownEndsAt) && (
-          <View style={styles.cooldownMessageCard}>
-            <Text style={styles.cooldownMessageTitle}>Donation Record Unavailable</Text>
+          <View style={[styles.cooldownMessageCard, isRTL && {direction: "rtl"}]}>
+            <Text style={styles.cooldownMessageTitle}>{t('DONATION_RECORD_UNAVAILABLE')}</Text>
             <Text style={styles.cooldownMessageText}>
-              You can record your next blood donation after {new Date(user.cooldownEndsAt).toLocaleDateString()}. 
-              Thank you for your recent donation! 🩸
+              {t('CAN_RECORD_NEXT_DONATION_AFTER')} {new Date(user.cooldownEndsAt).toLocaleDateString()}. 
+              {t('THANK_YOU_RECENT_DONATION')} 🩸
             </Text>
           </View>
         )}
@@ -940,7 +944,7 @@ const handleRecordDonation = async () => {
             {loading ? (
               <ActivityIndicator color="#FFFFFF" size="small" />
             ) : (
-              <Text style={styles.primaryBtnText}>Update Profile</Text>
+              <Text style={styles.primaryBtnText}>{t('UPDATE_PROFILE')}</Text>
             )}
           </TouchableOpacity>
 

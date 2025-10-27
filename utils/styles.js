@@ -1,4 +1,6 @@
-import { Platform, StyleSheet } from 'react-native';
+import { Dimensions, Platform, StyleSheet } from 'react-native';
+import { isRTL } from './i18n';
+const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 const PRIMARY = '#E73C3C';
 const PRIMARY_DARK = '#C42525';
@@ -14,6 +16,10 @@ const STAR = "#FFD700";
 const CARD_BG = "#FFFFFF";
 const TEXT_SECONDARY = "#5A5A5A";
 
+
+const baseRadius = 14;
+const gap = 14;
+const side = 18;
 
 export const COLORS = {
   primary: '#E73C3C',
@@ -2005,4 +2011,387 @@ export const globalStyle = StyleSheet.create(
     textAlign: 'center',
     fontWeight: '500',
   },
+  // Add to your existing styles
+newsCard: {
+  backgroundColor: CARD_BG,
+  borderRadius: 16,
+  marginHorizontal: 16,
+  marginBottom: 16,
+  shadowColor: '#000',
+  shadowOffset: {
+    width: 0,
+    height: 2,
+  },
+  shadowOpacity: 0.1,
+  shadowRadius: 3.84,
+  elevation: 5,
+  overflow: 'hidden',
+},
+newsImageContainer: {
+  width: '100%',
+  height: 200,
+},
+newsImage: {
+  width: '100%',
+  height: '100%',
+},
+newsContent: {
+  padding: 16,
+},
+newsTitle: {
+  fontSize: 18,
+  fontWeight: 'bold',
+  color: TEXT,
+  marginBottom: 8,
+},
+newsDate: {
+  fontSize: 14,
+  color: MUTED,
+  marginBottom: 12,
+  flexDirection: 'row',
+  alignItems: 'center',
+},
+newsContentText: {
+  fontSize: 15,
+  color: TEXT,
+  lineHeight: 22,
+  marginBottom: 16,
+},
+readMoreButton: {
+  flexDirection: isRTL ? 'row-reverse' : 'row',
+  alignItems: 'center',
+  alignSelf: 'flex-start',
+},
+readMoreText: {
+  color: PRIMARY,
+  fontSize: 14,
+  fontWeight: '600',
+  marginRight: isRTL ? 0 : 4,
+  marginLeft: isRTL ? 4 : 0,
+},
+newsListContainer: {
+  paddingTop: 16,
+  paddingBottom: 20,
+},
+loadingFooter: {
+  padding: 20,
+  alignItems: 'center',
+  justifyContent: 'center',
+},
+loadingText: {
+  marginTop: 8,
+  fontSize: 14,
+  color: MUTED,
+  textAlign: 'center',
+},
+emptyState: {
+  alignItems: 'center',
+  justifyContent: 'center',
+  padding: 40,
+  marginTop: 60,
+},
+emptyStateText: {
+  fontSize: 18,
+  color: MUTED,
+  textAlign: 'center',
+  marginTop: 16,
+  fontWeight: '500',
+},
+emptyStateSubtext: {
+  fontSize: 14,
+  color: MUTED,
+  textAlign: 'center',
+  marginTop: 8,
+},
+modalOverlay: {
+  flex: 1,
+  backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  justifyContent: 'flex-end',
+},
+modalContainer: {
+  backgroundColor: COLORS.sheet,
+  borderTopLeftRadius: 20,
+  borderTopRightRadius: 20,
+  maxHeight: SCREEN_HEIGHT,
+  minHeight: SCREEN_HEIGHT * 0.88,
+},
+modalHeader: {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  padding: 20,
+  borderBottomWidth: 1,
+  borderBottomColor: COLORS.border,
+},
+modalTitle: {
+  fontSize: 18,
+  fontWeight: 'bold',
+  color: COLORS.text,
+},
+closeButton: {
+  padding: 4,
+},
+modalContent: {
+  flex: 1,
+},
+modalImageContainer: {
+  width: '100%',
+  height: 200,
+},
+modalImage: {
+  width: '100%',
+  height: '100%',
+},
+modalNewsContent: {
+  padding: 20,
+},
+modalNewsTitle: {
+  fontSize: 20,
+  fontWeight: 'bold',
+  color: COLORS.text,
+  marginBottom: 16,
+  lineHeight: 28,
+},
+modalMeta: {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  marginBottom: 16,
+},
+modalMetaItem: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  gap: 6,
+},
+modalMetaText: {
+  fontSize: 14,
+  color: COLORS.muted,
+},
+modalShareButton: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  gap: 6,
+  padding: 8,
+  borderRadius: 8,
+  backgroundColor: 'rgba(255, 107, 107, 0.1)',
+},
+modalShareText: {
+  fontSize: 14,
+  color: COLORS.primary,
+  fontWeight: '500',
+},
+modalDivider: {
+  height: 1,
+  backgroundColor: COLORS.border,
+  marginBottom: 20,
+},
+modalNewsContentText: {
+  fontSize: 16,
+  color: COLORS.text,
+  lineHeight: 24,
+},
+modalCloseButton: {
+  backgroundColor: COLORS.primary,
+  margin: 20,
+  padding: 16,
+  borderRadius: 12,
+  alignItems: 'center',
+},
+modalCloseButtonText: {
+  color: '#fff',
+  fontSize: 16,
+  fontWeight: '600',
+},
+  // Add to your globalStyle object
+about: (writingDirection) => ({
+    safe: { flex: 1, backgroundColor: COLORS.bg },
+    content: { padding: side, paddingTop: 8 },
+
+    /* Hero */
+    hero: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      borderRadius: baseRadius + 2,
+      padding: side,
+      minHeight: 140,
+      marginBottom: gap,
+    },
+    heroLeft: {
+      flex: 1,
+      paddingRight: writingDirection === 'rtl' ? 0 : 8,
+      paddingLeft: writingDirection === 'rtl' ? 8 : 0,
+    },
+    heroTitle: { color: '#FFFFFF', fontSize: 22, fontWeight: '800', letterSpacing: 0.2 },
+    heroSubtitle: { color: '#FFFFFF', opacity: 0.95, marginTop: 4, fontSize: 14 },
+
+    heroChips: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginTop: 10 },
+    chip: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingHorizontal: 10,
+      paddingVertical: 6,
+      backgroundColor: COLORS.primaryLight,
+      borderRadius: 999,
+      borderWidth: 1,
+      borderColor: COLORS.borderLight,
+    },
+    chipIcon: {
+      marginRight: writingDirection === 'rtl' ? 0 : 6,
+      marginLeft: writingDirection === 'rtl' ? 6 : 0,
+      color: COLORS.primary,
+    },
+    chipText: { color: COLORS.text, fontSize: 12 },
+
+    heroLogoWrap: {
+      width: SCREEN_WIDTH * 0.24,
+      height: SCREEN_WIDTH * 0.24,
+      borderRadius: 16,
+      overflow: 'hidden',
+      backgroundColor: COLORS.primaryLight,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginLeft: writingDirection === 'rtl' ? 0 : 12,
+      marginRight: writingDirection === 'rtl' ? 12 : 0,
+      borderWidth: 1,
+      borderColor: COLORS.borderLight,
+    },
+    heroLogo: { width: '100%', height: '100%' },
+
+    /* Brand row */
+    brandRow: { flexDirection: 'row', gap, marginBottom: gap },
+    brandCard: { flex: 1, alignItems: 'center', paddingTop: 18, paddingBottom: 16 },
+    brandLogoWrap: {
+      width: 64,
+      height: 64,
+      borderRadius: 16,
+      backgroundColor: COLORS.primaryLight,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginBottom: 10,
+      borderWidth: 1,
+      borderColor: COLORS.borderLight,
+      overflow: "hidden"
+    },
+    brandLogo: { width: '100%', height: '100%' },
+    brandTitle: { color: COLORS.text, fontWeight: '700', fontSize: 14 },
+    brandSubtitle: { color: COLORS.textLight, fontSize: 12, marginTop: 2 },
+
+    /* Section header */
+    sectionHeader: { flexDirection: 'row', alignItems: 'center', marginBottom: 12 },
+    sectionIcon: {
+      width: 36,
+      height: 36,
+      borderRadius: 10,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginRight: writingDirection === 'rtl' ? 0 : 10,
+      marginLeft: writingDirection === 'rtl' ? 10 : 0,
+      overflow: 'hidden',
+    },
+    sectionTitle: { color: COLORS.text, fontSize: 16, fontWeight: '800' },
+    sectionSubtitleMuted: { color: COLORS.muted, fontSize: 12, marginTop: 2 },
+
+    /* Body */
+    body: { color: COLORS.textLight, lineHeight: 20, fontSize: 14 },
+
+    /* Stats */
+    statsRow: {
+      marginTop: 16,
+      backgroundColor: COLORS.bg,
+      borderRadius: 12,
+      borderWidth: 1,
+      borderColor: COLORS.border,
+      flexDirection: 'row',
+      alignItems: 'center',
+      padding: 12,
+    },
+    statItem: { flex: 1, alignItems: 'center', justifyContent: 'center' },
+    statNumber: { color: COLORS.text, fontSize: 18, fontWeight: '800' },
+    statLabel: { color: COLORS.muted, fontSize: 12, marginTop: 2 },
+    statDivider: { width: 1, height: 28, backgroundColor: COLORS.divider },
+
+    /* Team */
+    teamGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10, marginTop: 4 },
+    memberCard: {
+      // width: (SCREEN_WIDTH - side * 2 - 10) / 2, // 2 columns
+      width: "100%", // 2 columns
+      backgroundColor: COLORS.bg,
+      borderRadius: 12,
+      borderWidth: 1,
+      borderColor: COLORS.border,
+      padding: 12,
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    memberAvatar: {
+      width: 44,
+      height: 44,
+      borderRadius: 10,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginRight: writingDirection === 'rtl' ? 0 : 10,
+      marginLeft: writingDirection === 'rtl' ? 10 : 0,
+    },
+    memberInitial: { color: '#fff', fontWeight: '800', fontSize: 14, letterSpacing: 0.5 },
+    memberInfo: { flex: 1 },
+    memberName: { color: COLORS.text, fontWeight: '700' },
+    memberRole: { color: COLORS.muted, fontSize: 12, marginTop: 2 },
+
+    /* Teacher */
+    teacherRow: { flexDirection: 'row', alignItems: 'center', marginTop: 6 },
+    teacherAvatar: {
+      width: 52,
+      height: 52,
+      borderRadius: 12,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginRight: writingDirection === 'rtl' ? 0 : 12,
+      marginLeft: writingDirection === 'rtl' ? 12 : 0,
+      overflow: 'hidden',
+    },
+    teacherInfo: { flex: 1 },
+    teacherName: { color: COLORS.text, fontWeight: '800', fontSize: 15 },
+    teacherRole: { color: COLORS.muted, marginTop: 2 },
+    teacherBio: { color: COLORS.textLight, marginTop: 6, lineHeight: 20, fontSize: 13 },
+
+    /* Contact */
+    contactItem: { flexDirection: 'row', alignItems: 'center', paddingVertical: 12 },
+    contactIcon: {
+      width: 36,
+      height: 36,
+      borderRadius: 10,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: COLORS.primaryLight,
+      marginRight: writingDirection === 'rtl' ? 0 : 10,
+      marginLeft: writingDirection === 'rtl' ? 10 : 0,
+      borderWidth: 1,
+      borderColor: COLORS.borderLight,
+    },
+    contactTextWrap: { flex: 1 },
+    contactLabel: { color: COLORS.text, fontWeight: '700' },
+    contactValue: { color: COLORS.muted, marginTop: 2 },
+    divider: { height: 1, backgroundColor: COLORS.divider },
+
+    /* Mission */
+    mission: {
+      marginTop: 2,
+      borderRadius: baseRadius,
+      padding: side,
+    },
+    missionIconWrap: {
+      width: 42,
+      height: 42,
+      borderRadius: 12,
+      backgroundColor: '#FFFFFF33',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginBottom: 8,
+    },
+    missionTitle: { color: '#fff', fontSize: 16, fontWeight: '800' },
+    missionText: { color: '#fff', opacity: 0.98, marginTop: 6, lineHeight: 20 },
+    missionDivider: { height: 1, backgroundColor: '#FFFFFF55', marginVertical: 12 },
+    missionQuote: { color: '#fff', opacity: 0.98, fontStyle: 'italic' },
+  }),
 });

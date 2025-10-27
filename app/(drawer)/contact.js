@@ -1,4 +1,4 @@
-// app/screens/ContactUsScreen.tsx
+// app/screens/ContactUsScreen.js
 import { Ionicons } from '@expo/vector-icons';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -15,8 +15,9 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Input from '../../components/GeneralInput';
+import Header from '../../components/Header';
 import { useRTLStyles } from '../../contexts/useRTLStyles';
-import i18n from '../../utils/i18n';
+import { t } from '../../utils/i18n';
 import serverPath from '../../utils/serverPath';
 import { COLORS, globalStyle } from '../../utils/styles';
 
@@ -44,25 +45,25 @@ const ContactUsScreen = () => {
     const e = {};
     
     if (!fullName.trim() || fullName.trim().length < MIN_NAME) {
-      e.fullName = i18n.t('NAME_TOO_SHORT', { min: MIN_NAME });
+      e.fullName = t('NAME_TOO_SHORT', { min: MIN_NAME });
     } else if (fullName.trim().length > MAX_NAME) {
-      e.fullName = i18n.t('NAME_TOO_LONG', { max: MAX_NAME });
+      e.fullName = t('NAME_TOO_LONG', { max: MAX_NAME });
     }
 
     if (!email.trim()) {
-      e.email = i18n.t('EMAIL_REQUIRED');
+      e.email = t('EMAIL_REQUIRED');
     } else if (email.trim().length > MAX_EMAIL) {
-      e.email = i18n.t('EMAIL_TOO_LONG', { max: MAX_EMAIL });
+      e.email = t('EMAIL_TOO_LONG', { max: MAX_EMAIL });
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
-      e.email = i18n.t('EMAIL_INVALID');
+      e.email = t('EMAIL_INVALID');
     }
 
     if (!subject.trim() || subject.trim().length < MIN_SUBJECT) {
-      e.subject = i18n.t('SUBJECT_TOO_SHORT', { min: MIN_SUBJECT });
+      e.subject = t('SUBJECT_TOO_SHORT', { min: MIN_SUBJECT });
     }
 
     if (!message.trim() || message.trim().length < MIN_MESSAGE) {
-      e.message = i18n.t('MESSAGE_TOO_SHORT', { min: MIN_MESSAGE });
+      e.message = t('MESSAGE_TOO_SHORT', { min: MIN_MESSAGE });
     }
     
     return e;
@@ -95,12 +96,12 @@ const ContactUsScreen = () => {
 
       const data = await res.json().catch(() => ({}));
       if (!res.ok || data?.status === 'failure') {
-        throw new Error(data?.message || i18n.t('SOMETHING_WENT_WRONG'));
+        throw new Error(data?.message || t('SOMETHING_WENT_WRONG'));
       }
 
       Alert.alert(
-        i18n.t('THANK_YOU'),
-        i18n.t('CONTACT_SENT')
+        t('THANK_YOU'),
+        t('CONTACT_SENT')
       );
       setFullName('');
       setEmail('');
@@ -109,8 +110,8 @@ const ContactUsScreen = () => {
       setTouched({});
     } catch (err) {
       Alert.alert(
-        i18n.t('ERROR'), 
-        err?.message || i18n.t('TRY_AGAIN')
+        t('ERROR'), 
+        err?.message || t('TRY_AGAIN')
       );
     } finally {
       setLoading(false);
@@ -120,66 +121,10 @@ const ContactUsScreen = () => {
   return (
     <SafeAreaView style={styles.safe} edges={['bottom']}>
       {/* Enhanced Header matching your tabs layout style */}
-      <View style={styles.headerWrap}>
-        <LinearGradient
-          colors={[COLORS.primary, COLORS.primaryDark]}
-          style={[
-            {
-              paddingTop: Platform.OS === 'ios' ? 50 : 40,
-              paddingBottom: 16,
-              alignItems: 'center',
-              position: 'relative',
-              overflow: 'hidden',
-            },
-            {
-              flexDirection: isRTL ? 'row-reverse' : 'row',
-              borderBottomLeftRadius: 24,
-              borderBottomRightRadius: 24,
-            },
-          ]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 0 }}
-        >
-          {/* Decorative circles like in your tabs layout */}
-          <View style={styles.decoCircleBig} />
-          <View style={styles.decoCircleSmall} />
-
-          {/* Menu button */}
-          <Pressable 
-            onPress={openDrawer} 
-            style={({ pressed }) => [
-              styles.iconBtn, 
-              { marginHorizontal: 16 },
-              pressed && styles.iconBtnPressed
-            ]}
-          >
-            {({ pressed }) => (
-              <View style={[
-                styles.iconContainer,
-                {
-                  transform: [{ scale: pressed ? 0.9 : 1 }]
-                }
-              ]}>
-                <Ionicons name="menu" size={22} color="#fff" />
-              </View>
-            )}
-          </Pressable>
-
-          {/* Center title */}
-          <View style={styles.titleBox}>
-            <Text numberOfLines={1} style={styles.headerTitle}>
-              {i18n.t('CONTACT_US')}
-            </Text>
-            <Text numberOfLines={1} style={styles.headerSubtitle}>
-              {i18n.t('GET_IN_TOUCH')}
-            </Text>
-          </View>
-
-          {/* Right placeholder for balance */}
-          <View style={styles.iconBtn} />
-          <View style={styles.iconBtn} />
-        </LinearGradient>
-      </View>
+      <Header
+        title={t('CONTACT_US')}
+        subTitle={t('GET_IN_TOUCH')}
+      />
 
       <KeyboardAvoidingView
         behavior={Platform.select({ ios: 'padding', android: undefined })}
@@ -205,8 +150,8 @@ const ContactUsScreen = () => {
           <View style={styles.formContainer}>
             {/* Full Name */}
             <Input
-              label={i18n.t('FULL_NAME')}
-              placeholder={i18n.t('ENTER_NAME')}
+              label={t('FULL_NAME')}
+              placeholder={t('ENTER_NAME')}
               value={fullName}
               onChangeText={setFullName}
               onBlur={() => setTouched(t => ({ ...t, fullName: true }))}
@@ -220,8 +165,8 @@ const ContactUsScreen = () => {
 
             {/* Email */}
             <Input
-              label={i18n.t('EMAIL')}
-              placeholder={i18n.t('ENTER_EMAIL')}
+              label={t('EMAIL')}
+              placeholder={t('ENTER_EMAIL')}
               value={email}
               onChangeText={setEmail}
               onBlur={() => setTouched(t => ({ ...t, email: true }))}
@@ -237,8 +182,8 @@ const ContactUsScreen = () => {
 
             {/* Subject */}
             <Input
-              label={i18n.t('SUBJECT')}
-              placeholder={i18n.t('ENTER_SUBJECT')}
+              label={t('SUBJECT')}
+              placeholder={t('ENTER_SUBJECT')}
               value={subject}
               onChangeText={setSubject}
               onBlur={() => setTouched(t => ({ ...t, subject: true }))}
@@ -252,10 +197,10 @@ const ContactUsScreen = () => {
 
             <View style={styles.inputContainer}>
               <Text style={styles.label}>
-                {i18n.t('MESSAGE')} *
+                {t('MESSAGE')} *
               </Text>
               <Input
-                placeholder={i18n.t('ENTER_MESSAGE')}
+                placeholder={t('ENTER_MESSAGE')}
                 value={message}
                 onChangeText={setMessage}
                 onBlur={() => setTouched(t => ({ ...t, message: true }))}
@@ -293,7 +238,7 @@ const ContactUsScreen = () => {
                   <>
                     <Ionicons name="send-outline" size={18} color="#fff" style={styles.buttonIcon} />
                     <Text style={styles.buttonText}>
-                      {i18n.t('SEND_MESSAGE')}
+                      {t('SEND_MESSAGE')}
                     </Text>
                   </>
                 )}
@@ -304,7 +249,7 @@ const ContactUsScreen = () => {
             <View style={styles.helperContainer}>
               <Ionicons name="time-outline" size={14} color={COLORS.muted} />
               <Text style={styles.helperText}>
-                {i18n.t('WE_REPLY_SOON')}
+                {t('WE_REPLY_SOON')}
               </Text>
             </View>
           </View>

@@ -426,7 +426,7 @@ const SORT_OPTIONS = [
               onPress={() => handleViewDetails(item)}
             >
               <Ionicons name="information-circle" size={18} color="#fff" />
-              <Text style={[s.actionText, { color: "#fff", writingDirection }]}>
+              <Text style={[s.actionText, { color: "#fff", direction: writingDirection }]}>
                 {t('DETAILS')}
               </Text>
             </Pressable>
@@ -495,7 +495,7 @@ const SORT_OPTIONS = [
             onChangeText={setQuery}
             placeholder={t('SEARCH_DONORS_PLACEHOLDER')}
             placeholderTextColor={MUTED}
-            style={[s.searchInput, { writingDirection }]}
+            style={[s.searchInput, { direction: writingDirection }]}
             returnKeyType="search"
           />
           {query.length > 0 && (
