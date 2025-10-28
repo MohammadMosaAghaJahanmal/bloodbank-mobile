@@ -301,6 +301,17 @@ export const translations = {
     CONNECTION_ISSUE: "Connection Issue Detected",
     CHECK_CONNECTION_AND_TRY_AGAIN: "Make sure Wi-Fi or mobile data is turned on, then try again",
     RESTART_DEVICE_OR_CHECK_SETTINGS: "You can also try restarting your device or checking network settings",
+    DELETE_MY_ACCOUNT: "Delete My Account",
+    DELETE_ACCOUNT: "Delete Account",
+    DELETE_ACCOUNT_CONFIRMATION: "Are you sure you want to delete your account? This action cannot be undone.",
+    DELETE_ACCOUNT_WARNING: "This will submit a request to delete your account. An administrator will review your request. This action cannot be undone.",
+    REASON_FOR_DELETION: "Reason for deletion",
+    ENTER_REASON_PLACEHOLDER: "Please tell us why you want to delete your account...",
+    DELETE_REQUEST_SUBMITTED: "Request Submitted",
+    DELETE_REQUEST_SUCCESS_MESSAGE: "Your account deletion request has been submitted. An admin will review it shortly.",
+    DELETE_REQUEST_FAILED: "Failed to submit deletion request.",
+    DELETE_ACCOUNT_REASON_REQUIRED: "Please provide a reason for deleting your account.",
+    CONTINUE: "Continue",
   },
 
   ps: {
@@ -606,7 +617,18 @@ export const translations = {
     PLEASE_WAIT: "لطفاً لږ صبر وکړئ، موږ ستاسو د انټرنېټ اړیکه ګورو",
     CONNECTION_ISSUE: "د اړیکې ستونزه وموندل شوه",
     CHECK_CONNECTION_AND_TRY_AGAIN: "ډاډ ترلاسه کړئ چې Wi-Fi یا موبایل ډیټا فعاله ده، بیا هڅه وکړئ",
-    RESTART_DEVICE_OR_CHECK_SETTINGS: "تاسو کولی شئ خپل موبایل بیا چالان کړئ یا د شبکې تنظیمات وګورئ"
+    RESTART_DEVICE_OR_CHECK_SETTINGS: "تاسو کولی شئ خپل موبایل بیا چالان کړئ یا د شبکې تنظیمات وګورئ",
+    DELETE_MY_ACCOUNT: "زما حساب ړنګ کړئ",
+    DELETE_ACCOUNT: "حساب ړنګول",
+    DELETE_ACCOUNT_CONFIRMATION: "ایا تاسو ډاډه یاست چې غواړئ خپل حساب ړنګ کړئ؟ دا عمل بېرته نه شي راوګرځول کېدای.",
+    DELETE_ACCOUNT_WARNING: "دا به ستاسو د حساب د ړنګولو غوښتنه ولیږي. یو مدیر به ستاسو غوښتنه وڅېړي. دا عمل بېرته نه شي راوګرځول کېدای.",
+    REASON_FOR_DELETION: "د ړنګولو دلیل",
+    ENTER_REASON_PLACEHOLDER: "مهرباني وکړئ راته ووایاست چې ولې غواړئ خپل حساب ړنګ کړئ...",
+    DELETE_REQUEST_SUBMITTED: "غوښتنه وسپارل شوه",
+    DELETE_REQUEST_SUCCESS_MESSAGE: "ستاسو د حساب د ړنګولو غوښتنه وسپارل شوه. یو مدیر به ژر تر ژره دا وڅېړي.",
+    DELETE_REQUEST_FAILED: "د حساب د ړنګولو غوښتنه ونه سپارل شوه.",
+    DELETE_ACCOUNT_REASON_REQUIRED: "مهرباني وکړئ د حساب د ړنګولو دلیل ورکړئ.",
+    CONTINUE: "ادامه ورکړئ"
   },
 
   pa: {
@@ -913,6 +935,17 @@ export const translations = {
     PLEASE_WAIT: "لطفاً کمی صبر کنید، در حال بررسی اتصال اینترنت شما هستیم",
     CONNECTION_ISSUE: "مشکل اتصال شناسایی شد",
     CHECK_CONNECTION_AND_TRY_AGAIN: "اطمینان حاصل کنید که وای‌فای یا داده تلفن همراه روشن است، سپس دوباره تلاش کنید",
-    RESTART_DEVICE_OR_CHECK_SETTINGS: "می‌توانید دستگاه خود را مجدداً راه‌اندازی کنید یا تنظیمات شبکه را بررسی کنید"
+    RESTART_DEVICE_OR_CHECK_SETTINGS: "می‌توانید دستگاه خود را مجدداً راه‌اندازی کنید یا تنظیمات شبکه را بررسی کنید",
+    DELETE_MY_ACCOUNT: "حذف حساب من",
+    DELETE_ACCOUNT: "حذف حساب",
+    DELETE_ACCOUNT_CONFIRMATION: "آیا مطمئن هستید که می‌خواهید حساب خود را حذف کنید؟ این عمل غیرقابل بازگشت است.",
+    DELETE_ACCOUNT_WARNING: "با این کار، درخواست حذف حساب شما ارسال می‌شود. مدیر سیستم درخواست شما را بررسی خواهد کرد. این عمل غیرقابل بازگشت است.",
+    REASON_FOR_DELETION: "دلیل حذف حساب",
+    ENTER_REASON_PLACEHOLDER: "لطفاً توضیح دهید چرا می‌خواهید حساب خود را حذف کنید...",
+    DELETE_REQUEST_SUBMITTED: "درخواست ارسال شد",
+    DELETE_REQUEST_SUCCESS_MESSAGE: "درخواست حذف حساب شما با موفقیت ارسال شد. مدیر به زودی آن را بررسی خواهد کرد.",
+    DELETE_REQUEST_FAILED: "ارسال درخواست حذف حساب انجام نشد.",
+    DELETE_ACCOUNT_REASON_REQUIRED: "لطفاً دلیل حذف حساب را وارد کنید.",
+    CONTINUE: "ادامه"
   },
 };

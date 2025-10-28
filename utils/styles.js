@@ -878,6 +878,90 @@ export const globalStyle = StyleSheet.create(
   },
   version: { color: COLORS.muted, fontSize: 12, marginRight: 8 },
   link: { color: COLORS.primary, fontSize: 12, fontWeight: '700' },
+  // Add to your globalStyle object
+    modalOverlay: {
+      flex: 1,
+      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: 20,
+    },
+    modalContent: {
+      backgroundColor: '#FFFFFF',
+      borderRadius: 12,
+      padding: 20,
+      width: '100%',
+      maxWidth: 400,
+    },
+    modalHeader: {
+      marginBottom: 20,
+    },
+    modalTitle: {
+      fontSize: 20,
+      fontWeight: 'bold',
+      color: '#1E1E1E',
+      marginBottom: 8,
+      textAlign: 'center',
+    },
+    modalSubtitle: {
+      fontSize: 14,
+      color: '#7E7E7E',
+      textAlign: 'center',
+      lineHeight: 20,
+    },
+    inputContainer: {
+      marginBottom: 24,
+    },
+    inputLabel: {
+      fontSize: 14,
+      fontWeight: '600',
+      color: '#1E1E1E',
+      marginBottom: 8,
+    },
+    textInput: {
+      borderWidth: 1,
+      borderColor: '#EFEFEF',
+      borderRadius: 8,
+      padding: 12,
+      fontSize: 14,
+      color: '#1E1E1E',
+      backgroundColor: '#F9F9F9',
+      minHeight: 100,
+      textAlignVertical: 'top',
+    },
+    modalButtons: {
+      flexDirection: 'row',
+      gap: 12,
+    },
+    modalButton: {
+      flex: 1,
+      paddingVertical: 12,
+      paddingHorizontal: 16,
+      borderRadius: 8,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    cancelButton: {
+      backgroundColor: '#F3F4F6',
+      borderWidth: 1,
+      borderColor: '#D1D5DB',
+    },
+    cancelButtonText: {
+      color: '#374151',
+      fontSize: 14,
+      fontWeight: '600',
+    },
+    deleteButton: {
+      backgroundColor: '#DC2626',
+    },
+    deleteButtonDisabled: {
+      backgroundColor: '#FCA5A5',
+    },
+    deleteButtonText: {
+      color: '#FFFFFF',
+      fontSize: 14,
+      fontWeight: '600',
+    },
 },
   home: (writingDirection) => ({
     root: { 
@@ -2394,4 +2478,5 @@ about: (writingDirection) => ({
     missionDivider: { height: 1, backgroundColor: '#FFFFFF55', marginVertical: 12 },
     missionQuote: { color: '#fff', opacity: 0.98, fontStyle: 'italic' },
   }),
+  
 });

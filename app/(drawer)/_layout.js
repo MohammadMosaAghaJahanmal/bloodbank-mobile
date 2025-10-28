@@ -2,7 +2,7 @@ import { Feather, Ionicons } from '@expo/vector-icons';
 import { DrawerContentScrollView } from '@react-navigation/drawer';
 import Constants from 'expo-constants';
 import { Drawer } from 'expo-router/drawer';
-import { useContext } from 'react'; // Add useEffect
+import { useContext, useState } from 'react'; // Add useState
 import {
   Alert,
   Image, Linking,
@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import IMAGE from '../../assets/images/icon.png';
+import DeleteAccountModal from '../../components/DeleteAccountModal'; // Add this import
 import { AuthContext } from '../../contexts/authContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { t } from '../../utils/i18n';
@@ -39,7 +40,7 @@ export default function DrawerLayout() {
 
   return (
     <Drawer
-      key={`drawer_${currentLocale}`} // Force re-render with key
+      key={`drawer_${currentLocale}`}
       screenOptions={{
         drawerPosition: isRTL ? 'right' : 'left',
         headerShown: false,
@@ -75,9 +76,12 @@ export default function DrawerLayout() {
 function CustomDrawerContent(props) {
   const { navigation } = props;
   const { isRTL, currentLocale, toggleLanguage, isReady } = useLanguage();
-  const { user, logout } = useContext(AuthContext);
+  const { user, logout, token } = useContext(AuthContext);
   const insets = useSafeAreaInsets();
   const version = `${Constants.expoConfig?.version ?? ''} (${Constants.expoConfig?.android?.versionCode ?? Constants.expoConfig?.ios?.buildNumber ?? ''})`;
+  
+  // Add state for delete account modal
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
 
   // Don't render until language is ready
   if (!isReady) {
@@ -127,6 +131,62 @@ function CustomDrawerContent(props) {
     navigation.navigate('(tabs)', { 
       screen: 'login' 
     });
+  };
+
+  // Add delete account handler
+  const handleDeleteAccount = async (reason) => {
+    try {
+      const response = await fetch(serverPath(`/api/delete-account`), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}` // Adjust based on your auth
+        },
+        body: JSON.stringify({
+          reason: reason,
+          nameSnapshot: user?.fullName
+        })
+      });
+
+      const result = await response.json();
+
+      if (result.status === 'success') {
+        Alert.alert(
+          t('DELETE_REQUEST_SUBMITTED') || 'Request Submitted',
+          t('DELETE_REQUEST_SUCCESS_MESSAGE') || 'Your account deletion request has been submitted. An admin will review it shortly.',
+          [{ text: t('OK') || 'OK' }]
+        );
+      } else {
+        Alert.alert(
+          t('ERROR') || 'Error',
+          result.message || t('DELETE_REQUEST_FAILED') || 'Failed to submit deletion request.'
+        );
+      }
+    } catch (error) {
+      console.error('Delete account error:', error);
+      Alert.alert(
+        t('ERROR') || 'Error',
+        t('DELETE_REQUEST_FAILED') || 'Failed to submit deletion request. Please try again.'
+      );
+    }
+  };
+
+  const showDeleteAccountConfirmation = () => {
+    Alert.alert(
+      t('DELETE_ACCOUNT') || 'Delete Account',
+      t('DELETE_ACCOUNT_WARNING') || 'This will submit a request to delete your account. An administrator will review your request. This action cannot be undone.',
+      [
+        { 
+          text: t('CANCEL') || 'Cancel', 
+          style: 'cancel' 
+        },
+        { 
+          text: t('CONTINUE') || 'Continue', 
+          style: 'destructive',
+          onPress: () => setDeleteModalVisible(true)
+        },
+      ]
+    );
   };
 
   // User data based on authentication status
@@ -272,6 +332,15 @@ function CustomDrawerContent(props) {
               onPress={() => go('(tabs)', 'profile')}
               isRTL={isRTL}
             />
+            
+            {/* Add Delete Account Button */}
+            <MenuItem
+              icon={<Feather name="trash-2" size={18} color={COLORS.danger} />}
+              label={t('DELETE_MY_ACCOUNT') || 'Delete My Account'}
+              onPress={showDeleteAccountConfirmation}
+              isRTL={isRTL}
+              isDanger={true}
+            />
           </Section>
         )}
 
@@ -355,6 +424,13 @@ function CustomDrawerContent(props) {
           </View>
         </View>
       </DrawerContentScrollView>
+
+      {/* Delete Account Modal */}
+      <DeleteAccountModal
+        visible={deleteModalVisible}
+        onClose={() => setDeleteModalVisible(false)}
+        onSubmit={handleDeleteAccount}
+      />
     </View>
   );
 }
@@ -369,7 +445,7 @@ function Section({ children, isRTL }) {
 }
 
 function MenuItem({
-  icon, label, onPress, isRTL,
+  icon, label, onPress, isRTL, isDanger = false
 }) {
   return (
     <Pressable 
@@ -388,7 +464,8 @@ function MenuItem({
       <Text 
         style={[
           styles.itemLabel, 
-          { textAlign: isRTL ? 'right' : 'left' }
+          { textAlign: isRTL ? 'right' : 'left' },
+          isDanger && { color: COLORS.danger }
         ]} 
         numberOfLines={1}
       >
