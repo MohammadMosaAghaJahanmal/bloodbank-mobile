@@ -962,6 +962,18 @@ export const globalStyle = StyleSheet.create(
       fontSize: 14,
       fontWeight: '600',
     },
+    deletionWarning: {
+      fontSize: 12,
+      color: '#D97706',
+      marginTop: 4,
+      fontWeight: '500',
+    },
+    itemDisabled: {
+      opacity: 0.5,
+    },
+    itemLabelDisabled: {
+      opacity: 0.7,
+    },
 },
   home: (writingDirection) => ({
     root: { 

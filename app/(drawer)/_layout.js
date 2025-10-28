@@ -2,7 +2,7 @@ import { Feather, Ionicons } from '@expo/vector-icons';
 import { DrawerContentScrollView } from '@react-navigation/drawer';
 import Constants from 'expo-constants';
 import { Drawer } from 'expo-router/drawer';
-import { useContext, useState } from 'react'; // Add useState
+import { useContext, useState } from 'react';
 import {
   Alert,
   Image, Linking,
@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import IMAGE from '../../assets/images/icon.png';
-import DeleteAccountModal from '../../components/DeleteAccountModal'; // Add this import
+import DeleteAccountModal from '../../components/DeleteAccountModal';
 import { AuthContext } from '../../contexts/authContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { t } from '../../utils/i18n';
@@ -27,6 +27,8 @@ const COLORS = {
   muted: '#7E7E7E',
   sheet: '#FFFFFF',
   divider: '#EFEFEF',
+  danger: '#DC2626',
+  warning: '#D97706',
 };
 
 const LANGUAGES = [
@@ -76,12 +78,13 @@ export default function DrawerLayout() {
 function CustomDrawerContent(props) {
   const { navigation } = props;
   const { isRTL, currentLocale, toggleLanguage, isReady } = useLanguage();
-  const { user, logout, token } = useContext(AuthContext);
+  const { user, logout, token, setAuth } = useContext(AuthContext);
   const insets = useSafeAreaInsets();
   const version = `${Constants.expoConfig?.version ?? ''} (${Constants.expoConfig?.android?.versionCode ?? Constants.expoConfig?.ios?.buildNumber ?? ''})`;
   
   // Add state for delete account modal
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   // Don't render until language is ready
   if (!isReady) {
@@ -136,11 +139,12 @@ function CustomDrawerContent(props) {
   // Add delete account handler
   const handleDeleteAccount = async (reason) => {
     try {
+      setIsLoading(true);
       const response = await fetch(serverPath(`/api/delete-account`), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}` // Adjust based on your auth
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
           reason: reason,
@@ -151,6 +155,12 @@ function CustomDrawerContent(props) {
       const result = await response.json();
 
       if (result.status === 'success') {
+        // Update user context with deletion request status
+          setAuth(prev => ({
+            ...prev,
+            user: {...prev.user, deletionRequest: true }
+          }))
+        
         Alert.alert(
           t('DELETE_REQUEST_SUBMITTED') || 'Request Submitted',
           t('DELETE_REQUEST_SUCCESS_MESSAGE') || 'Your account deletion request has been submitted. An admin will review it shortly.',
@@ -168,7 +178,68 @@ function CustomDrawerContent(props) {
         t('ERROR') || 'Error',
         t('DELETE_REQUEST_FAILED') || 'Failed to submit deletion request. Please try again.'
       );
+    } finally {
+      setIsLoading(false);
     }
+  };
+
+  // Add cancel deletion request handler
+  const handleCancelDeletionRequest = async () => {
+    Alert.alert(
+      t('CANCEL_DELETION_REQUEST') || 'Cancel Deletion Request',
+      t('CANCEL_DELETION_CONFIRMATION') || 'Are you sure you want to cancel your account deletion request?',
+      [
+        { 
+          text: t('NO') || 'No', 
+          style: 'cancel' 
+        },
+        { 
+          text: t('YES_CANCEL') || 'Yes, Cancel', 
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              setIsLoading(true);
+              const response = await fetch(serverPath(`/api/delete-account/cancel`), {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${token}`
+                }
+              });
+
+              const result = await response.json();
+
+              if (result.status === 'success') {
+                // Update user context with deletion request status
+                setAuth(prev => ({
+                  ...prev,
+                  user: {...prev.user, deletionRequest: false }
+                }));
+                
+                Alert.alert(
+                  t('DELETION_REQUEST_CANCELLED') || 'Request Cancelled',
+                  t('DELETION_REQUEST_CANCELLED_MESSAGE') || 'Your account deletion request has been cancelled.',
+                  [{ text: t('OK') || 'OK' }]
+                );
+              } else {
+                Alert.alert(
+                  t('ERROR') || 'Error',
+                  result.message || t('CANCEL_DELETION_FAILED') || 'Failed to cancel deletion request.'
+                );
+              }
+            } catch (error) {
+              console.error('Cancel deletion error:', error);
+              Alert.alert(
+                t('ERROR') || 'Error',
+                t('CANCEL_DELETION_FAILED') || 'Failed to cancel deletion request. Please try again.'
+              );
+            } finally {
+              setIsLoading(false);
+            }
+          }
+        },
+      ]
+    );
   };
 
   const showDeleteAccountConfirmation = () => {
@@ -188,6 +259,9 @@ function CustomDrawerContent(props) {
       ]
     );
   };
+
+  // Check if user has pending deletion request
+  const hasPendingDeletionRequest = user?.deletionRequest === true;
 
   // User data based on authentication status
   const userData = user ? {
@@ -265,6 +339,17 @@ function CustomDrawerContent(props) {
             >
               {userData.email}
             </Text>
+            {/* Show deletion request status */}
+            {hasPendingDeletionRequest && (
+              <Text 
+                style={[
+                  styles.deletionWarning,
+                  { textAlign: isRTL ? 'right' : 'left' }
+                ]}
+              >
+                {t('PENDING_DELETION_WARNING') || '⏳ Account deletion pending'}
+              </Text>
+            )}
           </View>
         </View>
       </View>
@@ -333,14 +418,26 @@ function CustomDrawerContent(props) {
               isRTL={isRTL}
             />
             
-            {/* Add Delete Account Button */}
-            <MenuItem
-              icon={<Feather name="trash-2" size={18} color={COLORS.danger} />}
-              label={t('DELETE_MY_ACCOUNT') || 'Delete My Account'}
-              onPress={showDeleteAccountConfirmation}
-              isRTL={isRTL}
-              isDanger={true}
-            />
+            {/* Conditional Delete Account / Cancel Deletion Request Button */}
+            {!hasPendingDeletionRequest ? (
+              <MenuItem
+                icon={<Feather name="trash-2" size={18} color={COLORS.danger} />}
+                label={t('DELETE_MY_ACCOUNT') || 'Delete My Account'}
+                onPress={showDeleteAccountConfirmation}
+                isRTL={isRTL}
+                isDanger={true}
+                disabled={isLoading}
+              />
+            ) : (
+              <MenuItem
+                icon={<Feather name="x-circle" size={18} color={COLORS.warning} />}
+                label={t('CANCEL_DELETION_REQUEST') || 'Cancel Deletion Request'}
+                onPress={handleCancelDeletionRequest}
+                isRTL={isRTL}
+                isWarning={true}
+                disabled={isLoading}
+              />
+            )}
           </Section>
         )}
 
@@ -387,6 +484,7 @@ function CustomDrawerContent(props) {
               isRTL && { flexDirection: 'row-reverse' }
             ]}
             onPress={handleLogout}
+            disabled={isLoading}
           >
             <Feather name="log-out" size={18} color={COLORS.primary} />
             <Text style={styles.logoutTxt}>{t('LOGOUT')}</Text>
@@ -430,6 +528,7 @@ function CustomDrawerContent(props) {
         visible={deleteModalVisible}
         onClose={() => setDeleteModalVisible(false)}
         onSubmit={handleDeleteAccount}
+        isLoading={isLoading}
       />
     </View>
   );
@@ -445,15 +544,23 @@ function Section({ children, isRTL }) {
 }
 
 function MenuItem({
-  icon, label, onPress, isRTL, isDanger = false
+  icon, label, onPress, isRTL, isDanger = false, isWarning = false, disabled = false
 }) {
+  const getTextColor = () => {
+    if (isDanger) return COLORS.danger;
+    if (isWarning) return COLORS.warning;
+    return COLORS.text;
+  };
+
   return (
     <Pressable 
       onPress={onPress} 
       style={[
         styles.item, 
-        isRTL && { flexDirection: 'row-reverse' }
+        isRTL && { flexDirection: 'row-reverse' },
+        disabled && styles.itemDisabled
       ]}
+      disabled={disabled}
     >
       <View style={[
         styles.itemIcon, 
@@ -465,7 +572,8 @@ function MenuItem({
         style={[
           styles.itemLabel, 
           { textAlign: isRTL ? 'right' : 'left' },
-          isDanger && { color: COLORS.danger }
+          { color: getTextColor() },
+          disabled && styles.itemLabelDisabled
         ]} 
         numberOfLines={1}
       >

@@ -18,7 +18,7 @@ const initialState = {
 export const AuthContext = React.createContext({
   ...initialState,
   initialState,
-  setAuth: () => {},
+  setAuth: (prev) => {},
 });
 
 async function fetchJSON(url, options = {}) {

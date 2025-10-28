@@ -312,6 +312,14 @@ export const translations = {
     DELETE_REQUEST_FAILED: "Failed to submit deletion request.",
     DELETE_ACCOUNT_REASON_REQUIRED: "Please provide a reason for deleting your account.",
     CONTINUE: "Continue",
+    CANCEL_DELETION_REQUEST: "Cancel Deletion Request",
+    CANCEL_DELETION_CONFIRMATION: "Are you sure you want to cancel your account deletion request?",
+    YES_CANCEL: "Yes, Cancel",
+    DELETION_REQUEST_CANCELLED: "Request Cancelled",
+    DELETION_REQUEST_CANCELLED_MESSAGE: "Your account deletion request has been cancelled.",
+    CANCEL_DELETION_FAILED: "Failed to cancel deletion request.",
+    PENDING_DELETION_WARNING: "⏳ Account deletion pending",
+    NO: "No",
   },
 
   ps: {
@@ -628,7 +636,15 @@ export const translations = {
     DELETE_REQUEST_SUCCESS_MESSAGE: "ستاسو د حساب د ړنګولو غوښتنه وسپارل شوه. یو مدیر به ژر تر ژره دا وڅېړي.",
     DELETE_REQUEST_FAILED: "د حساب د ړنګولو غوښتنه ونه سپارل شوه.",
     DELETE_ACCOUNT_REASON_REQUIRED: "مهرباني وکړئ د حساب د ړنګولو دلیل ورکړئ.",
-    CONTINUE: "ادامه ورکړئ"
+    CONTINUE: "ادامه ورکړئ",
+    CANCEL_DELETION_REQUEST: "د حساب د حذف غوښتنه لغوه کول",
+    CANCEL_DELETION_CONFIRMATION: "ایا تاسې باوري یاست چې د خپل حساب د حذف غوښتنه لغوه کړئ؟",
+    YES_CANCEL: "هو، لغوه کړه",
+    DELETION_REQUEST_CANCELLED: "غوښتنه لغوه شوه",
+    DELETION_REQUEST_CANCELLED_MESSAGE: "ستاسې د حساب د حذف غوښتنه لغوه شوې ده.",
+    CANCEL_DELETION_FAILED: "د حساب د حذف غوښتنه لغوه نه شوه.",
+    PENDING_DELETION_WARNING: "⏳ د حساب حذف کېدل په انتظار کې دي",
+    NO: "نه",
   },
 
   pa: {
@@ -946,6 +962,14 @@ export const translations = {
     DELETE_REQUEST_SUCCESS_MESSAGE: "درخواست حذف حساب شما با موفقیت ارسال شد. مدیر به زودی آن را بررسی خواهد کرد.",
     DELETE_REQUEST_FAILED: "ارسال درخواست حذف حساب انجام نشد.",
     DELETE_ACCOUNT_REASON_REQUIRED: "لطفاً دلیل حذف حساب را وارد کنید.",
-    CONTINUE: "ادامه"
+    CONTINUE: "ادامه",
+    CANCEL_DELETION_REQUEST: "لغو درخواست حذف حساب",
+    CANCEL_DELETION_CONFIRMATION: "آیا مطمئن هستید که می‌خواهید درخواست حذف حساب خود را لغو کنید؟",
+    YES_CANCEL: "بله، لغو کن",
+    DELETION_REQUEST_CANCELLED: "درخواست لغو شد",
+    DELETION_REQUEST_CANCELLED_MESSAGE: "درخواست حذف حساب شما لغو شد.",
+    CANCEL_DELETION_FAILED: "لغو درخواست حذف حساب ناموفق بود.",
+    PENDING_DELETION_WARNING: "⏳ حذف حساب در حال انتظار است",
+    NO: "خیر"
   },
 };
