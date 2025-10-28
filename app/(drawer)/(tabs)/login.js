@@ -14,7 +14,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Input from '../../../components/GeneralInput';
 import { AuthContext } from '../../../contexts/authContext';
 import { useRTLStyles } from '../../../contexts/useRTLStyles';
-import i18n from '../../../utils/i18n';
+import { t } from '../../../utils/i18n';
 import serverPath from '../../../utils/serverPath';
 import { globalStyle } from '../../../utils/styles';
 
@@ -34,20 +34,20 @@ export default function LoginScreen() {
     const e = {};
     
     if (touched.loginIdentifier && !loginIdentifier.trim()) {
-      e.loginIdentifier = i18n.t('ENTER_EMAIL_OR_PHONE');
+      e.loginIdentifier = t('ENTER_EMAIL_OR_PHONE');
     } else if (touched.loginIdentifier && loginIdentifier.trim()) {
       const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(loginIdentifier);
       const isPhone = /^\+?\d{8,15}$/.test(loginIdentifier.replace(/\s/g, ''));
       
       if (!isEmail && !isPhone) {
-        e.loginIdentifier = i18n.t('INVALID_EMAIL_OR_PHONE');
+        e.loginIdentifier = t('INVALID_EMAIL_OR_PHONE');
       }
     }
     
     if (touched.password && !password) {
-      e.password = i18n.t('ENTER_PASSWORD');
+      e.password = t('ENTER_PASSWORD');
     } else if (touched.password && password.length < 6) {
-      e.password = i18n.t('PASSWORD_TOO_SHORT', { min: 6 });
+      e.password = t('PASSWORD_TOO_SHORT', { min: 6 });
     }
     
     return e;
@@ -78,11 +78,11 @@ export default function LoginScreen() {
       });
 
       const data = await res.json();
-      if (!res.ok) throw new Error(data?.message || i18n.t('LOGIN_FAILED'));
+      if (!res.ok) throw new Error(data?.message || t('LOGIN_FAILED'));
 
       if (data?.status === 'failure') {
         setLoading(false);
-        Alert.alert(i18n.t('LOGIN_FAILED'), data.message);
+        Alert.alert(t('LOGIN_FAILED'), data.message);
         return
       }
 
@@ -92,7 +92,7 @@ export default function LoginScreen() {
       } else if (data?.token) {
         await saveTokenAndLogin(data.token, null);
       } else {
-        throw new Error(i18n.t('NO_TOKEN_RECEIVED'));
+        throw new Error(t('NO_TOKEN_RECEIVED'));
       }
 
       setLoading(false);
@@ -106,12 +106,12 @@ export default function LoginScreen() {
       const msg = String(err?.message || '')
         .toLowerCase();
 
-      let errorMessage = i18n.t('LOGIN_FAILED_TRY_AGAIN');
-      if (msg.includes('network request failed')) errorMessage = i18n.t('NETWORK_ERROR');
-      else if (msg.includes('invalid credentials')) errorMessage = i18n.t('INVALID_CREDENTIALS');
-      else if (msg.includes('user not found')) errorMessage = i18n.t('USER_NOT_FOUND');
+      let errorMessage = t('LOGIN_FAILED_TRY_AGAIN');
+      if (msg.includes('network request failed')) errorMessage = t('NETWORK_ERROR');
+      else if (msg.includes('invalid credentials')) errorMessage = t('INVALID_CREDENTIALS');
+      else if (msg.includes('user not found')) errorMessage = t('USER_NOT_FOUND');
 
-      Alert.alert(i18n.t('LOGIN_FAILED'), errorMessage);
+      Alert.alert(t('LOGIN_FAILED'), errorMessage);
     }
   };
 
@@ -139,15 +139,15 @@ export default function LoginScreen() {
         >
           {/* Header with Blood Drop Logo */}
           <View style={styles.header}>
-            <Text style={styles.title}>{i18n.t('WELCOME_BACK')}</Text>
-            <Text style={styles.subtitle}>{i18n.t('SIGN_IN_TO_CONTINUE')}</Text>
+            <Text style={styles.title}>{t('WELCOME_BACK')}</Text>
+            <Text style={styles.subtitle}>{t('SIGN_IN_TO_CONTINUE')}</Text>
           </View>
 
           {/* Login Form */}
           <View style={styles.card}>
             <Input
-              label={i18n.t('EMAIL_OR_PHONE')}
-              placeholder={i18n.t('EMAIL_OR_PHONE_PLACEHOLDER')}
+              label={t('EMAIL_OR_PHONE')}
+              placeholder={t('EMAIL_OR_PHONE_PLACEHOLDER')}
               value={loginIdentifier}
               onChangeText={setLoginIdentifier}
               onBlur={() => setTouched(t => ({ ...t, loginIdentifier: true }))}
@@ -161,8 +161,8 @@ export default function LoginScreen() {
             />
 
             <Input
-              label={i18n.t('PASSWORD')}
-              placeholder={i18n.t('PASSWORD_PLACEHOLDER')}
+              label={t('PASSWORD')}
+              placeholder={t('PASSWORD_PLACEHOLDER')}
               value={password}
               onChangeText={setPassword}
               onBlur={() => setTouched(t => ({ ...t, password: true }))}
@@ -179,7 +179,7 @@ export default function LoginScreen() {
                   style={styles.eyeButton}
                 >
                   <Text style={styles.eyeText}>
-                    {showPassword ? i18n.t('HIDE') : i18n.t('SHOW')}
+                    {showPassword ? t('HIDE') : t('SHOW')}
                   </Text>
                 </TouchableOpacity>
               }
@@ -190,7 +190,7 @@ export default function LoginScreen() {
               style={styles.forgotPasswordButton}
               onPress={handleForgotPassword}
             >
-              <Text style={styles.forgotPasswordText}>{i18n.t('FORGOT_PASSWORD')}</Text>
+              <Text style={styles.forgotPasswordText}>{t('FORGOT_PASSWORD')}</Text>
             </TouchableOpacity>
 
             {/* Login Button */}
@@ -203,7 +203,7 @@ export default function LoginScreen() {
               {loading ? (
                 <ActivityIndicator color="#FFFFFF" size="small" />
               ) : (
-                <Text style={styles.loginButtonText}>{i18n.t('SIGN_IN')}</Text>
+                <Text style={styles.loginButtonText}>{t('SIGN_IN')}</Text>
               )}
             </TouchableOpacity>
           </View>
@@ -211,15 +211,15 @@ export default function LoginScreen() {
           {/* Divider */}
           <View style={styles.dividerContainer}>
             <View style={styles.dividerLine} />
-            <Text style={styles.dividerText}>{i18n.t('OR')}</Text>
+            <Text style={styles.dividerText}>{t('OR')}</Text>
             <View style={styles.dividerLine} />
           </View>
 
           {/* Sign Up Link */}
           <View style={styles.signUpContainer}>
-            <Text style={styles.signUpText}>{i18n.t('NO_ACCOUNT')} </Text>
+            <Text style={styles.signUpText}>{t('NO_ACCOUNT')} </Text>
             <TouchableOpacity onPress={handleSignUp}>
-              <Text style={styles.signUpLink}>{i18n.t('CREATE_ACCOUNT')}</Text>
+              <Text style={styles.signUpLink}>{t('CREATE_ACCOUNT')}</Text>
             </TouchableOpacity>
           </View>
 

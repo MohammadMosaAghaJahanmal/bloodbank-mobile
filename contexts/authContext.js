@@ -85,37 +85,37 @@ const AuthProvider = (props) => {
   }, []);
 
   // load app data when logged in
-  useEffect(() => {
-    let aborted = false;
+  // useEffect(() => {
+  //   let aborted = false;
 
-    if (!auth.login || !auth.token) return;
+  //   if (!auth.login || !auth.token) return;
 
-    (async () => {
-      try {
-        setAuth((p) => ({ ...p, loading: true }));
+  //   (async () => {
+  //     try {
+  //       setAuth((p) => ({ ...p, loading: true }));
 
-        const donorsRes = await fetchJSON(serverPath('/api/donors'), {
-          headers: { Authorization: `bearer ${auth.token}` },
-        });
-        const newsRes = await fetchJSON(serverPath('/api/news'));
+  //       const donorsRes = await fetchJSON(serverPath('/api/donors'), {
+  //         headers: { Authorization: `bearer ${auth.token}` },
+  //       });
+  //       const newsRes = await fetchJSON(serverPath('/api/news'));
 
-        if (aborted) return;
+  //       if (aborted) return;
 
-        // Adjust these lines to your real API shape
-        const donors = donorsRes?.data || donorsRes || [];
-        const news = newsRes?.data || newsRes || [];
+  //       // Adjust these lines to your real API shape
+  //       const donors = donorsRes?.data || donorsRes || [];
+  //       const news = newsRes?.data || newsRes || [];
 
-        dispatch('setDonors', donors);
-        dispatch('setCategories', news);
-      } catch (err) {
-        // Optional: Alert.alert('Error', err.message);
-      } finally {
-        if (!aborted) setAuth((p) => ({ ...p, loading: false }));
-      }
-    })();
+  //       dispatch('setDonors', donors);
+  //       dispatch('setCategories', news);
+  //     } catch (err) {
+  //       // Optional: Alert.alert('Error', err.message);
+  //     } finally {
+  //       if (!aborted) setAuth((p) => ({ ...p, loading: false }));
+  //     }
+  //   })();
 
-    return () => { aborted = true; };
-  }, [auth.login, auth.token]);
+  //   return () => { aborted = true; };
+  // }, [auth.login, auth.token]);
 
   // (Optional) helpers you can call from screens
  const saveTokenAndLogin = useCallback(async (token, user) => {
