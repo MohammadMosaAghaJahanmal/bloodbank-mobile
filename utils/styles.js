@@ -36,6 +36,8 @@ export const COLORS = {
   success: '#16a34a',
   error: '#dc2626',
   errorLight: '#FEF2F2',
+  danger: '#DC2626',
+  warning: '#D97706',
 };
 
 const TABCOLORS = {

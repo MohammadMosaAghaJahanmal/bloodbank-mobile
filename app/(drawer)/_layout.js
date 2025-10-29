@@ -16,20 +16,10 @@ import { AuthContext } from '../../contexts/authContext';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { t } from '../../utils/i18n';
 import serverPath from '../../utils/serverPath';
-import { globalStyle } from '../../utils/styles';
+import { COLORS, globalStyle } from '../../utils/styles';
 
 const {drawer : styles} = globalStyle
 
-const COLORS = {
-  primary: '#E73C3C',
-  primaryDark: '#C42525',
-  text: '#1E1E1E',
-  muted: '#7E7E7E',
-  sheet: '#FFFFFF',
-  divider: '#EFEFEF',
-  danger: '#DC2626',
-  warning: '#D97706',
-};
 
 const LANGUAGES = [
   { code: 'en', label: 'English', rtl: false, short: 'EN' },
