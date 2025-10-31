@@ -13,7 +13,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Input from '../../../components/GeneralInput';
 import { useRTLStyles } from '../../../contexts/useRTLStyles';
-import i18n from '../../../utils/i18n';
+import { t } from '../../../utils/i18n';
 import serverPath from '../../../utils/serverPath';
 import { globalStyle } from '../../../utils/styles';
 
@@ -32,12 +32,12 @@ export default function ForgotPasswordScreen() {
     const e = {};
     
     if (touched.email && !email.trim()) {
-      e.email = i18n.t('ENTER_EMAIL');
+      e.email = t('ENTER_EMAIL');
     } else if (touched.email && email.trim()) {
       const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
       
       if (!isEmail) {
-        e.email = i18n.t('INVALID_EMAIL');
+        e.email = t('INVALID_EMAIL');
       }
     }
     
@@ -68,11 +68,11 @@ export default function ForgotPasswordScreen() {
 
       const data = await res.json();
       
-      if (!res.ok) throw new Error(data?.message || i18n.t('FAILED_SEND_RESET_LINK'));
+      if (!res.ok) throw new Error(data?.message || t('FAILED_SEND_RESET_LINK'));
 
       if (data?.status === 'failure') {
         setLoading(false);
-        Alert.alert(i18n.t('FAILED'), data.message);
+        Alert.alert(t('FAILED'), data.message);
         return;
       }
 
@@ -80,9 +80,9 @@ export default function ForgotPasswordScreen() {
       setEmailSent(true);
       
       Alert.alert(
-        i18n.t('RESET_LINK_SENT'),
-        i18n.t('CHECK_EMAIL_INSTRUCTIONS'),
-        [{ text: i18n.t('OK') }]
+        t('RESET_LINK_SENT'),
+        t('CHECK_EMAIL_INSTRUCTIONS'),
+        [{ text: t('OK') }]
       );
 
     } catch (err) {
@@ -92,12 +92,12 @@ export default function ForgotPasswordScreen() {
       const msg = String(err?.message || '')
         .toLowerCase();
 
-      let errorMessage = i18n.t('FAILED_SEND_RESET_LINK_TRY_AGAIN');
-      if (msg.includes('network request failed')) errorMessage = i18n.t('NETWORK_ERROR');
-      else if (msg.includes('user not found')) errorMessage = i18n.t('NO_ACCOUNT_WITH_EMAIL');
-      else if (msg.includes('email')) errorMessage = i18n.t('CHECK_EMAIL_TRY_AGAIN');
+      let errorMessage = t('FAILED_SEND_RESET_LINK_TRY_AGAIN');
+      if (msg.includes('network request failed')) errorMessage = t('NETWORK_ERROR');
+      else if (msg.includes('user not found')) errorMessage = t('NO_ACCOUNT_WITH_EMAIL');
+      else if (msg.includes('email')) errorMessage = t('CHECK_EMAIL_TRY_AGAIN');
 
-      Alert.alert(i18n.t('FAILED'), errorMessage);
+      Alert.alert(t('FAILED'), errorMessage);
     }
   };
 
@@ -128,11 +128,11 @@ export default function ForgotPasswordScreen() {
         >
           {/* Header */}
           <View style={styles.header}>
-            <Text style={styles.title}>{i18n.t('RESET_PASSWORD')}</Text>
+            <Text style={styles.title}>{t('RESET_PASSWORD')}</Text>
             <Text style={styles.subtitle}>
               {emailSent 
-                ? i18n.t('CHECK_EMAIL_FOR_INSTRUCTIONS') 
-                : i18n.t('ENTER_EMAIL_FOR_RESET_LINK')
+                ? t('CHECK_EMAIL_FOR_INSTRUCTIONS') 
+                : t('ENTER_EMAIL_FOR_RESET_LINK')
               }
             </Text>
           </View>
@@ -142,9 +142,9 @@ export default function ForgotPasswordScreen() {
             {emailSent ? (
               <View style={styles.successContainer}>
                 <Text style={styles.successIcon}>📧</Text>
-                <Text style={styles.successTitle}>{i18n.t('CHECK_YOUR_EMAIL')}</Text>
+                <Text style={styles.successTitle}>{t('CHECK_YOUR_EMAIL')}</Text>
                 <Text style={styles.successText}>
-                  {i18n.t('WE_SENT_INSTRUCTIONS_TO')}{'\n'}
+                  {t('WE_SENT_INSTRUCTIONS_TO')}{'\n'}
                   <Text style={styles.emailText}>{email}</Text>
                 </Text>
                 
@@ -156,15 +156,15 @@ export default function ForgotPasswordScreen() {
                   {loading ? (
                     <ActivityIndicator color="#FFFFFF" size="small" />
                   ) : (
-                    <Text style={styles.resendButtonText}>{i18n.t('RESEND_EMAIL')}</Text>
+                    <Text style={styles.resendButtonText}>{t('RESEND_EMAIL')}</Text>
                   )}
                 </TouchableOpacity>
               </View>
             ) : (
               <>
                 <Input
-                  label={i18n.t('EMAIL_ADDRESS')}
-                  placeholder={i18n.t('ENTER_YOUR_EMAIL')}
+                  label={t('EMAIL_ADDRESS')}
+                  placeholder={t('ENTER_YOUR_EMAIL')}
                   value={email}
                   onChangeText={setEmail}
                   onBlur={() => setTouched(t => ({ ...t, email: true }))}
@@ -189,7 +189,7 @@ export default function ForgotPasswordScreen() {
                   {loading ? (
                     <ActivityIndicator color="#FFFFFF" size="small" />
                   ) : (
-                    <Text style={styles.resetButtonText}>{i18n.t('SEND_RESET_LINK')}</Text>
+                    <Text style={styles.resetButtonText}>{t('SEND_RESET_LINK')}</Text>
                   )}
                 </TouchableOpacity>
               </>
@@ -202,19 +202,19 @@ export default function ForgotPasswordScreen() {
               style={styles.linkButton}
               onPress={handleBackToLogin}
             >
-              <Text style={styles.linkText}>← {i18n.t('BACK_TO_LOGIN')}</Text>
+              <Text style={styles.linkText}>← {t('BACK_TO_LOGIN')}</Text>
             </TouchableOpacity>
 
             <View style={styles.dividerContainer}>
               <View style={styles.dividerLine} />
-              <Text style={styles.dividerText}>{i18n.t('OR')}</Text>
+              <Text style={styles.dividerText}>{t('OR')}</Text>
               <View style={styles.dividerLine} />
             </View>
 
             <View style={styles.signUpContainer}>
-              <Text style={styles.signUpText}>{i18n.t('NO_ACCOUNT')} </Text>
+              <Text style={styles.signUpText}>{t('NO_ACCOUNT')} </Text>
               <TouchableOpacity onPress={handleCreateAccount}>
-                <Text style={styles.signUpLink}>{i18n.t('CREATE_ACCOUNT')}</Text>
+                <Text style={styles.signUpLink}>{t('CREATE_ACCOUNT')}</Text>
               </TouchableOpacity>
             </View>
           </View>
