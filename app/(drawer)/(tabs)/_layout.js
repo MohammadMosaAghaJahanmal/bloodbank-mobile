@@ -7,7 +7,7 @@ import { Animated, Pressable, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AuthContext } from '../../../contexts/authContext';
 import { useRTLStyles } from '../../../contexts/useRTLStyles';
-import i18n from '../../../utils/i18n';
+import { t } from '../../../utils/i18n';
 import { globalStyle } from '../../../utils/styles';
 
 
@@ -27,7 +27,7 @@ export default function TabsLayout() {
       <Tabs.Screen 
         name="index" 
         options={{ 
-          title: i18n.t('HOME'),
+          title: t('HOME'),
           headerShown: true,
         }} 
       />
@@ -35,7 +35,7 @@ export default function TabsLayout() {
       <Tabs.Screen 
         name="profile" 
         options={{ 
-          title: i18n.t('PROFILE'),
+          title: t('PROFILE'),
           headerShown: true,
         }}
       />
@@ -105,11 +105,11 @@ function RedHeader({ options, navigation, route }) {
   const getTitle = () => {
     if (typeof options.title === 'string') return options.title;
     
-    if (route?.name === 'index') return i18n.t('HOME');
-    if (route?.name === 'profile') return i18n.t('PROFILE');
-    if (route?.name === 'login') return i18n.t('LOGIN');
+    if (route?.name === 'index') return t('HOME');
+    if (route?.name === 'profile') return t('PROFILE');
+    if (route?.name === 'login') return t('LOGIN');
     
-    return i18n.t('PROFILE');
+    return t('PROFILE');
   };
 
   const title = getTitle();
@@ -299,8 +299,8 @@ function CustomTabBar({ state, navigation }) {
   }, [state.index]);
 
   const getLabel = (name) => {
-    if (name === 'index') return i18n.t('HOME');
-    if (name === 'profile') return i18n.t('PROFILE');
+    if (name === 'index') return t('HOME');
+    if (name === 'profile') return t('PROFILE');
     return name;
   };
 
