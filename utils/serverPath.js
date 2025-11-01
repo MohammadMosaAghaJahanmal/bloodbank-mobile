@@ -1,1 +1,1 @@
-export default (path) => (`http://192.168.237.139:8080${path}`); 
+export default (path) => (`http://192.168.237.27:8080${path}`); 
