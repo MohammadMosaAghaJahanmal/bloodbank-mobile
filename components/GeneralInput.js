@@ -19,11 +19,9 @@ const Input = function Input({
   isRTL,
   writingDirection,
   styles,
-  // New props for textarea support
   multiline = false,
   numberOfLines = 4,
   textAlignVertical = 'top',
-  // Additional styling props
   inputStyle,
   containerStyle
 }) {
@@ -32,12 +30,12 @@ const Input = function Input({
       {label && <Text style={styles.label}>{label}</Text>}
       <View style={[
         styles.inputWrap, 
-        multiline && styles.textareaWrap, // Additional style for textarea
+        multiline && styles.textareaWrap,
         !!error && styles.inputError
       ]}>
         {icon && <Text style={[
           styles.inputIcon,
-          multiline && styles.textareaIcon // Additional style for textarea icon
+          multiline && styles.textareaIcon 
         ]}>{icon}</Text>}
         <TextInput
           value={value}
@@ -46,8 +44,8 @@ const Input = function Input({
           placeholderTextColor={MUTED}
           style={[
             styles.input,
-            multiline && styles.textarea, // Additional style for textarea
-            inputStyle // Allow custom input styling
+            multiline && styles.textarea,
+            inputStyle
           ]}
           keyboardType={keyboardType}
           secureTextEntry={secureTextEntry}
@@ -68,7 +66,7 @@ const Input = function Input({
         />
         {right ? <View style={[
           styles.inputRight,
-          multiline && styles.textareaRight // Additional style for textarea right element
+          multiline && styles.textareaRight
         ]}>{right}</View> : null}
       </View>
       {!!error && <Text style={styles.error}>{error}</Text>}
