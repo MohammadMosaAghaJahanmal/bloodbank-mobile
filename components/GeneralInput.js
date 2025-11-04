@@ -1,6 +1,6 @@
 import { Text, TextInput, View } from "react-native";
+import { COLORS } from '../utils/styles';
 
-const MUTED = '#7E7E7E';
 
 const Input = function Input({
   label,
@@ -41,7 +41,7 @@ const Input = function Input({
           value={value}
           onChangeText={onChangeText}
           placeholder={placeholder}
-          placeholderTextColor={MUTED}
+          placeholderTextColor={COLORS.muted}
           style={[
             styles.input,
             multiline && styles.textarea,
