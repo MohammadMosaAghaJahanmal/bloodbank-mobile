@@ -16,7 +16,7 @@ export const useRTLStyles = () => {
 
   const createRTLStyles = (styles) => {
     if (!isReady) {
-      return StyleSheet.create(styles); // Return original styles while loading
+      return StyleSheet.create(styles);
     }
 
     return StyleSheet.create(
