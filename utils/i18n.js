@@ -26,12 +26,7 @@ i18n.missingTranslation = (scope, options) => {
   
   // Option 2: Return "missing_key" prefix (more visible for debugging)
   return `missing_${scope}`;
-  
-  // Option 3: Try to return from default locale (English)
-  // if (i18n.locale !== 'en' && translations.en && translations.en[scope]) {
-  //   return translations.en[scope];
-  // }
-  // return scope;
+
 };
 
 // Enhanced translation function with fallback
