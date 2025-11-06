@@ -8,9 +8,6 @@ import { translations } from './dictionary';
 const i18n = new I18n();
 
 
-// Your translations object remains the same...
-
-
 i18n.translations = translations;
 i18n.enableFallback = true;
 i18n.defaultLocale = 'en';
