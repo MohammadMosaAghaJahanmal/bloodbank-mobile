@@ -53,8 +53,8 @@ export const t = (key, options = {}) => {
     }
     
     return result;
-  } catch (error) {
-    console.error('🌐 Translation error:', error, 'for key:', key);
+  } catch (err) {
+    console.error('🌐 Translation error:', err, 'for key:', key);
     
     // Fallback strategies
     if (translations.en && translations.en[key]) {
@@ -69,8 +69,8 @@ export const t = (key, options = {}) => {
 export const safeT = (key, options = {}) => {
   try {
     return t(key, options);
-  } catch (error) {
-    console.error('🌐 Safe translation error:', error);
+  } catch (err) {
+    console.error('🌐 Safe translation error:', err);
     return key || 'translation_error';
   }
 };
@@ -80,7 +80,7 @@ export const hasTranslation = (key, locale = i18n.locale) => {
   try {
     const translation = translations[locale]?.[key];
     return translation && translation !== key && !translation.startsWith('missing_');
-  } catch (error) {
+  } catch (err) {
     return false;
   }
 };
@@ -128,8 +128,8 @@ export const initializeI18n = async () => {
     }
     
     return 'en';
-  } catch (error) {
-    console.log('🌐 Error initializing i18n:', error);
+  } catch (err) {
+    console.log('🌐 Error initializing i18n:', err);
     // Fallback to English
     i18n.locale = 'en';
     return 'en';
@@ -156,8 +156,8 @@ export const changeLanguage = (locale) => {
     }
     
     return isRTL(newLocale);
-  } catch (error) {
-    console.error('🌐 Error changing language:', error);
+  } catch (err) {
+    console.error('🌐 Error changing language:', err);
     i18n.locale = 'en';
     return false;
   }
@@ -169,7 +169,7 @@ export const getSystemLanguage = () => {
   try {
     const locales = Localization.getLocales();
     return locales[0]?.languageCode || 'en';
-  } catch (error) {
+  } catch (err) {
     return 'en';
   }
 };
