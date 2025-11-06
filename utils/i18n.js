@@ -7,8 +7,6 @@ import { translations } from './dictionary';
 // Initialize i18n
 const i18n = new I18n();
 
-const STORAGE_KEY = 'app_language';
-
 
 // Your translations object remains the same...
 
