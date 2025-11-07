@@ -251,7 +251,6 @@ function RedHeader({ options, navigation, route }) {
 }
 
 
-
 function CustomTabBar({ state, navigation }) {
   const insets = useSafeAreaInsets();
   const { login, logout } = useContext(AuthContext);
@@ -426,7 +425,7 @@ const handleTabPress = (route, index, isFocused) => {
                   {getLabel(route.name)}
                 </Animated.Text>
 
-                {/* Animated active indicator */}
+                {/* Animated active indicator. */}
                 <Animated.View 
                   style={[
                     styles.activeDot,
