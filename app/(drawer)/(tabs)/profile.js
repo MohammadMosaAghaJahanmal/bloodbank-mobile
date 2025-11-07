@@ -22,7 +22,7 @@ import { AuthContext } from '../../../contexts/authContext';
 import { useRTLStyles } from '../../../contexts/useRTLStyles';
 import { t } from '../../../utils/i18n';
 import serverPath from '../../../utils/serverPath';
-import { globalStyle } from '../../../utils/styles';
+import { COLORS, globalStyle } from '../../../utils/styles';
 
 export default function ProfileScreen() {
   const { createRTLStyles, isRTL, writingDirection } = useRTLStyles();
@@ -614,7 +614,7 @@ const handleRecordDonation = async () => {
                   disabled={sendingVerification}
                 >
                   {sendingVerification ? (
-                    <ActivityIndicator color="#FFFFFF" size="small" />
+                    <ActivityIndicator color={COLORS.white} size="small" />
                   ) : (
                     <>
                       <Text style={styles.verifyButtonText}>{t('VERIFY_NOW')}</Text>
@@ -767,7 +767,7 @@ const handleRecordDonation = async () => {
                 disabled={locationLoading}
               >
                 {locationLoading ? (
-                  <ActivityIndicator color="#FFFFFF" size="small" />
+                  <ActivityIndicator color={COLORS.white} size="small" />
                 ) : (
                   <View style={styles.locationBtnContent}>
                     <Text style={styles.locationBtnText}>
@@ -916,7 +916,7 @@ const handleRecordDonation = async () => {
               disabled={!lastDonationDate || !amountMl || updatingDonation}
             >
               {updatingDonation ? (
-                <ActivityIndicator color="#FFFFFF" size="small" />
+                <ActivityIndicator color={COLORS.white} size="small" />
               ) : (
                 <Text style={styles.donationBtnText}>{t('RECORD_DONATION')}</Text>
               )}
@@ -942,7 +942,7 @@ const handleRecordDonation = async () => {
             disabled={!isFormValid || loading}
           >
             {loading ? (
-              <ActivityIndicator color="#FFFFFF" size="small" />
+              <ActivityIndicator color={COLORS.white} size="small" />
             ) : (
               <Text style={styles.primaryBtnText}>{t('UPDATE_PROFILE')}</Text>
             )}

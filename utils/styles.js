@@ -38,6 +38,7 @@ export const COLORS = {
   errorLight: '#FEF2F2',
   danger: '#DC2626',
   warning: '#D97706',
+  white: "#FFFFFF"
 };
 
 const TABCOLORS = {
