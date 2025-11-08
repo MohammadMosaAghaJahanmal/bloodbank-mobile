@@ -86,7 +86,6 @@ export default function LoginScreen() {
         return
       }
 
-      // ✅ Update global auth state + persist token
       if (data?.token && data?.user) {
         await saveTokenAndLogin(data.token, data.user);
       } else if (data?.token) {
