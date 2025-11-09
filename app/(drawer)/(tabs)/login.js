@@ -58,6 +58,7 @@ export default function LoginScreen() {
     password.length >= 6 && 
     !errors.loginIdentifier;
 
+    
   // Handle login
   const handleLogin = async () => {
     if (!isValid || loading) return;
