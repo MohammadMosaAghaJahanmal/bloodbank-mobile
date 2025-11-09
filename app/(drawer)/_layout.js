@@ -390,7 +390,7 @@ function CustomDrawerContent(props) {
                       selected && styles.langPillTextActive
                     ]}
                   >
-                    {lng.short}
+                    {lng.label}
                   </Text>
                 </Pressable>
               );
