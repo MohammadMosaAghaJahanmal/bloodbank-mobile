@@ -14,11 +14,13 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import CS_LOGO from '../../assets/images/cs-logo.png';
+import APP_LOGO from '../../assets/images/logo-drop.png';
+import UNIVERSITY_LOGO from '../../assets/images/university-logo.png';
 import Header from '../../components/Header';
 import { useRTLStyles } from '../../contexts/useRTLStyles';
 import { t } from '../../utils/i18n';
 import { COLORS, globalStyle } from '../../utils/styles';
-
 // Reusable Card
 // eslint-disable-next-line react/display-name
 const Card = memo(({ style, children, testID }) => (
@@ -110,7 +112,7 @@ const AboutUsScreen = () => {
 
           <View style={rstyles.heroLogoWrap} accessible accessibilityLabel="App Logo">
             <Image
-              source={require('../../assets/images/logo-drop.png')}
+              source={APP_LOGO}
               style={rstyles.heroLogo}
               resizeMode="contain"
             />
@@ -122,7 +124,7 @@ const AboutUsScreen = () => {
           <Card style={rstyles.brandCard}>
             <View style={rstyles.brandLogoWrap}>
               <Image
-                source={require('../../assets/images/logo-drop.png')}
+                source={APP_LOGO}
                 style={rstyles.brandLogo}
                 resizeMode="contain"
               />
@@ -134,7 +136,7 @@ const AboutUsScreen = () => {
           <Card style={rstyles.brandCard}>
             <View style={rstyles.brandLogoWrap}>
               <Image
-                source={require('../../assets/images/icon.png')}
+                source={UNIVERSITY_LOGO}
                 style={rstyles.brandLogo}
                 resizeMode="contain"
               />
@@ -225,7 +227,7 @@ const AboutUsScreen = () => {
             <Text style={[rstyles.sectionTitle, isRTL && { direction: writingDirection, marginRight: 5 }]}>{t('CONTACT_INFO')}</Text>
           </View>
 
-          <Pressable
+          {/* <Pressable
             onPress={() => openWebsite('https://saba.edu.af')}
             android_ripple={{ color: COLORS.primaryLight }}
             style={rstyles.contactItem}
@@ -242,7 +244,7 @@ const AboutUsScreen = () => {
               </Text>
             </View>
             <Ionicons name={isRTL ? 'chevron-back' : 'chevron-forward'} size={18} color={COLORS.muted} />
-          </Pressable>
+          </Pressable> */}
 
           <View style={rstyles.divider} />
 
@@ -274,7 +276,12 @@ const AboutUsScreen = () => {
           end={{ x: 1, y: 1 }}
         >
           <View style={rstyles.missionIconWrap}>
-            <Ionicons name="heart" size={28} color="#fff" />
+            {/* <Ionicons name="heart" size={28} color="#fff" /> */}
+            <Image
+              source={CS_LOGO}
+              style={rstyles.brandLogo}
+              resizeMode="contain"
+            />
           </View>
           <Text style={[rstyles.missionTitle, isRTL && { direction: writingDirection, marginRight: 5 }]}> {t('OUR_MISSION')}</Text>
           <Text style={[rstyles.missionText, isRTL && { direction: writingDirection, marginRight: 5 }]}>{t('MISSION_STATEMENT')}</Text>

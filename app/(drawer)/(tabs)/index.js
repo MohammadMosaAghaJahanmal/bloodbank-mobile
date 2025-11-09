@@ -337,27 +337,70 @@ const SORT_OPTIONS = [
     );
   };
 
-  const handleCall = (donor) => {
-    Alert.alert(
-      t('CALL_DONOR'),
-      t('CALL_DONOR_CONFIRMATION', { name: donor.name, phone: donor.phone }),
-      [
-        { text: t('CANCEL'), style: "cancel" },
-        {
-          text: t('CALL'),
-          onPress: async () => {
-            const phoneNumber = `tel:${donor.phone}`;
-            const supported = await Linking.canOpenURL(phoneNumber);
+  const DEFAULT_COUNTRY_CODE = '93'; 
+
+  const toWhatsAppNumber = (raw) => {
+  // remove non-digits
+  let n = String(raw).replace(/\D/g, '');
+  // if it starts with 00, strip it
+  if (n.startsWith('00')) n = n.slice(2);
+  // if it starts with 0 and you expect local numbers, prepend country code
+  if (n.startsWith('0')) n = DEFAULT_COUNTRY_CODE + n.slice(1);
+  // if it has no country code length (very short), prepend default
+  if (!n.startsWith(DEFAULT_COUNTRY_CODE) && n.length <= 10) {
+    n = DEFAULT_COUNTRY_CODE + n;
+  }
+  return n;
+};
+
+const openWhatsApp = async (rawPhone) => {
+  const phone = toWhatsAppNumber(rawPhone);           // e.g. "93744488816"
+  const appUrl = `whatsapp://send?phone=${phone}`;    // deep link
+  const webUrl = `https://wa.me/${phone}`;            // mobile-safe fallback
+
+  try {
+    // Try app first
+    const supported = await Linking.canOpenURL(appUrl);
+    if (supported) {
+      await Linking.openURL(appUrl);
+      return;
+    }
+    // Fallback to wa.me (opens browser -> WhatsApp)
+    await Linking.openURL(webUrl);
+  } catch (e) {
+    Alert.alert('Error', 'WhatsApp is not installed or cannot be opened.');
+  }
+};
+
+const handleCall = (donor) => {
+  Alert.alert(
+    t('CALL_DONOR'),
+    t('CALL_DONOR_CONFIRMATION', { name: donor.name, phone: donor.phone }),
+    [
+      { text: t('CANCEL'), style: 'cancel' },
+      {
+        text: t('CALL'),
+        onPress: async () => {
+          try {
+            const tel = `tel:${donor.phone}`;
+            const supported = await Linking.canOpenURL(tel);
             if (supported) {
-              await Linking.openURL(phoneNumber);
+              await Linking.openURL(tel);
             } else {
               Alert.alert(t('ERROR'), t('CANNOT_MAKE_CALLS'));
             }
-          },
+          } catch {
+            Alert.alert(t('ERROR'), t('CANNOT_MAKE_CALLS'));
+          }
         },
-      ]
-    );
-  };
+      },
+      {
+        text: 'WhatsApp',
+        onPress: () => openWhatsApp(donor.phone),
+      },
+    ]
+  );
+};
 
   const s = createRTLStyles(globalStyle.home(writingDirection));
 

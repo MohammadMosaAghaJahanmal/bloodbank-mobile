@@ -320,6 +320,7 @@ export const translations = {
     CANCEL_DELETION_FAILED: "Failed to cancel deletion request.",
     PENDING_DELETION_WARNING: "⏳ Account deletion pending",
     NO: "No",
+    WHATSAPP_NOT_INSTALLED: "WhatsApp is not installed on your device.",
   },
 
   ps: {
@@ -645,6 +646,7 @@ export const translations = {
     CANCEL_DELETION_FAILED: "د حساب د حذف غوښتنه لغوه نه شوه.",
     PENDING_DELETION_WARNING: "⏳ د حساب حذف کېدل په انتظار کې دي",
     NO: "نه",
+    WHATSAPP_NOT_INSTALLED: "واټس اپ ستا په موبایل کې نه دی نصب شوی.",
   },
 
   pa: {
@@ -970,6 +972,7 @@ export const translations = {
     DELETION_REQUEST_CANCELLED_MESSAGE: "درخواست حذف حساب شما لغو شد.",
     CANCEL_DELETION_FAILED: "لغو درخواست حذف حساب ناموفق بود.",
     PENDING_DELETION_WARNING: "⏳ حذف حساب در حال انتظار است",
-    NO: "خیر"
+    NO: "خیر",
+    WHATSAPP_NOT_INSTALLED: "واتس‌اپ در دستگاه شما نصب نیست.",
   },
 };
