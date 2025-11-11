@@ -16,6 +16,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 import FilterModal from "../../../components/FilterModal";
+import RatingModal from "../../../components/RatingModal";
 import SortModal from "../../../components/SortModal";
 import { AFGHANISTAN_PROVINCES } from '../../../constants/theme';
 import { useRTLStyles } from "../../../contexts/useRTLStyles";
@@ -28,41 +29,47 @@ const CARD_BG = "#FFFFFF";
 const TEXT = "#1E1E1E";
 const MUTED = "#7E7E7E";
 
-
 export default function HomeScreen() {
   
-const SORT_OPTIONS = [
-  { 
-    id: "recent", 
-    label: t('SORT_RECENT'), 
-    icon: "time", 
-    translationKey: "SORT_RECENT" 
-  },
-  { 
-    id: "name", 
-    label: t('SORT_NAME_ASC'), 
-    icon: "person", 
-    translationKey: "SORT_NAME_ASC" 
-  },
-  { 
-    id: "blood", 
-    label: t('SORT_BLOOD_TYPE'), 
-    icon: "water", 
-    translationKey: "SORT_BLOOD_TYPE" 
-  },
-  { 
-    id: "location", 
-    label: t('LOCATION'), 
-    icon: "location", 
-    translationKey: "LOCATION" 
-  },
-  { 
-    id: "distance", 
-    label: t('SORT_DISTANCE'), 
-    icon: "navigate", 
-    translationKey: "SORT_DISTANCE" 
-  },
-];
+  const SORT_OPTIONS = [
+    { 
+      id: "recent", 
+      label: t('SORT_RECENT'), 
+      icon: "time", 
+      translationKey: "SORT_RECENT" 
+    },
+    { 
+      id: "name", 
+      label: t('SORT_NAME_ASC'), 
+      icon: "person", 
+      translationKey: "SORT_NAME_ASC" 
+    },
+    { 
+      id: "blood", 
+      label: t('SORT_BLOOD_TYPE'), 
+      icon: "water", 
+      translationKey: "SORT_BLOOD_TYPE" 
+    },
+    { 
+      id: "location", 
+      label: t('LOCATION'), 
+      icon: "location", 
+      translationKey: "LOCATION" 
+    },
+    { 
+      id: "distance", 
+      label: t('SORT_DISTANCE'), 
+      icon: "navigate", 
+      translationKey: "SORT_DISTANCE" 
+    },
+    { 
+      id: "rating", 
+      label: t('SORT_RATING'), 
+      icon: "star", 
+      translationKey: "SORT_RATING" 
+    },
+  ];
+
   const { createRTLStyles, isRTL, writingDirection } = useRTLStyles();
   const [query, setQuery] = useState("");
   const [selectedBloodTypes, setSelectedBloodTypes] = useState([]);
@@ -70,6 +77,7 @@ const SORT_OPTIONS = [
   const [sortBy, setSortBy] = useState("recent");
   const [showFilterModal, setShowFilterModal] = useState(false);
   const [showSortModal, setShowSortModal] = useState(false);
+  const [showRatingModal, setShowRatingModal] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
@@ -86,6 +94,7 @@ const SORT_OPTIONS = [
   const [userLocation, setUserLocation] = useState(null);
   const [locationLoading, setLocationLoading] = useState(false);
   const [isNearbyActive, setIsNearbyActive] = useState(false);
+  const [selectedDonorForRating, setSelectedDonorForRating] = useState(null);
   
   const scrollY = useRef(new Animated.Value(0)).current;
   const searchInputRef = useRef(null);
@@ -113,6 +122,19 @@ const SORT_OPTIONS = [
       console.error('API call failed:', error);
       throw error;
     }
+  };
+
+  // Submit rating function
+  const submitRating = async (ratingData) => {
+    return await apiCall('/api/rating', {
+      method: 'POST',
+      body: JSON.stringify(ratingData),
+    });
+  };
+
+  // Handle rating submission
+  const handleRatingSubmit = async (ratingData) => {
+    await submitRating(ratingData);
   };
 
   // Get user location
@@ -154,28 +176,22 @@ const SORT_OPTIONS = [
 
   // Toggle nearby donors
   const toggleNearbyDonors = async () => {
-    if (locationLoading) return; // Prevent pressing while loading
+    if (locationLoading) return;
 
     if (isNearbyActive) {
-      // Turn off nearby filter
       setIsNearbyActive(false);
       setUserLocation(null);
       setSortBy('recent');
-      // Fetch donors without location
       fetchDonors(1, true);
     } else {
-      // Turn on nearby filter
       let location = await getUserLocation();
       
       if (location) {
         setIsNearbyActive(true);
-        // Clear other filters when using location
         setSelectedBloodTypes([]);
         setSelectedLocations([]);
         setQuery('');
         setSortBy('distance');
-        
-        // Fetch donors with location
         fetchDonors(1, true, location);
       }
     }
@@ -206,7 +222,7 @@ const SORT_OPTIONS = [
     }
   };
 
-  // Fetch donors from API - Updated to accept location
+  // Fetch donors from API
   const fetchDonors = async (page = 1, reset = false, location = null) => {
     if ((reset ? loading : loadingMore)) return;
     
@@ -226,7 +242,6 @@ const SORT_OPTIONS = [
         locations: selectedLocations.join(','),
       });
 
-      // Add location parameters if nearby is active
       if (isNearbyActive && userLocation) {
         params.append('latitude', userLocation.latitude.toString());
         params.append('longitude', userLocation.longitude.toString());
@@ -332,7 +347,7 @@ const SORT_OPTIONS = [
   const handleViewDetails = (donor) => {
     Alert.alert(
       t('DONOR_DETAILS'),
-      `${t('BLOOD_TYPE')}: ${donor.blood}\n${t('LOCATION')}: ${donor.location}\n${t('LAST_DONATION')}: ${donor.lastDonation === "Never donated" ? t("NEVER_DONATED") : donor.lastDonation}\n${t('DISTANCE')}: ${donor.distance === 'Unknown' ? t("UNKNOWN") : donor.distance}\n${t('CONTACT')}: ${donor.phone}\n`,
+      `${t('BLOOD_TYPE')}: ${donor.blood}\n${t('LOCATION')}: ${donor.location}\n${t('LAST_DONATION')}: ${donor.lastDonation === "Never donated" ? t("NEVER_DONATED") : donor.lastDonation}\n${t('DISTANCE')}: ${donor.distance === 'Unknown' ? t("UNKNOWN") : donor.distance}\n${t('CONTACT')}: ${donor.phone}\n${t('RATING')}: ${donor.rating.average} ⭐ (${donor.rating.total} ${t('RATINGS')})`,
       [{ text: t('CLOSE'), style: "cancel" }]
     );
   };
@@ -340,67 +355,87 @@ const SORT_OPTIONS = [
   const DEFAULT_COUNTRY_CODE = '93'; 
 
   const toWhatsAppNumber = (raw) => {
-  // remove non-digits
-  let n = String(raw).replace(/\D/g, '');
-  // if it starts with 00, strip it
-  if (n.startsWith('00')) n = n.slice(2);
-  // if it starts with 0 and you expect local numbers, prepend country code
-  if (n.startsWith('0')) n = DEFAULT_COUNTRY_CODE + n.slice(1);
-  // if it has no country code length (very short), prepend default
-  if (!n.startsWith(DEFAULT_COUNTRY_CODE) && n.length <= 10) {
-    n = DEFAULT_COUNTRY_CODE + n;
-  }
-  return n;
-};
-
-const openWhatsApp = async (rawPhone) => {
-  const phone = toWhatsAppNumber(rawPhone);           // e.g. "93744488816"
-  const appUrl = `whatsapp://send?phone=${phone}`;    // deep link
-  const webUrl = `https://wa.me/${phone}`;            // mobile-safe fallback
-
-  try {
-    // Try app first
-    const supported = await Linking.canOpenURL(appUrl);
-    if (supported) {
-      await Linking.openURL(appUrl);
-      return;
+    let n = String(raw).replace(/\D/g, '');
+    if (n.startsWith('00')) n = n.slice(2);
+    if (n.startsWith('0')) n = DEFAULT_COUNTRY_CODE + n.slice(1);
+    if (!n.startsWith(DEFAULT_COUNTRY_CODE) && n.length <= 10) {
+      n = DEFAULT_COUNTRY_CODE + n;
     }
-    // Fallback to wa.me (opens browser -> WhatsApp)
-    await Linking.openURL(webUrl);
-  } catch (e) {
-    Alert.alert('Error', 'WhatsApp is not installed or cannot be opened.');
-  }
-};
+    return n;
+  };
 
-const handleCall = (donor) => {
-  Alert.alert(
-    t('CALL_DONOR'),
-    t('CALL_DONOR_CONFIRMATION', { name: donor.name, phone: donor.phone }),
-    [
-      { text: t('CANCEL'), style: 'cancel' },
-      {
-        text: t('CALL'),
-        onPress: async () => {
-          try {
-            const tel = `tel:${donor.phone}`;
-            const supported = await Linking.canOpenURL(tel);
-            if (supported) {
-              await Linking.openURL(tel);
-            } else {
-              Alert.alert(t('ERROR'), t('CANNOT_MAKE_CALLS'));
+  const openWhatsApp = async (rawPhone) => {
+    const phone = toWhatsAppNumber(rawPhone);
+    const appUrl = `whatsapp://send?phone=${phone}`;
+    const webUrl = `https://wa.me/${phone}`;
+
+    try {
+      const supported = await Linking.canOpenURL(appUrl);
+      if (supported) {
+        await Linking.openURL(appUrl);
+        return true;
+      }
+      await Linking.openURL(webUrl);
+      return true;
+    } catch (e) {
+      Alert.alert(t('ERROR'), t('WHATSAPP_NOT_INSTALLED'));
+      return false;
+    }
+  };
+
+  const handleCall = async (donor) => {
+    try {
+      const tel = `tel:${donor.phone}`;
+      const supported = await Linking.canOpenURL(tel);
+      if (supported) {
+        await Linking.openURL(tel);
+        return true;
+      } else {
+        Alert.alert(t('ERROR'), t('CANNOT_MAKE_CALLS'));
+        return false;
+      }
+    } catch {
+      Alert.alert(t('ERROR'), t('CANNOT_MAKE_CALLS'));
+      return false;
+    }
+  };
+
+  const showContactOptions = (donor) => {
+    Alert.alert(
+      t('CONTACT_DONOR'),
+      t('CONTACT_DONOR_CONFIRMATION', { name: donor.name, phone: donor.phone }),
+      [
+        { text: t('CANCEL'), style: 'cancel' },
+        {
+          text: t('CALL'),
+          onPress: async () => {
+            const success = await handleCall(donor);
+            if (success) {
+              // Show rating modal after successful call
+              setSelectedDonorForRating(donor);
+              setTimeout(() => setShowRatingModal(true), 1000);
             }
-          } catch {
-            Alert.alert(t('ERROR'), t('CANNOT_MAKE_CALLS'));
-          }
+          },
         },
-      },
-      {
-        text: 'WhatsApp',
-        onPress: () => openWhatsApp(donor.phone),
-      },
-    ]
-  );
-};
+        {
+          text: t('WHATSAPP'),
+          onPress: async () => {
+            const success = await openWhatsApp(donor.phone);
+            if (success) {
+              // Show rating modal after successful WhatsApp
+              setSelectedDonorForRating(donor);
+              setTimeout(() => setShowRatingModal(true), 1000);
+            }
+          },
+        },
+      ]
+    );
+  };
+
+  const closeRatingModal = () => {
+    setShowRatingModal(false);
+    setSelectedDonorForRating(null);
+  };
 
   const s = createRTLStyles(globalStyle.home(writingDirection));
 
@@ -443,16 +478,20 @@ const handleCall = (donor) => {
             </View>
           </View>
           
-          <Text style={[s.location, isRTL && {direction: "rtl"}]} numberOfLines={1}>
-            { AFGHANISTAN_PROVINCES?.find(per => per.id === item.province?.toLowerCase())?.[isRTL ? "ps"  : "en" ] }
-          </Text>
+          <View style={s.ratingContainer}>
+            <Text style={[s.location, isRTL && {direction: "rtl"}]} numberOfLines={1}>
+              { AFGHANISTAN_PROVINCES?.find(per => per.id === item.province?.toLowerCase())?.[isRTL ? "ps"  : "en" ] }
+            </Text>
+          </View>
 
           <View style={s.infoRow}>
             <View style={s.infoTag}>
               <Text style={s.infoText}>📍 {item.distance === 'Unknown' ? t("UNKNOWN") : item.distance}</Text>
             </View>
             <View style={s.infoTag}>
-              <Text style={s.infoText}>⏰ {item.lastDonation === "Never donated" ? t("NEVER_DONATED") : item.lastDonation}</Text>
+              <Text style={s.infoText}>
+                <Ionicons name="star" size={12} color="#FFD700" /> {item.rating.average} ({item.rating.total > 10? "10+" : item.rating.total})
+              </Text>
             </View>
           </View>
 
@@ -482,7 +521,7 @@ const handleCall = (donor) => {
                   transform: [{ scale: pressed ? 0.95 : 1 }]
                 }
               ]} 
-              onPress={() => handleCall(item)}
+              onPress={() => showContactOptions(item)}
             >
               <Ionicons name="call" size={20} color={PRIMARY} />
             </Pressable>
@@ -701,6 +740,13 @@ const handleCall = (donor) => {
         SORT_OPTIONS={SORT_OPTIONS}
         handleSortSelect={handleSortSelect}
         sortBy={sortBy}
+      />
+      
+      <RatingModal
+        visible={showRatingModal}
+        onClose={closeRatingModal}
+        donor={selectedDonorForRating}
+        onSubmitRating={handleRatingSubmit}
       />
     </SafeAreaView>
   );
