@@ -1041,5 +1041,6 @@ export const translations = {
     DONOR_NOT_FOUND: "اهداکننده پیدا نشد",
     SORT_RATING: "مرتب‌سازی امتیاز",
     WHATSAPP: "واتس‌اپ",
+
   },
 };
