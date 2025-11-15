@@ -165,7 +165,7 @@ export const translations = {
     FAILED: "Failed",
     ENTER_YOUR_EMAIL: "Enter your email",
     FILTER_DONORS: "Filter Donors",
-    BLOOD_TYPE: "🩸 Blood Type",
+    BLOOD_TYPE: "Blood Type",
     CLEAR_ALL: "Clear All",
     APPLY_FILTERS: "Apply Filters",
       // Sort Modal
@@ -185,9 +185,9 @@ export const translations = {
     CONNECTION_ERROR: "Connection Error",
     CHECK_INTERNET_CONNECTION: "Please check your internet connection and try again.",
     DONOR_DETAILS: "Donor Details",
-    LAST_DONATION: "⏰ Last Donation",
-    DISTANCE: "📏 Distance",
-    CONTACT: "📞 Contact",
+    LAST_DONATION: "Last Donation",
+    DISTANCE: "Distance",
+    CONTACT: "Contact",
     STATUS: "Status",
     CLOSE: "Close",
     CALL_DONOR: "Call Donor",
@@ -343,7 +343,7 @@ export const translations = {
     DONOR_NOT_FOUND: "Donor not found",
     SORT_RATING: "Sort Rating",
     WHATSAPP: "WhatsApp",
-
+    TOTAL_DONATED: "Total Donated",
   },
 
   ps: {
@@ -532,10 +532,10 @@ export const translations = {
     CONNECTION_ERROR: "د اتصال تېروتنه",
     CHECK_INTERNET_CONNECTION: "مهرباني وکړئ خپل انټرنټ وګورئ او بیا هڅه وکړئ.",
     DONOR_DETAILS: "د وینې ورکوونکي معلومات",
-    BLOOD_TYPE: "🩸 د وینې ډول",
-    LAST_DONATION: "⏰ وروستۍ مرسته",
-    DISTANCE: "📏 فاصله",
-    CONTACT: "📞 اړیکه",
+    BLOOD_TYPE: "د وینې ډول",
+    LAST_DONATION: "وروستۍ مرسته",
+    DISTANCE: "فاصله",
+    CONTACT: "اړیکه",
     STATUS: "حالت",
     CLOSE: "بندول",
     CALL_DONOR: "وینې ورکوونکي ته زنګ ووهئ",
@@ -692,6 +692,8 @@ export const translations = {
     DONOR_NOT_FOUND: "مرستندوی ونه موندل شو",
     SORT_RATING: "درجه بندي ترتیب کړئ",
     WHATSAPP: "واټس اپ",
+    TOTAL_DONATED: "ټوله مرستې",
+
   },
 
   pa: {
@@ -881,10 +883,10 @@ export const translations = {
     CONNECTION_ERROR: "خطای اتصال",
     CHECK_INTERNET_CONNECTION: "لطفاً اتصال اینترنت خود را بررسی کرده و دوباره تلاش کنید.",
     DONOR_DETAILS: "جزئیات اهداکننده",
-    BLOOD_TYPE: "🩸 گروه خونی",
-    LAST_DONATION: "⏰ آخرین اهدا",
-    DISTANCE: "📏 فاصله",
-    CONTACT: "📞 تماس",
+    BLOOD_TYPE: "گروه خونی",
+    LAST_DONATION: "آخرین اهدا",
+    DISTANCE: "فاصله",
+    CONTACT: "تماس",
     STATUS: "وضعیت",
     CLOSE: "بستن",
     CALL_DONOR: "تماس با اهداکننده",
@@ -1041,6 +1043,7 @@ export const translations = {
     DONOR_NOT_FOUND: "اهداکننده پیدا نشد",
     SORT_RATING: "مرتب‌سازی امتیاز",
     WHATSAPP: "واتس‌اپ",
+    TOTAL_DONATED: "کل مبلغ کمک",
 
   },
 };

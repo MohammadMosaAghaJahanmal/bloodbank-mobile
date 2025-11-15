@@ -15,6 +15,7 @@ import {
   View
 } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
+import DonorDetailsModal from "../../../components/DonorDetailsModal";
 import FilterModal from "../../../components/FilterModal";
 import RatingModal from "../../../components/RatingModal";
 import SortModal from "../../../components/SortModal";
@@ -23,7 +24,6 @@ import { useRTLStyles } from "../../../contexts/useRTLStyles";
 import { t } from "../../../utils/i18n";
 import serverPath from "../../../utils/serverPath";
 import { globalStyle } from "../../../utils/styles";
-
 const PRIMARY = "#E73C3C";
 const CARD_BG = "#FFFFFF";
 const TEXT = "#1E1E1E";
@@ -82,6 +82,10 @@ export default function HomeScreen() {
   const [loading, setLoading] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
   const [donors, setDonors] = useState([]);
+  const [selectedDonor, setSelectedDonor] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
+
+
   const [filterOptions, setFilterOptions] = useState({ bloodTypes: [], locations: [] });
   const [stats, setStats] = useState({ totalDonors: 0, availableDonors: 0, availability: 0 });
   const [pagination, setPagination] = useState({
@@ -345,11 +349,13 @@ export default function HomeScreen() {
   };
 
   const handleViewDetails = (donor) => {
-    Alert.alert(
-      t('DONOR_DETAILS'),
-      `${t('BLOOD_TYPE')}: ${donor.blood}\n${t('LOCATION')}: ${donor.location}\n${t('LAST_DONATION')}: ${donor.lastDonation === "Never donated" ? t("NEVER_DONATED") : donor.lastDonation}\n${t('DISTANCE')}: ${donor.distance === 'Unknown' ? t("UNKNOWN") : donor.distance}\n${t('CONTACT')}: ${donor.phone}\n${t('RATING')}: ${donor.rating.average} ⭐ (${donor.rating.total} ${t('RATINGS')})`,
-      [{ text: t('CLOSE'), style: "cancel" }]
-    );
+    setSelectedDonor(donor);
+    setModalVisible(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalVisible(false);
+    setSelectedDonor(null);
   };
 
   const DEFAULT_COUNTRY_CODE = '93'; 
@@ -747,6 +753,12 @@ export default function HomeScreen() {
         onClose={closeRatingModal}
         donor={selectedDonorForRating}
         onSubmitRating={handleRatingSubmit}
+      />
+      <DonorDetailsModal
+        visible={modalVisible}
+        donor={selectedDonor}
+        onClose={handleCloseModal}
+        t={t} // Replace with your translation function
       />
     </SafeAreaView>
   );
