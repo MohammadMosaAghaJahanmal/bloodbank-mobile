@@ -8,28 +8,10 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { COLORS } from "../utils/styles";
 
 const { width } = Dimensions.get('window');
 
-export const COLORS = {
-  primary: '#E73C3C',
-  primaryDark: '#C42525',
-  text: '#1E1E1E',
-  muted: '#7E7E7E',
-  sheet: '#FFFFFF',
-  divider: '#EFEFEF',
-  primaryLight: '#FEF2F2',
-  textLight: '#4A4A4A',
-  bg: '#FFFFFF',
-  border: '#E8E8E8',
-  borderLight: '#F0F0F0',
-  success: '#16a34a',
-  error: '#dc2626',
-  errorLight: '#FEF2F2',
-  danger: '#DC2626',
-  warning: '#D97706',
-  white: "#FFFFFF"
-};
 
 const DonorDetailsModal = ({ visible, donor, onClose, t }) => {
   if (!donor) return null;
@@ -127,6 +109,7 @@ const DonorDetailsModal = ({ visible, donor, onClose, t }) => {
               value={donor.donationCount.toString()}
               color={COLORS.success}
             />
+            <View style={{marginBottom: 20}}></View>
           </ScrollView>
 
           {/* Footer Button */}
