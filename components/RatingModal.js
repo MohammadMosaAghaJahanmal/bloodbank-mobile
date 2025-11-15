@@ -6,9 +6,8 @@ import {
   Modal,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
-  View,
+  View
 } from 'react-native';
 import { t } from '../utils/i18n';
 
@@ -152,7 +151,7 @@ const RatingModal = ({ visible, onClose, donor, onSubmitRating }) => {
           </View>
 
           {/* Comment Input */}
-          <View style={styles.commentSection}>
+          {/* <View style={styles.commentSection}>
             <Text style={styles.commentLabel}>{t('OPTIONAL_COMMENT')}</Text>
             <TextInput
               style={styles.commentInput}
@@ -165,7 +164,7 @@ const RatingModal = ({ visible, onClose, donor, onSubmitRating }) => {
               textAlignVertical="top"
               editable={!isSubmitting}
             />
-          </View>
+          </View> */}
 
           {/* Action Buttons */}
           <View style={styles.actionButtons}>
