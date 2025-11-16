@@ -763,4 +763,3 @@ export default function HomeScreen() {
     </SafeAreaView>
   );
 }
-
