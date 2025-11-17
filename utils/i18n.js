@@ -163,5 +163,4 @@ export const getSystemLanguage = () => {
   }
 };
 
-// Export the enhanced i18n instance
 export default i18n;
