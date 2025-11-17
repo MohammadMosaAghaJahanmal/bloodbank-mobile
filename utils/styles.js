@@ -9,10 +9,8 @@ const TEXT = '#1E1E1E';
 const MUTED = '#7E7E7E';
 const BORDER = '#E8E8E8';
 
-const PRIMARY_LIGHT = "#FF6B6B";
 const SUCCESS = "#27AE60";
 const WARNING = "#F39C12";
-const STAR = "#FFD700";
 const CARD_BG = "#FFFFFF";
 const TEXT_SECONDARY = "#5A5A5A";
 
