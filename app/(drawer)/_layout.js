@@ -126,6 +126,7 @@ function CustomDrawerContent(props) {
     });
   };
 
+  // Add delete account handler
   const handleDeleteAccount = async (reason) => {
     try {
       setIsLoading(true);
@@ -172,6 +173,7 @@ function CustomDrawerContent(props) {
     }
   };
 
+  // Add cancel deletion request handler
   const handleCancelDeletionRequest = async () => {
     Alert.alert(
       t('CANCEL_DELETION_REQUEST') || 'Cancel Deletion Request',
@@ -511,6 +513,7 @@ function CustomDrawerContent(props) {
         </View>
       </DrawerContentScrollView>
 
+      {/* Delete Account Modal */}
       <DeleteAccountModal
         visible={deleteModalVisible}
         onClose={() => setDeleteModalVisible(false)}
