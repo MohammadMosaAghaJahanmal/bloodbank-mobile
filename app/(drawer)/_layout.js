@@ -513,7 +513,6 @@ function CustomDrawerContent(props) {
         </View>
       </DrawerContentScrollView>
 
-      {/* Delete Account Modal */}
       <DeleteAccountModal
         visible={deleteModalVisible}
         onClose={() => setDeleteModalVisible(false)}
