@@ -172,7 +172,6 @@ function CustomDrawerContent(props) {
     }
   };
 
-  // Add cancel deletion request handler
   const handleCancelDeletionRequest = async () => {
     Alert.alert(
       t('CANCEL_DELETION_REQUEST') || 'Cancel Deletion Request',
