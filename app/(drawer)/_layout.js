@@ -145,6 +145,7 @@ function CustomDrawerContent(props) {
       const result = await response.json();
 
       if (result.status === 'success') {
+        // Update user context with deletion request status
           setAuth(prev => ({
             ...prev,
             user: {...prev.user, deletionRequest: true }
