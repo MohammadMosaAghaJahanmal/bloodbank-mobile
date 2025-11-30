@@ -126,6 +126,8 @@ function CustomDrawerContent(props) {
     });
   };
 
+  
+
   // Add delete account handler
   const handleDeleteAccount = async (reason) => {
     try {
