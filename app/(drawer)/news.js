@@ -66,7 +66,6 @@ const NewsScreen = () => {
     }
   };
 
-  // Fetch news from API
   const fetchNews = async (page = 1, reset = false) => {
     if ((reset ? loading : loadingMore)) return;
     
