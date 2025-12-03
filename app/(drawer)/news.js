@@ -373,7 +373,6 @@ const NewsScreen = () => {
         />
       )}
 
-      {/* News Detail Modal */}
       {renderNewsModal()}
     </SafeAreaView>
   );
