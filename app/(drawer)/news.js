@@ -106,7 +106,7 @@ const NewsScreen = () => {
   // Initial data loading
   useEffect(() => {
     fetchNews(1, true);
-  }, [fetchNews]);
+  }, []);
 
   // Load more news for pagination
   const loadMoreNews = useCallback(() => {
