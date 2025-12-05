@@ -866,8 +866,6 @@ export const translations = {
     FILTER_DONORS: "فیلتر اهداکنندگان",
     CLEAR_ALL: "پاک کردن همه",
     APPLY_FILTERS: "اعمال فیلترها",
-    
-    // Sort Modal
     SORT_BY: "مرتب سازی بر اساس",
     
     // Sort Options
