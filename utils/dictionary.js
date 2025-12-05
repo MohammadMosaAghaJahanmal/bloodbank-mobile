@@ -168,7 +168,6 @@ export const translations = {
     BLOOD_TYPE: "Blood Type",
     CLEAR_ALL: "Clear All",
     APPLY_FILTERS: "Apply Filters",
-      // Sort Modal
     SORT_BY: "Sort By",
     
     // Sort Options (you'll need to update your SORT_OPTIONS array to use these keys)
