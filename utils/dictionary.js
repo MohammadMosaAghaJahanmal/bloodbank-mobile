@@ -491,7 +491,7 @@ export const translations = {
     SAVE: "خوندي کول",
     EDIT: "سمون",
     BACK: "شاته",
-    // Forgot Password Screen
+
     RESET_PASSWORD: "پاسورډ بیاځلي تنظیم کړئ",
     ENTER_EMAIL_FOR_RESET_LINK: "د بیاځلي تنظیم لینک ترلاسه کولو لپاره خپل بریښنالیک دننه کړئ",
     CHECK_EMAIL_FOR_INSTRUCTIONS: "د بیاځلي تنظیم لارښوونو لپاره خپل بریښنالیک وګورئ",
