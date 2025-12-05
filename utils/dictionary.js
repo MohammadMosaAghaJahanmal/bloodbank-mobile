@@ -867,8 +867,6 @@ export const translations = {
     CLEAR_ALL: "پاک کردن همه",
     APPLY_FILTERS: "اعمال فیلترها",
     SORT_BY: "مرتب سازی بر اساس",
-    
-    // Sort Options
     SORT_NAME_ASC: "نام (الف-ی)",
     SORT_NAME_DESC: "نام (ی-الف)",
     SORT_DISTANCE: "فاصله",
