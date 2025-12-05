@@ -2372,7 +2372,7 @@ about: (writingDirection) => ({
     },
     brandLogo: { width: '100%', height: '100%' },
     brandTitle: { color: COLORS.text, fontWeight: '700', fontSize: 14 },
-    brandSubtitle: { color: COLORS.textLight, fontSize: 12, marginTop: 2 },
+    brandSubtitle: { color: COLORS.textLight, fontSize: 12, marginTop: 2, textAlign: "center" },
 
     /* Section header */
     sectionHeader: { flexDirection: 'row', alignItems: 'center', marginBottom: 12 },
