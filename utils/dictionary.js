@@ -281,8 +281,7 @@ export const translations = {
     LIVES_IMPACTED: 'People Reached',
     UNIVERSITY_WEBSITE: 'University Website',
     TEACHER_BIO: 'Providing guidance and mentorship for student technology projects',
-    MISSION_QUOTE:
-      'Using technology to support our communities in an organized way',
+    MISSION_QUOTE: 'Using technology to support our communities in an organized way',
     SABA_UNIVERSITY: 'Saba University',
     COMPUTER_SCIENCE: 'Computer Science',
     SAFE_TIMELY: 'Safe & Timely',
