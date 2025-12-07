@@ -270,8 +270,7 @@ export const translations = {
     PROJECT_SUPERVISOR: 'Project Supervisor',
     CONTACT_INFO: 'Contact Information',
     OUR_MISSION: 'Our Purpose',
-    MISSION_STATEMENT:
-      'To offer an easy-to-use communication platform that helps voluntary blood donors and community members connect and organize blood donations through official health centers.',
+    MISSION_STATEMENT: 'To offer an easy-to-use communication platform that helps voluntary blood donors and community members connect and organize blood donations through official health centers.',
     SAVING_LIVES_TOGETHER: 'Working Together for the Community',
     LIFE_SAVER: 'Community Support Platform',
     EXCELLENCE_IN_EDUCATION: 'Excellence in Education',
@@ -281,8 +280,7 @@ export const translations = {
     YEAR: 'Year',
     LIVES_IMPACTED: 'People Reached',
     UNIVERSITY_WEBSITE: 'University Website',
-    TEACHER_BIO:
-      'Providing guidance and mentorship for student technology projects',
+    TEACHER_BIO: 'Providing guidance and mentorship for student technology projects',
     MISSION_QUOTE:
       'Using technology to support our communities in an organized way',
     SABA_UNIVERSITY: 'Saba University',
