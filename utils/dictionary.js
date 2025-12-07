@@ -259,13 +259,11 @@ export const translations = {
     NO_NEWS_AVAILABLE: 'No news available at the moment',
 
 
-
     OUR_STORY: 'Our Story',
     BLOOD_BANK_APP: 'Blood Bank App',
     SAVING_LIVES: 'Connecting Donors and Community',
     OUR_PROJECT: 'Our Project',
-    PROJECT_DESCRIPTION:
-      'This app is the final project of Computer Science students. It was created to provide a simple digital platform for Afghanistan where voluntary blood donors can share their information and people can more easily find matching donors in their area. Saba University supported the development of this app as an educational and community-connectivity project.',
+    PROJECT_DESCRIPTION: 'This app is the final project of Computer Science students. It was created to provide a simple digital platform for Afghanistan where voluntary blood donors can share their information and people can more easily find matching donors in their area. Saba University supported the development of this app as an educational and community-connectivity project.',
     DEVELOPMENT_TEAM: 'Development Team',
     COMPUTER_SCIENCE_STUDENTS: 'Computer Science Students',
     GUIDANCE_TEACHER: 'Guidance Teacher',
