@@ -1,6 +1,5 @@
 export const translations = {
   en: {
-    // General
     HOME: 'Home',
     SETTINGS: 'Settings',
     PROFILE: 'Profile',
@@ -22,7 +21,7 @@ export const translations = {
     CONTINUE_TO_BLOOD_DETAILS: "Continue to Blood Details",
     UPDATE_PROFILE: "Update Profile",
     LOGOUT_CONFIRMATION_TITLE: 'Logout',
-    LOGOUT_CONFIRMATION_MESSAGE: 'Are you sure you want to logout?',
+    LOGOUT_CONFIRMATION_MESSAGE: 'Are you sure you want to log out?',
     CANCEL: 'Cancel',
     USER: 'User',
     APP_VERSION: 'App Version',
@@ -55,10 +54,10 @@ export const translations = {
     SUBJECT_TOO_SHORT: 'Subject is too short',
     MESSAGE_TOO_SHORT: 'Message is too short',
     SOMETHING_WENT_WRONG: 'Something went wrong, please try again later.',
-    WELCOME_BACK: "Welcome Back",
+    WELCOME_BACK: "Welcome back",
     SIGN_IN_TO_CONTINUE: "Sign in to continue saving lives",
     EMAIL_OR_PHONE: "Email or Phone Number *",
-    EMAIL_OR_PHONE_PLACEHOLDER: "Email or Phone",
+    EMAIL_OR_PHONE_PLACEHOLDER: "Email or phone",
     PASSWORD: "Password *",
     PASSWORD_PLACEHOLDER: "Password",
     SHOW: "Show",
@@ -77,7 +76,7 @@ export const translations = {
     NETWORK_ERROR: "Network error. Please check your internet connection.",
     INVALID_CREDENTIALS: "Invalid email/phone or password. Please try again.",
     USER_NOT_FOUND: "No account found with this email or phone number.",
-    NO_TOKEN_RECEIVED: "Server did not return a token.",
+    NO_TOKEN_RECEIVED: "The server did not return a token.",
     FULL_NAME_PLACEHOLDER: "e.g. Ahmad Khan",
     EMAIL_ADDRESS: "Email Address *",
     EMAIL_PLACEHOLDER: "example@email.com",
@@ -87,56 +86,61 @@ export const translations = {
     YOUR_LOCATION: "Your Location *",
     LOCATION_PLACEHOLDER: "Kandahar District #3",
 
-    
     ADD_PROFILE_PHOTO: "Add Profile Photo",
     CHANGE_PHOTO: "Change Photo",
     UPLOAD_PROFILE_PHOTO: "Upload Profile Photo",
     CHOOSE_OPTION: "Choose an option",
     TAKE_PHOTO: "Take Photo",
     CHOOSE_FROM_GALLERY: "Choose from Gallery",
-    
+
     ENABLE_LOCATION_SERVICES: "Enable Location Services",
-    LOCATION_SERVICES_DESCRIPTION: "Get your exact coordinates automatically to help people find donors nearby accurately.",
+    LOCATION_SERVICES_DESCRIPTION:
+      "Get your exact coordinates automatically to help people accurately find nearby donors.",
     GET_MY_LOCATION: "Get My Location",
     UPDATE_MY_LOCATION: "Update My Location",
     CURRENT_COORDINATES: "Current Coordinates",
     LATITUDE: "Latitude",
     LONGITUDE: "Longitude",
-    COORDINATES_HELP: "These coordinates will help people find you accurately",
-    
+    COORDINATES_HELP: "These coordinates will help people find you accurately.",
+
     SHOW_IN_DONOR_SEARCH: "Show in donor search",
-    SEARCH_VISIBILITY_DESCRIPTION: "Make your profile visible to people searching for blood donors in your area",
-    
+    SEARCH_VISIBILITY_DESCRIPTION:
+      "Make your profile visible to people searching for blood donors in your area.",
+
     ALREADY_HAVE_ACCOUNT: "Already have an account?",
-    
+
     FULL_NAME_TOO_SHORT: "Enter your full name (min 3 characters)",
     INVALID_EMAIL: "Enter a valid email address",
     PHONE_REQUIRED: "Enter your mobile number",
     PHONE_START_WITH_07: "Phone number must start with 07",
-    PHONE_10_DIGITS: "Phone number must be exactly 10 digits",
+    PHONE_10_DIGITS: "Phone number must be exactly 10 digits.",
     SELECT_BLOOD_GROUP: "Select your blood group",
     LOCATION_TOO_SHORT: "Enter your location (min 3 characters)",
     SELECT_PROVINCE: "Select your province",
-    
+
     PERMISSION_DENIED: "Permission Denied",
-    LOCATION_PERMISSION_REQUIRED: "Location permission is required to get your current location. Please enable it in your device settings.",
+    LOCATION_PERMISSION_REQUIRED:
+      "Location permission is required to get your current location. Please enable it in your device settings.",
     LOCATION_FOUND: "Location Found",
-    COORDINATES_SAVED_MANUAL_LOCATION: "Coordinates saved successfully, but could not get exact address. You can manually enter your location.",
+    COORDINATES_SAVED_MANUAL_LOCATION:
+      "Coordinates saved successfully, but we could not get the exact address. You can manually enter your location.",
     LOCATION_ERROR: "Location Error",
-    UNABLE_GET_LOCATION: "Unable to get your current location. Please make sure location services are enabled and try again.",
-    
+    UNABLE_GET_LOCATION:
+      "Unable to get your current location. Please make sure location services are enabled and try again.",
+
     FAILED_TAKE_PHOTO: "Failed to take photo: ",
     FAILED_SELECT_IMAGE: "Failed to select image: ",
-    
+
     REGISTRATION_FAILED: "Registration Failed",
-    REGISTRATION_SUCCESSFUL: "Registration Successful! 🎉",
-    THANK_YOU_JOINING: "Thank you for joining our blood donor community. You can now save lives!",
+    REGISTRATION_SUCCESSFUL: "Registration successful! 🎉",
+    THANK_YOU_JOINING:
+      "Thank you for joining our blood donor community. You can now help people who need blood donations!",
     GET_STARTED: "Get Started",
     TRY_AGAIN_LATER: "Please try again later.",
     CHECK_CONNECTION_TRY_AGAIN: "Please check your connection and try again.",
     OK: "OK",
     PROVINCE: "Province",
-    LOCATION: "Location", 
+    LOCATION: "Location",
     COORDINATES: "Coordinates",
     SEARCH: "Search",
     VISIBILITY: "Visibility",
@@ -151,15 +155,17 @@ export const translations = {
     CHECK_EMAIL_FOR_INSTRUCTIONS: "Check your email for reset instructions",
     SEND_RESET_LINK: "Send Reset Link",
     RESET_LINK_SENT: "Reset Link Sent!",
-    CHECK_EMAIL_INSTRUCTIONS: "Please check your email for password reset instructions.",
+    CHECK_EMAIL_INSTRUCTIONS:
+      "Please check your email for password reset instructions.",
     CHECK_YOUR_EMAIL: "Check Your Email",
     WE_SENT_INSTRUCTIONS_TO: "We've sent password reset instructions to",
     RESEND_EMAIL: "Resend Email",
     BACK_TO_LOGIN: "Back to Login",
-    
+
     // Validation and Error Messages
     FAILED_SEND_RESET_LINK: "Failed to send reset link",
-    FAILED_SEND_RESET_LINK_TRY_AGAIN: "Failed to send reset link. Please try again.",
+    FAILED_SEND_RESET_LINK_TRY_AGAIN:
+      "Failed to send reset link. Please try again.",
     NO_ACCOUNT_WITH_EMAIL: "No account found with this email address.",
     CHECK_EMAIL_TRY_AGAIN: "Please check your email address and try again.",
     FAILED: "Failed",
@@ -169,8 +175,7 @@ export const translations = {
     CLEAR_ALL: "Clear All",
     APPLY_FILTERS: "Apply Filters",
     SORT_BY: "Sort By",
-    
-    // Sort Options (you'll need to update your SORT_OPTIONS array to use these keys)
+
     SORT_NAME_ASC: "Name (A-Z)",
     SORT_NAME_DESC: "Name (Z-A)",
     SORT_DISTANCE: "Distance",
@@ -178,11 +183,13 @@ export const translations = {
     SORT_RECENT: "Most Recent",
     SORT_BLOOD_TYPE: "Blood Type",
 
-    UNABLE_TO_GET_LOCATION: "Unable to get your location. Please try again.",
+    UNABLE_TO_GET_LOCATION:
+      "Unable to get your location. Please try again.",
     FAILED_TO_LOAD_FILTERS: "Failed to load filter options",
     FAILED_TO_FETCH_DONORS: "Failed to fetch donors",
     CONNECTION_ERROR: "Connection Error",
-    CHECK_INTERNET_CONNECTION: "Please check your internet connection and try again.",
+    CHECK_INTERNET_CONNECTION:
+      "Please check your internet connection and try again.",
     DONOR_DETAILS: "Donor Details",
     LAST_DONATION: "Last Donation",
     DISTANCE: "Distance",
@@ -194,7 +201,8 @@ export const translations = {
     CALL: "Call",
     CANNOT_MAKE_CALLS: "Your device cannot make phone calls.",
     LOADING_MORE_DONORS: "Loading more donors...",
-    SEARCH_DONORS_PLACEHOLDER: "Search donors by name, blood type, or location...",
+    SEARCH_DONORS_PLACEHOLDER:
+      "Search donors by name, blood type, or location...",
     SORT: "Sort",
     FILTER: "Filter",
     FINDING: "Finding...",
@@ -202,35 +210,40 @@ export const translations = {
     FINDING_NEARBY_DONORS: "Finding nearby donors...",
     LOADING_DONORS: "Loading donors...",
     NO_DONORS_NEAR_LOCATION: "No donors found near your location",
-    NO_DONORS_MATCHING_SEARCH: "No donors found matching your search criteria",
+    NO_DONORS_MATCHING_SEARCH:
+      "No donors found matching your search criteria",
     NO_DONORS_AVAILABLE: "No donors available at the moment",
     UNKNOWN: "Unknown",
-    NEVER_DONATED: "Never Donated",
+    NEVER_DONATED: "Never donated",
     UPDATE_PROFILE_PHOTO: "Update Profile Photo",
     REMOVE_PHOTO: "Remove Photo",
     SUCCESS: "Success",
     PROFILE_UPDATED_SUCCESS: "Profile updated successfully!",
     UPDATE_FAILED: "Update Failed",
     VERIFICATION_FAILED: "Verification Failed",
-    FAILED_SEND_VERIFICATION: "Failed to send verification email. Please try again.",
+    FAILED_SEND_VERIFICATION:
+      "Failed to send verification email. Please try again.",
     VERIFICATION_SENT: "Verification Sent",
-    VERIFICATION_EMAIL_SENT: "A verification email has been sent to your email address. Please check your inbox and follow the instructions to verify your account.",
-    FILL_ALL_DONATION_FIELDS: "Please fill all required donation fields.",
+    VERIFICATION_EMAIL_SENT:
+      "A verification email has been sent to your email address. Please check your inbox and follow the instructions to verify your account.",
+    FILL_ALL_DONATION_FIELDS:
+      "Please fill all required donation fields.",
     ENTER_BLOOD_AMOUNT: "Please enter blood amount",
-    BLOOD_AMOUNT_RANGE: "Blood amount must be between 1-1000 ml",
+    BLOOD_AMOUNT_RANGE: "Blood amount must be between 1–1000 ml",
     FAILED_RECORD_DONATION: "Failed to record donation.",
     DONATION_RECORDED_SUCCESS: "Blood donation recorded successfully!",
-    CAN_DONATE_IN_DAYS: "You can donate blood again in {{days}} ",
+    CAN_DONATE_IN_DAYS: "You can donate blood again in {{days}} days.",
     ELIGIBLE_TO_DONATE: "You are eligible to donate blood now!",
     DONATION_STATUS: "Donation Status",
     ACCOUNT_VERIFIED: "Email Verified",
     VERIFY_YOUR_ACCOUNT: "Verify Your \nEmail",
-    TRUSTED_DONOR: "Trusted donor",
+    TRUSTED_DONOR: "Trusted Donor",
     INCREASE_CREDIBILITY: "Increase your credibility",
     VERIFIED: "Verified",
     VERIFY_NOW: "Verify Now",
     PERSONAL_INFORMATION: "Personal Information",
-    NEW_PASSWORD_OPTIONAL: "New Password (leave empty to keep current)",
+    NEW_PASSWORD_OPTIONAL:
+      "New Password (leave empty to keep current)",
     BLOOD_LOCATION_INFORMATION: "Blood & Location Information",
     UPDATE_LOCATION_COORDINATES: "Update Location Coordinates",
     RECORD_BLOOD_DONATION: "Record Blood Donation",
@@ -238,39 +251,45 @@ export const translations = {
     SELECT_DONATION_DATE: "Select donation date",
     BLOOD_AMOUNT_ML: "Blood Amount (ml)",
     DONATION_LOCATION: "Donation Location",
-    DONATION_LOCATION_PLACEHOLDER: "e.g., Red Cross Center, City Hospital",
+    DONATION_LOCATION_PLACEHOLDER:
+      "e.g., Red Cross Center, City Hospital",
     NOTES_OPTIONAL: "Notes (Optional)",
-    NOTES_PLACEHOLDER: "Any additional notes about your donation...",
+    NOTES_PLACEHOLDER:
+      "Any additional notes about your donation...",
     COOLDOWN_PERIOD: "Cooldown Period",
     MONTHS: "months",
     FIXED: "fixed",
-    COOLDOWN_PERIOD_DESCRIPTION: "Standard waiting period between blood donations. You will be automatically available for donation search after this period.",
+    COOLDOWN_PERIOD_DESCRIPTION:
+      "Typical waiting period between blood donations. Always follow advice from your local health professionals.",
     RECORD_DONATION: "Record Donation",
     DONATION_RECORD_UNAVAILABLE: "Donation Record Unavailable",
-    CAN_RECORD_NEXT_DONATION_AFTER: "You can record your next blood donation after",
-    THANK_YOU_RECENT_DONATION: "Thank you for your recent donation!",
+    CAN_RECORD_NEXT_DONATION_AFTER:
+      "You can record your next blood donation after",
+    THANK_YOU_RECENT_DONATION:
+      "Thank you for your recent donation!",
     LOCATION_AT_COORDINATES: "Location at {{lat}}, {{lng}}",
     NEWS: 'News',
     LATEST_UPDATES: 'Latest Updates',
     READ_MORE: 'Read More',
-    LOADING_NEWS: 'Loading News...',
+    LOADING_NEWS: 'Loading news...',
     LOADING_MORE_NEWS: 'Loading more news...',
     CHECK_BACK_LATER: 'Check back later for updates',
     NO_NEWS_AVAILABLE: 'No news available at the moment',
-
 
     OUR_STORY: 'Our Story',
     BLOOD_BANK_APP: 'Blood Bank App',
     SAVING_LIVES: 'Connecting Donors and Community',
     OUR_PROJECT: 'Our Project',
-    PROJECT_DESCRIPTION: 'This app is the final project of Computer Science students. It was created to provide a simple digital platform for Afghanistan where voluntary blood donors can share their information and people can more easily find matching donors in their area. Saba University supported the development of this app as an educational and community-connectivity project.',
+    PROJECT_DESCRIPTION:
+      'This app is the final project of Computer Science students. It was created to provide a simple digital platform for Afghanistan where voluntary blood donors can share their information and people can more easily find matching donors in their area. Saba University supported the development of this app as an educational and community-connection project.',
     DEVELOPMENT_TEAM: 'Development Team',
     COMPUTER_SCIENCE_STUDENTS: 'Computer Science Students',
     GUIDANCE_TEACHER: 'Guidance Teacher',
     PROJECT_SUPERVISOR: 'Project Supervisor',
     CONTACT_INFO: 'Contact Information',
     OUR_MISSION: 'Our Purpose',
-    MISSION_STATEMENT: 'To offer an easy-to-use communication platform that helps voluntary blood donors and community members connect and organize blood donations through official health centers.',
+    MISSION_STATEMENT:
+      'To offer an easy-to-use communication platform that helps voluntary blood donors and community members connect and organize blood donations through official health centers.',
     SAVING_LIVES_TOGETHER: 'Working Together for the Community',
     LIFE_SAVER: 'Community Support Platform',
     EXCELLENCE_IN_EDUCATION: 'Excellence in Education',
@@ -280,8 +299,10 @@ export const translations = {
     YEAR: 'Year',
     LIVES_IMPACTED: 'People Reached',
     UNIVERSITY_WEBSITE: 'University Website',
-    TEACHER_BIO: 'Providing guidance and mentorship for student technology projects',
-    MISSION_QUOTE: 'Using technology to support our communities in an organized way',
+    TEACHER_BIO:
+      'Providing guidance and mentorship for student technology projects',
+    MISSION_QUOTE:
+      'Using technology to support our communities in an organized way',
     SABA_UNIVERSITY: 'Saba University',
     COMPUTER_SCIENCE: 'Computer Science',
     SAFE_TIMELY: 'Safe & Timely',
@@ -296,34 +317,47 @@ export const translations = {
     SHARE: 'Share',
     NO_INTERNET: "No Internet Connection",
     YOU_ARE_OFFLINE: "You are offline",
-    CHECKING_CONNECTION: "Checking Connection",
-    PLEASE_WAIT: "Please wait while we check your internet connection",
-    CONNECTION_ISSUE: "Connection Issue Detected",
-    CHECK_CONNECTION_AND_TRY_AGAIN: "Make sure Wi-Fi or mobile data is turned on, then try again",
-    RESTART_DEVICE_OR_CHECK_SETTINGS: "You can also try restarting your device or checking network settings",
+    CHECKING_CONNECTION: "Checking connection",
+    PLEASE_WAIT:
+      "Please wait while we check your internet connection",
+    CONNECTION_ISSUE: "Connection issue detected",
+    CHECK_CONNECTION_AND_TRY_AGAIN:
+      "Make sure Wi-Fi or mobile data is turned on, then try again.",
+    RESTART_DEVICE_OR_CHECK_SETTINGS:
+      "You can also try restarting your device or checking network settings.",
     DELETE_MY_ACCOUNT: "Delete My Account",
     DELETE_ACCOUNT: "Delete Account",
-    DELETE_ACCOUNT_CONFIRMATION: "Are you sure you want to delete your account? This action cannot be undone.",
-    DELETE_ACCOUNT_WARNING: "This will submit a request to delete your account. An administrator will review your request. This action cannot be undone.",
+    DELETE_ACCOUNT_CONFIRMATION:
+      "Are you sure you want to delete your account? This action cannot be undone.",
+    DELETE_ACCOUNT_WARNING:
+      "This will submit a request to delete your account. An administrator will review your request. This action cannot be undone.",
     REASON_FOR_DELETION: "Reason for deletion",
-    ENTER_REASON_PLACEHOLDER: "Please tell us why you want to delete your account...",
+    ENTER_REASON_PLACEHOLDER:
+      "Please tell us why you want to delete your account...",
     DELETE_REQUEST_SUBMITTED: "Request Submitted",
-    DELETE_REQUEST_SUCCESS_MESSAGE: "Your account deletion request has been submitted. An admin will review it shortly.",
+    DELETE_REQUEST_SUCCESS_MESSAGE:
+      "Your account deletion request has been submitted. An admin will review it shortly.",
     DELETE_REQUEST_FAILED: "Failed to submit deletion request.",
-    DELETE_ACCOUNT_REASON_REQUIRED: "Please provide a reason for deleting your account.",
+    DELETE_ACCOUNT_REASON_REQUIRED:
+      "Please provide a reason for deleting your account.",
     CONTINUE: "Continue",
     CANCEL_DELETION_REQUEST: "Cancel Deletion Request",
-    CANCEL_DELETION_CONFIRMATION: "Are you sure you want to cancel your account deletion request?",
+    CANCEL_DELETION_CONFIRMATION:
+      "Are you sure you want to cancel your account deletion request?",
     YES_CANCEL: "Yes, Cancel",
     DELETION_REQUEST_CANCELLED: "Request Cancelled",
-    DELETION_REQUEST_CANCELLED_MESSAGE: "Your account deletion request has been cancelled.",
-    CANCEL_DELETION_FAILED: "Failed to cancel deletion request.",
+    DELETION_REQUEST_CANCELLED_MESSAGE:
+      "Your account deletion request has been cancelled.",
+    CANCEL_DELETION_FAILED:
+      "Failed to cancel deletion request.",
     PENDING_DELETION_WARNING: "⏳ Account deletion pending",
     NO: "No",
-    WHATSAPP_NOT_INSTALLED: "WhatsApp is not installed or cannot be opened.",
+    WHATSAPP_NOT_INSTALLED:
+      "WhatsApp is not installed or cannot be opened.",
     RATING: "Rating",
     RATE_DONOR: "Rate Donor",
-    HOW_WAS_YOUR_EXPERIENCE: "How was your experience with this donor?",
+    HOW_WAS_YOUR_EXPERIENCE:
+      "How was your experience with this donor?",
     SELECT_RATING: "Select your rating",
     STAR: "star",
     STARS: "stars",
@@ -333,12 +367,15 @@ export const translations = {
     SUBMITTING: "Submitting...",
     PLEASE_SELECT_RATING: "Please select a rating",
     RATING_SUBMITTED: "Thank you for your rating!",
-    RATING_SUBMISSION_FAILED: "Failed to submit rating. Please try again.",
+    RATING_SUBMISSION_FAILED:
+      "Failed to submit rating. Please try again.",
     UNSAVED_CHANGES: "Unsaved Changes",
-    RATING_NOT_SAVED_CONFIRM: "Your rating will not be saved. Are you sure?",
+    RATING_NOT_SAVED_CONFIRM:
+      "Your rating will not be saved. Are you sure?",
     DISCARD: "Discard",
     CONTACT_DONOR: "Contact Donor",
-    CONTACT_DONOR_CONFIRMATION: "Contact {{name}} at {{phone}}?",
+    CONTACT_DONOR_CONFIRMATION:
+      "Contact {{name}} at {{phone}}?",
     RATINGS: "Ratings",
     DONOR_NOT_FOUND: "Donor not found",
     SORT_RATING: "Sort Rating",
