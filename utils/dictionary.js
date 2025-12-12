@@ -27,6 +27,7 @@ export const translations = {
     APP_VERSION: 'App Version',
     TERMS_OF_SERVICE: 'Terms of Service',
 
+    
     // Contact Us Screen
     FULL_NAME: 'Full Name',
     EMAIL: 'Email',
