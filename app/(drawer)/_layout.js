@@ -24,7 +24,7 @@ const {drawer : styles} = globalStyle
 const LANGUAGES = [
   { code: 'en', label: 'English', rtl: false, short: 'EN' },
   { code: 'ps', label: 'پښتو',   rtl: true,  short: 'PS' },
-  { code: 'pa', label: 'پارسی',  rtl: true,  short: 'PA' },
+  { code: 'pa', label: 'فارسی',  rtl: true,  short: 'PA' },
 ];
 
 export default function DrawerLayout() {
