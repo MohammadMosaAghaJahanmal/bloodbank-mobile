@@ -344,6 +344,7 @@ function CustomDrawerContent(props) {
           </View>
         </View>
       </View>
+
       <DrawerContentScrollView
         {...props}
         contentContainerStyle={{ 
