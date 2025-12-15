@@ -399,7 +399,6 @@ function CustomDrawerContent(props) {
           </View>
         </Section>
 
-        {/* Main menu - Show profile only when logged in */}
         {user && (
           <Section isRTL={isRTL}>
             <MenuItem
