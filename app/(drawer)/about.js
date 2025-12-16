@@ -299,7 +299,6 @@ const AboutUsScreen = () => {
 
 export default AboutUsScreen;
 
-/* ----------------------------- STYLES ----------------------------- */
 
 const baseRadius = 14;
 const gap = 14;
