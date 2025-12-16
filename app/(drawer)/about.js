@@ -245,6 +245,7 @@ const AboutUsScreen = () => {
             </View>
             <Ionicons name={isRTL ? 'chevron-back' : 'chevron-forward'} size={18} color={COLORS.muted} />
           </Pressable> */}
+          
 
           <View style={rstyles.divider} />
 
