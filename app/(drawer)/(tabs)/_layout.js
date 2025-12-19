@@ -43,21 +43,21 @@ export default function TabsLayout() {
       <Tabs.Screen 
         name="login" 
         options={{ 
-          href: null,
+          href: null, // Hide from tab bar.
           headerShown: true,
         }} 
       />
       <Tabs.Screen 
         name="register" 
         options={{ 
-          href: null,
+          href: null, // Hide from tab bar.
           headerShown: true,
         }} 
       />
       <Tabs.Screen 
         name="forgot-password" 
         options={{ 
-          href: null,
+          href: null, // Hide from tab bar.
           headerShown: true,
         }} 
       />
