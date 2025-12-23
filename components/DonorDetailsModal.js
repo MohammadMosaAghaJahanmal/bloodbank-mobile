@@ -232,11 +232,11 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     alignItems: 'center',
   },
-  closeActionText: {
-    color: COLORS.white,
-    fontSize: 16,
-    fontWeight: '600',
-  },
+  // closeActionText: {
+  //   color: COLORS.white,
+  //   fontSize: 16,
+  //   fontWeight: '600',
+  // },
 });
 
 export default DonorDetailsModal;
