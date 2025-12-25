@@ -40,7 +40,7 @@ export const COLORS = {
 };
 
 const TABCOLORS = {
-  primary: '#E73C3C',
+  primary: '#E73C3C', // header red
   text: '#FFFFFF',
   muted: 'rgba(255,255,255,0.7)',
   barBg: '#FFFFFF',
