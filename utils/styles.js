@@ -48,6 +48,7 @@ const TABCOLORS = {
 };
 
 
+
 export const globalStyle = StyleSheet.create(
   {
   capitalize: {textTransform: "capitalize"},
