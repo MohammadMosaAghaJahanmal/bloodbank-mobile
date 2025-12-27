@@ -46,7 +46,6 @@ const TABCOLORS = {
   shadow: '#000000',
 };
 
-
 export const globalStyle = StyleSheet.create(
   {
   capitalize: {textTransform: "capitalize"},
