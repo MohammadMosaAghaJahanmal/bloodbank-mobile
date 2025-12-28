@@ -370,7 +370,6 @@ const NewsScreen = () => {
           removeClippedSubviews={true}
         />
       )}
-
       {/* News Detail Modal */}
       {renderNewsModal()}
     </SafeAreaView>
