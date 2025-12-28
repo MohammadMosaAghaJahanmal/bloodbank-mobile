@@ -148,8 +148,6 @@ const NewsScreen = () => {
     setSelectedNews(null);
   };
 
-
-
   const renderNewsItem = ({ item, index }) => (
     <Animated.View
       style={[
