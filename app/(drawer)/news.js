@@ -313,7 +313,6 @@ const NewsScreen = () => {
       </View>
     </Modal>
   );
-  
 
   return (
     <SafeAreaView style={styles.safe} edges={['bottom']}>
