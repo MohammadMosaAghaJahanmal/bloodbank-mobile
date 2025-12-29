@@ -1,3 +1,4 @@
+// app_layout.js
 import bbStore from '@/store/bbStore';
 import { Stack } from 'expo-router';
 import React from 'react';
@@ -6,7 +7,6 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import AuthProvider from '../contexts/authContext';
 import { LanguageProvider } from '../contexts/LanguageContext';
 import { NetworkAwareContent, NetworkProvider } from '../contexts/NetworkContext';
-
 
 bbStore();
 
