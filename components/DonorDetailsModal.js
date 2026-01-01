@@ -57,13 +57,14 @@ const DonorDetailsModal = ({ visible, donor, onClose, t }) => {
               value={donor.blood}
               color={COLORS.primary}
             />
-            
+
             {/* Location */}
             <DetailItem
               icon="location"
               label={t('LOCATION')}
               value={donor.location}
             />
+            
             {/* Last Donation */}
             <DetailItem
               icon="calendar"
