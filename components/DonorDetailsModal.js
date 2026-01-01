@@ -71,13 +71,14 @@ const DonorDetailsModal = ({ visible, donor, onClose, t }) => {
               label={t('LAST_DONATION')}
               value={donor.lastDonation === "Never Donated" ? t("NEVER_DONATED") : donor.lastDonation}
             />
-            
+
             {/* Distance */}
             <DetailItem
               icon="navigate"
               label={t('DISTANCE')}
               value={donor.distance === 'Unknown' ? t("UNKNOWN") : donor.distance}
             />
+            
             {/* Contact */}
             <DetailItem
               icon="call"
