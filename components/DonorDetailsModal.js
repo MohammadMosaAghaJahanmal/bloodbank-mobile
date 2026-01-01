@@ -49,6 +49,7 @@ const DonorDetailsModal = ({ visible, donor, onClose, t }) => {
           </View>
 
           <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+            
             {/* Blood Type */}
             <DetailItem
               icon="water"
