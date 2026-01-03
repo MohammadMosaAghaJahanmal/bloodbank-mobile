@@ -77,7 +77,7 @@ export default function DeleteAccountModal({ visible, onClose, onSubmit }) {
                 styles.textInput,
                 isRTL && { textAlign: 'right' }
               ]}
-              placeholder={t('ENTER_REASON_PLACEHOLDER') || 'Please tell us why you want to delete your account...'}
+              placeholder={t('ENTER_REASON_PLACEHOLDER') || 'Please tell us why you want to delete your account.'}
               placeholderTextColor={COLORS.muted}
               value={reason}
               onChangeText={setReason}
