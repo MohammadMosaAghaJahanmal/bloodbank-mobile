@@ -19,6 +19,7 @@ const ProvinceDropdown = ({setTouched, setProvince, touched, province}) => {
       }
     };
   
+    // Get selected province display name
     const getSelectedProvinceName = () => {
       if (!province) return '';
       const selectedProvince = AFGHANISTAN_PROVINCES.find(p => p.id === province);
