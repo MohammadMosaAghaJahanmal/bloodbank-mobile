@@ -10,7 +10,6 @@ const ProvinceDropdown = ({setTouched, setProvince, touched, province}) => {
     const [showProvinceDropdown, setShowProvinceDropdown] = useState(false);
     const styles = createRTLStyles(globalStyle);
 
-    // Get province name based on current language
     const getProvinceName = (provinceData) => {
       switch (currentLocale) {
         case 'ps': return provinceData.ps;
