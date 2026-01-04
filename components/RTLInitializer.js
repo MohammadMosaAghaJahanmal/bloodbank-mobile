@@ -19,7 +19,6 @@ export default function RTLInitializer({ children }) {
       }
 
       setTimeout(() => {
-        // Force a re-render by updating a state if needed
       }, 100);
     }
   }, [isRTL, isReady]);
