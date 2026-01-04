@@ -10,7 +10,6 @@ export default function RTLInitializer({ children }) {
     if (isReady) {
       console.log('Applying RTL Settings:', { isRTL, platform: Platform.OS });
       
-      // Force RTL settings - this is crucial
       I18nManager.forceRTL(isRTL);
       I18nManager.allowRTL(isRTL);
       
