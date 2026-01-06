@@ -12,7 +12,6 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { t } from '../utils/i18n';
 import { COLORS, globalStyle } from '../utils/styles';
 
-
 const { drawer: styles } = globalStyle;
 
 export default function DeleteAccountModal({ visible, onClose, onSubmit }) {
