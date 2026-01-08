@@ -1,6 +1,7 @@
 import { Text, TextInput, View } from "react-native";
 import { COLORS } from '../utils/styles';
 
+
 const Input = function Input({
   label,
   value,
@@ -55,6 +56,7 @@ const Input = function Input({
           writingDirection={writingDirection}
           autoCorrect={false}
           spellCheck={false}
+          // Multiline props
           multiline={multiline}
           numberOfLines={multiline ? numberOfLines : undefined}
           textAlignVertical={multiline ? textAlignVertical : 'center'}
