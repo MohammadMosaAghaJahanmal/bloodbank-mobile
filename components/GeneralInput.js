@@ -1,7 +1,6 @@
 import { Text, TextInput, View } from "react-native";
 import { COLORS } from '../utils/styles';
 
-
 const Input = function Input({
   label,
   value,
