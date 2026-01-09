@@ -56,6 +56,7 @@ const Input = function Input({
           writingDirection={writingDirection}
           autoCorrect={false}
           spellCheck={false}
+          // Multiline props
           multiline={multiline}
           numberOfLines={multiline ? numberOfLines : undefined}
           textAlignVertical={multiline ? textAlignVertical : 'center'}
