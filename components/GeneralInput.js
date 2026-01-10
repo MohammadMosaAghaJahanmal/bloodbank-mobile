@@ -61,6 +61,7 @@ const Input = function Input({
           numberOfLines={multiline ? numberOfLines : undefined}
           textAlignVertical={multiline ? textAlignVertical : 'center'}
           // Helpful extras
+          
           onSubmitEditing={onSubmitEditing}
           blurOnSubmit={!multiline} // Don't blur on submit when multiline
         />
