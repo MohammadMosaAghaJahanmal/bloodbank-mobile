@@ -63,6 +63,7 @@ const Input = function Input({
           // Helpful extras
           onSubmitEditing={onSubmitEditing}
           blurOnSubmit={!multiline} // Don't blur on submit when multiline
+          
         />
         {right ? <View style={[
           styles.inputRight,
