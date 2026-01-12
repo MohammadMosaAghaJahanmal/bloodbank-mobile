@@ -24,6 +24,7 @@ export default function RTLInitializer({ children }) {
     }
   }, [isRTL, isReady]);
 
+  // Don't render children until RTL is properly configured
   if (!isReady) {
     return null;
   }
