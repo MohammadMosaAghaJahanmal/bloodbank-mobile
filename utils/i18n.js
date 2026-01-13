@@ -4,7 +4,7 @@ import * as Localization from 'expo-localization';
 import { I18n } from 'i18n-js';
 import { I18nManager, Platform } from 'react-native';
 import { translations } from './dictionary';
-// Initialize i18n
+// Initialize i18n instance
 const i18n = new I18n();
 
 
