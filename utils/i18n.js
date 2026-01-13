@@ -59,7 +59,7 @@ export const safeT = (key, options = {}) => {
   try {
     return t(key, options);
   } catch (err) {
-    console.error('🌐  translation error:', err);
+    console.error('🌐 Safe translation error:', err);
     return key || 'translation_error';
   }
 };
