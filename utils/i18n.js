@@ -8,7 +8,6 @@ import { translations } from './dictionary';
 const i18n = new I18n();
 
 
-
 i18n.translations = translations;
 i18n.enableFallback = true;
 i18n.defaultLocale = 'en';
