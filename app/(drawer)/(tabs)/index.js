@@ -226,7 +226,7 @@ export default function HomeScreen() {
     }
   };
 
-  // Fetch donors from API
+  // Fetch donors from API\
   const fetchDonors = async (page = 1, reset = false, location = null) => {
     if ((reset ? loading : loadingMore)) return;
     
