@@ -1,3 +1,4 @@
+// components/ToggleSwitch.js
 import { Text, TouchableOpacity, View } from 'react-native';
 import { useRTLStyles } from '../contexts/useRTLStyles';
 import { globalStyle } from '../utils/styles';
