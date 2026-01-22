@@ -48,6 +48,9 @@ const AboutUsScreen = () => {
   const openEmail = (email) => {
     Linking.openURL(`mailto:${email}`).catch((err) => console.error('Failed to open email:', err));
   };
+  const openTel = (email) => {
+    Linking.openURL(`tel:${email}`).catch((err) => console.error('Failed to open email:', err));
+  };
 
   const renderTeamMember = (member, index) => {
     const initials = member.name
@@ -283,6 +286,24 @@ const AboutUsScreen = () => {
               <Text style={[rstyles.contactLabel, isRTL && { direction: writingDirection, marginRight: 5 }]}>{t('EMAIL_ADDRESS')}</Text>
               <Text style={[rstyles.contactValue, isRTL && { direction: writingDirection, marginRight: 5 }]} numberOfLines={1}>
                 info@saba.edu.af
+              </Text>
+            </View>
+            <Ionicons name={isRTL ? 'chevron-back' : 'chevron-forward'} size={18} color={COLORS.muted} />
+          </Pressable>
+          <Pressable
+            onPress={() => openTel('+93708092814')}
+            android_ripple={{ color: COLORS.primaryLight }}
+            style={rstyles.contactItem}
+            accessibilityRole="button"
+            accessibilityHint="Compose Phone Call"
+          >
+            <View style={rstyles.contactIcon}>
+              <Ionicons name="call-outline" size={18} color={COLORS.primary} />
+            </View>
+            <View style={rstyles.contactTextWrap}>
+              <Text style={[rstyles.contactLabel, isRTL && { direction: writingDirection, marginRight: 5 }]}>{t('MOBILE_NUMBER')}</Text>
+              <Text style={[rstyles.contactValue, isRTL && { direction: writingDirection, marginRight: 5 }]} numberOfLines={1}>
+                +93708092814
               </Text>
             </View>
             <Ionicons name={isRTL ? 'chevron-back' : 'chevron-forward'} size={18} color={COLORS.muted} />
