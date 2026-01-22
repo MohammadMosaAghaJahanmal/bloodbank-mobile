@@ -216,6 +216,26 @@ const AboutUsScreen = () => {
               </Text>
             </View>
           </View>
+          <View style={[rstyles.divider, {marginTop: 10}]} />
+
+          <Pressable
+            onPress={() => openEmail('eng.rohullahahmadi01@gmail.com')}
+            android_ripple={{ color: COLORS.primaryLight }}
+            style={rstyles.contactItem}
+            accessibilityRole="button"
+            accessibilityHint="Compose email"
+          >
+            <View style={rstyles.contactIcon}>
+              <Ionicons name="mail-outline" size={18} color={COLORS.primary} />
+            </View>
+            <View style={rstyles.contactTextWrap}>
+              <Text style={[rstyles.contactLabel, isRTL && { direction: writingDirection, marginRight: 5 }]}>{t('EMAIL_ADDRESS')}</Text>
+              <Text style={[rstyles.contactValue, isRTL && { direction: writingDirection, marginRight: 5 }]} numberOfLines={1}>
+                eng.rohullahahmadi01@gmail.com
+              </Text>
+            </View>
+            <Ionicons name={isRTL ? 'chevron-back' : 'chevron-forward'} size={18} color={COLORS.muted} />
+          </Pressable>
         </Card>
 
         {/* Contact */}
