@@ -8,7 +8,7 @@ export default function RTLInitializer({ children }) {
 
   useEffect(() => {
     if (isReady) {
-      console.log('Applying RTL settings:', { isRTL, platform: Platform.OS });
+      console.log('Applying RTL Settings:', { isRTL, platform: Platform.OS });
       
       // Force RTL settings - this is crucial
       I18nManager.forceRTL(isRTL);
