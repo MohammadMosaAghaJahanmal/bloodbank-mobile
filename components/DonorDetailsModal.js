@@ -68,7 +68,7 @@ const DonorDetailsModal = ({ visible, donor, onClose, t }) => {
             <DetailItem
               icon="calendar"
               label={t('LAST_DONATION')}
-              value={donor.lastDonation === "Never donated" ? t("NEVER_DONATED") : donor.lastDonation}
+              value={donor.lastDonation === "Never Donated" ? t("NEVER_DONATED") : donor.lastDonation}
             />
 
             {/* Distance */}
