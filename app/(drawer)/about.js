@@ -198,6 +198,7 @@ const AboutUsScreen = () => {
           </View>
         </Card>
 
+        {/* Guidance Teacher */}
         <Card>
           <View style={rstyles.sectionHeader}>
             <LinearGradient colors={[COLORS.primary, COLORS.primaryDark]} style={rstyles.sectionIcon}>
