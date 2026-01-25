@@ -60,7 +60,7 @@ export default function DeleteAccountModal({ visible, onClose, onSubmit }) {
               {t('DELETE_ACCOUNT') || 'Delete Account'}
             </Text>
             <Text style={styles.modalSubtitle}>
-              {t('DELETE_ACCOUNT_CONFIRMATION') || 'Are you sure you want to delete your account? This action cannot be undone.'}
+              {t('DELETE_ACCOUNT_CONFIRMATION') || 'Are You Sure you want to delete your account? This action cannot be undone.'}
             </Text>
           </View>
 
