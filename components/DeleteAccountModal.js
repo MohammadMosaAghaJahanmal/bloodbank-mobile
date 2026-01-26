@@ -34,7 +34,7 @@ export default function DeleteAccountModal({ visible, onClose, onSubmit }) {
       setReason('');
       onClose();
     } catch (error) {
-      console.error('Error submitting delete request:', error);
+      console.error('Error Submitting Delete Request:', error);
     } finally {
       setIsSubmitting(false);
     }
