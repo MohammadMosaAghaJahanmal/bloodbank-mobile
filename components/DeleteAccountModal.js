@@ -70,7 +70,7 @@ export default function DeleteAccountModal({ visible, onClose, onSubmit }) {
               styles.inputLabel,
               { textAlign: isRTL ? 'right' : 'left' }
             ]}>
-              {t('REASON_FOR_DELETION') || 'Reason for deletion'} *
+              {t('REASON_FOR_DELETION') || 'Reason For Deletion'} *
             </Text>
             <TextInput
               style={[
