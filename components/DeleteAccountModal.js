@@ -23,7 +23,7 @@ export default function DeleteAccountModal({ visible, onClose, onSubmit }) {
     if (!reason.trim()) {
       Alert.alert(
         t('REQUIRED_FIELD') || 'Required',
-        t('DELETE_ACCOUNT_REASON_REQUIRED') || 'Please provide a reason for deleting your account.'
+        t('DELETE_ACCOUNT_REASON_REQUIRED') || 'Please Provide A Reason For Deleting Your Account.'
       );
       return;
     }
