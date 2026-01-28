@@ -8,6 +8,7 @@ import {
   Animated,
   Image,
   Linking,
+  Platform,
   Pressable,
   RefreshControl,
   Text,
@@ -726,7 +727,7 @@ export default function HomeScreen() {
           initialNumToRender={10}
           maxToRenderPerBatch={10}
           windowSize={10}
-          removeClippedSubviews={true}
+          removeClippedSubviews={Platform.OS === 'android'}
         />
       )}
 
