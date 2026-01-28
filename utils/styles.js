@@ -986,7 +986,7 @@ export const globalStyle = StyleSheet.create(
       top: 0,
       left: 0,
       right: 0,
-      height: 190,
+      height: Platform.OS === "android" ? 190 : 205,
       backgroundColor: PRIMARY,
       borderBottomLeftRadius: 24,
       borderBottomRightRadius: 24,
