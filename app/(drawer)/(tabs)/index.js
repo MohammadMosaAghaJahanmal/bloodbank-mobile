@@ -697,7 +697,7 @@ export default function HomeScreen() {
           showsVerticalScrollIndicator={false}
           onScroll={Animated.event(
             [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-            { useNativeDriver: true }
+            { useNativeDriver: Platform.OS === "android" }
           )}
           scrollEventThrottle={16}
           refreshControl={
