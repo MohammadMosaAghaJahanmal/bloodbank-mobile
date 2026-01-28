@@ -8,10 +8,10 @@ import {
   Animated,
   Image,
   Linking,
-  Platform,
   Pressable,
   RefreshControl,
   Text,
+  Platform,
   TextInput,
   View
 } from "react-native";
