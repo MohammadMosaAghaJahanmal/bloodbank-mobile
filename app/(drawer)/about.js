@@ -1,3 +1,4 @@
+// app/screens/AboutUsScreen.js
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { memo } from 'react';
