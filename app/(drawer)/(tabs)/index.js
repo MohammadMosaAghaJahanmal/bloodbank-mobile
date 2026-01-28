@@ -8,10 +8,10 @@ import {
   Animated,
   Image,
   Linking,
-  Platform,
   Pressable,
   RefreshControl,
   Text,
+  Platform,
   TextInput,
   View
 } from "react-native";
@@ -697,7 +697,7 @@ export default function HomeScreen() {
           showsVerticalScrollIndicator={false}
           onScroll={Animated.event(
             [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-            { useNativeDriver: true }
+            { useNativeDriver: Platform.OS === "androidr" }
           )}
           scrollEventThrottle={16}
           refreshControl={
