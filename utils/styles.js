@@ -371,6 +371,7 @@ export const globalStyle = StyleSheet.create(
     shadowOffset: { width: 0, height: 4 },
     elevation: 4,
     flex: 1,
+    maxHeight: 52
   },
   disabledBtn: {
     opacity: 0.5,
