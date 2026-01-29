@@ -52,7 +52,7 @@ export const globalStyle = StyleSheet.create(
   {
   capitalize: {textTransform: "capitalize"},
   safe: { flex: 1, backgroundColor: BG },
-  container: { padding: 20, minHeight: '100%' },
+  container: { padding: 20, minHeight: '100%', paddingTop: 0 },
   stepContainer: { flex: 1 },
   header: { alignItems: 'center', marginBottom: 16 },
   title: { fontSize: 24, fontWeight: '800', color: TEXT, textAlign: 'center' },
