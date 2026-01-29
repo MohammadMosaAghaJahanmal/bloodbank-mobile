@@ -6,6 +6,7 @@ import {
   Animated,
   Image,
   Modal,
+  Platform,
   Pressable,
   RefreshControl,
   ScrollView,
@@ -341,7 +342,7 @@ const NewsScreen = () => {
           showsVerticalScrollIndicator={false}
           onScroll={Animated.event(
             [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-            { useNativeDriver: true }
+            { useNativeDriver: Platform.OS === "android" }
           )}
           scrollEventThrottle={16}
           refreshControl={
