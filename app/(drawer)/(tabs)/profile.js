@@ -35,7 +35,6 @@ export default function ProfileScreen() {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [locationLoading, setLocationLoading] = useState(false);
 
-  // Form fields - initialized with user data
   const [profileImage, setProfileImage] = useState(null);
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
