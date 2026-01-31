@@ -136,17 +136,21 @@ const AboutUsScreen = () => {
             <Text style={[rstyles.brandSubtitle, isRTL && { direction: writingDirection }]}>{t('LIFE_SAVER')}</Text>
           </Card>
 
-          <Card style={rstyles.brandCard}>
+          {Platform.OS === 'android' && ( 
+
+            
+            <Card style={rstyles.brandCard}>
             <View style={rstyles.brandLogoWrap}>
               <Image
                 source={UNIVERSITY_LOGO}
                 style={rstyles.brandLogo}
                 resizeMode="contain"
-              />
+                />
             </View>
             <Text style={[rstyles.brandTitle, isRTL && { direction: writingDirection }]}>{t('SABA_UNIVERSITY')}</Text>
             <Text style={[rstyles.brandSubtitle, isRTL && { direction: writingDirection }]}>{t('EXCELLENCE_IN_EDUCATION')}</Text>
           </Card>
+          )}
         </View>
 
         {/* Project */}
@@ -242,6 +246,8 @@ const AboutUsScreen = () => {
         </Card>
 
         {/* Contact */}
+          {Platform.OS === 'android' && (
+
         <Card>
           <View style={rstyles.sectionHeader}>
             <LinearGradient colors={[COLORS.primary, COLORS.primaryDark]} style={rstyles.sectionIcon}>
@@ -309,6 +315,7 @@ const AboutUsScreen = () => {
             <Ionicons name={isRTL ? 'chevron-back' : 'chevron-forward'} size={18} color={COLORS.muted} />
           </Pressable>
         </Card>
+        )}
 
         {/* Mission */}
         <LinearGradient
@@ -317,14 +324,17 @@ const AboutUsScreen = () => {
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
         >
-          <View style={rstyles.missionIconWrap}>
-            {/* <Ionicons name="heart" size={28} color="#fff" /> */}
-            <Image
-              source={CS_LOGO}
-              style={rstyles.brandLogo}
-              resizeMode="contain"
-            />
-          </View>
+          {Platform.OS === 'android' && (
+
+            <View style={rstyles.missionIconWrap}>
+              {/* <Ionicons name="heart" size={28} color="#fff" /> */}
+              <Image
+                source={CS_LOGO}
+                style={rstyles.brandLogo}
+                resizeMode="contain"
+                />
+            </View>
+            )}
           <Text style={[rstyles.missionTitle, isRTL && { direction: writingDirection, marginRight: 5 }]}> {t('OUR_MISSION')}</Text>
           <Text style={[rstyles.missionText, isRTL && { direction: writingDirection, marginRight: 5 }]}>{t('MISSION_STATEMENT')}</Text>
           <View style={rstyles.missionDivider} />
