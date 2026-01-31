@@ -283,7 +283,8 @@ export default function RegisterScreen() {
   const handleNextStep = () => {
     if (step === 1 && isStep1Valid) {
       setStep(2);
-      getCurrentLocation()
+      if(Platform.OS === "android")
+        getCurrentLocation()
     }
   };
 
