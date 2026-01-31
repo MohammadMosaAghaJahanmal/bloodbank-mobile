@@ -154,6 +154,8 @@ const AboutUsScreen = () => {
         </View>
 
         {/* Project */}
+          {Platform.OS === 'android' && (<>
+
         <Card>
           <View style={rstyles.sectionHeader}>
             <LinearGradient colors={[COLORS.primary, COLORS.primaryDark]} style={rstyles.sectionIcon}>
@@ -168,14 +170,10 @@ const AboutUsScreen = () => {
           <Text style={[rstyles.body, isRTL && { direction: writingDirection }]}>{t('PROJECT_DESCRIPTION')}</Text>
 
           <View style={rstyles.statsRow}>
-          {Platform.OS === 'android' && (
-
-            
             <View style={rstyles.statItem}>
               <Text style={rstyles.statNumber}>5</Text>
               <Text style={[rstyles.statLabel, isRTL && { direction: writingDirection, textAlign: "center" }]}>{t('DEVELOPERS')}</Text>
             </View>
-            )}
             <View style={rstyles.statDivider} />
             <View style={rstyles.statItem}>
               <Text style={rstyles.statNumber}>1</Text>
@@ -188,7 +186,6 @@ const AboutUsScreen = () => {
             </View>
           </View>
         </Card>
-          {Platform.OS === 'android' && (<>
 
         {/* Team */}
         <Card>
