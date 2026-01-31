@@ -168,10 +168,14 @@ const AboutUsScreen = () => {
           <Text style={[rstyles.body, isRTL && { direction: writingDirection }]}>{t('PROJECT_DESCRIPTION')}</Text>
 
           <View style={rstyles.statsRow}>
+          {Platform.OS === 'android' && (
+
+            
             <View style={rstyles.statItem}>
               <Text style={rstyles.statNumber}>5</Text>
               <Text style={[rstyles.statLabel, isRTL && { direction: writingDirection, textAlign: "center" }]}>{t('DEVELOPERS')}</Text>
             </View>
+            )}
             <View style={rstyles.statDivider} />
             <View style={rstyles.statItem}>
               <Text style={rstyles.statNumber}>1</Text>
@@ -184,6 +188,7 @@ const AboutUsScreen = () => {
             </View>
           </View>
         </Card>
+          {Platform.OS === 'android' && (<>
 
         {/* Team */}
         <Card>
@@ -246,7 +251,6 @@ const AboutUsScreen = () => {
         </Card>
 
         {/* Contact */}
-          {Platform.OS === 'android' && (
 
         <Card>
           <View style={rstyles.sectionHeader}>
@@ -315,6 +319,7 @@ const AboutUsScreen = () => {
             <Ionicons name={isRTL ? 'chevron-back' : 'chevron-forward'} size={18} color={COLORS.muted} />
           </Pressable>
         </Card>
+          </>
         )}
 
         {/* Mission */}
