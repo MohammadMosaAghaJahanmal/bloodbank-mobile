@@ -17,17 +17,17 @@ const useStore = (shouldRender = true) =>
     let newState = actions[type](payload, globalState);
     globalState = {...globalState, ...newState};
     listeners.forEach(listener => {
-        listener(globalState)
+      listener(globalState)
     });
   }
   
   useEffect(() =>
   {
     if (shouldRender)
-        listeners.push(setState);
+      listeners.push(setState);
     return () => {
-        if (shouldRender)
-            listeners = listeners.filter((listener) => listener !== setState);
+      if (shouldRender)
+      listeners = listeners.filter((listener) => listener !== setState);
     }
 
   }, [setState, shouldRender])
