@@ -14,21 +14,21 @@ const useStore = (shouldRender = true) =>
   const dispatch = (type, payload) =>
   {
       
-      let newState = actions[type](payload, globalState);
-      globalState = {...globalState, ...newState};
-      listeners.forEach(listener => {
-          listener(globalState)
-      });
+    let newState = actions[type](payload, globalState);
+    globalState = {...globalState, ...newState};
+    listeners.forEach(listener => {
+        listener(globalState)
+    });
   }
   
   useEffect(() =>
   {
-      if (shouldRender)
-          listeners.push(setState);
-      return () => {
-          if (shouldRender)
-              listeners = listeners.filter((listener) => listener !== setState);
-      }
+    if (shouldRender)
+        listeners.push(setState);
+    return () => {
+        if (shouldRender)
+            listeners = listeners.filter((listener) => listener !== setState);
+    }
 
   }, [setState, shouldRender])
   
@@ -39,7 +39,7 @@ export const initState = (action, initialState) =>
 {
   if(initialState)
   {
-      globalState = {...globalState, ...initialState};
+    globalState = {...globalState, ...initialState};
   }
   actions = {...actions, ...action};
 }
