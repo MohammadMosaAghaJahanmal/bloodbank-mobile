@@ -1,13 +1,11 @@
 import { useEffect, useState } from "react";
 
-
 let globalState = {
     donors: [],
     news: [],
 };
 let actions = {};
 let listeners = [];
-
 
 const useStore = (shouldRender = true) =>
 {
@@ -37,7 +35,6 @@ const useStore = (shouldRender = true) =>
     return [globalState, dispatch];
 }
 
-
 export const initState = (action, initialState) =>
 {
     if(initialState)
@@ -46,6 +43,5 @@ export const initState = (action, initialState) =>
     }
     actions = {...actions, ...action};
 }
-
 
 export default useStore;
