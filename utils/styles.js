@@ -2373,8 +2373,6 @@ about: (writingDirection) => ({
     brandTitle: { color: COLORS.text, fontWeight: '700', fontSize: 14 },
     brandSubtitle: { color: COLORS.textLight, fontSize: 12, marginTop: 2, textAlign: "center" },
 
-    /* Section header */
-    
     sectionHeader: { flexDirection: 'row', alignItems: 'center', marginBottom: 12 },
     sectionIcon: {
       width: 36,
