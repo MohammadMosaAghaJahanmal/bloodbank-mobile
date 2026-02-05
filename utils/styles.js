@@ -2411,7 +2411,6 @@ about: (writingDirection) => ({
     /* Team */
     teamGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10, marginTop: 4 },
     memberCard: {
-      // width: (SCREEN_WIDTH - side * 2 - 10) / 2, // 2 columns
       width: "100%", // 2 columns
       backgroundColor: COLORS.bg,
       borderRadius: 12,
