@@ -2452,7 +2452,7 @@ about: (writingDirection) => ({
     teacherBio: { color: COLORS.textLight, marginTop: 6, lineHeight: 20, fontSize: 13 },
 
     /* Contact */
-    
+
     contactItem: { flexDirection: 'row', alignItems: 'center', paddingVertical: 12 },
     contactIcon: {
       width: 36,
@@ -2472,6 +2472,7 @@ about: (writingDirection) => ({
     divider: { height: 1, backgroundColor: COLORS.divider },
 
     /* Mission */
+    
     mission: {
       marginTop: 2,
       borderRadius: baseRadius,
