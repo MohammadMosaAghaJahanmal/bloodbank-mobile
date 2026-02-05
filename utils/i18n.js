@@ -7,7 +7,6 @@ import { translations } from './dictionary';
 // Initialize i18n instance
 const i18n = new I18n();
 
-
 i18n.translations = translations;
 i18n.enableFallback = true;
 i18n.defaultLocale = 'en';
