@@ -2374,6 +2374,7 @@ about: (writingDirection) => ({
     brandSubtitle: { color: COLORS.textLight, fontSize: 12, marginTop: 2, textAlign: "center" },
 
     /* Section header */
+    
     sectionHeader: { flexDirection: 'row', alignItems: 'center', marginBottom: 12 },
     sectionIcon: {
       width: 36,
@@ -2472,7 +2473,7 @@ about: (writingDirection) => ({
     divider: { height: 1, backgroundColor: COLORS.divider },
 
     /* Mission */
-    
+
     mission: {
       marginTop: 2,
       borderRadius: baseRadius,
