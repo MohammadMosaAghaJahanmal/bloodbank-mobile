@@ -39,6 +39,7 @@ export const COLORS = {
   black: "#000000",
   avatarBg: '#FFE6E6',
   neutral: '#F5F5F5',
+  mutedText: '#7E7E7E',
 };
 
 const TABCOLORS = {
