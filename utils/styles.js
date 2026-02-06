@@ -37,6 +37,7 @@ export const COLORS = {
   warning: '#D97706',
   white: "#FFFFFF",
   black: "#000000",
+  avatarBg: '#FFE6E6',
 };
 
 const TABCOLORS = {
