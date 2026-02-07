@@ -1,5 +1,6 @@
 export const translations = {
   en: {
+    // General
     HOME: 'Home',
     SETTINGS: 'Settings',
     PROFILE: 'Profile',
@@ -736,6 +737,7 @@ export const translations = {
   },
 
   pa: {
+
     // عمومی
     HOME: 'خانه',
     SETTINGS: 'تنظیمات',
