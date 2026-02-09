@@ -158,7 +158,7 @@ export const getSystemLanguage = () => {
   try {
     const locales = Localization.getLocales();
     return locales[0]?.languageCode || 'en';
-  } catch (error) {
+  } catch (err) {
     return 'en';
   }
 };
