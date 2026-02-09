@@ -2,7 +2,6 @@ import { initState } from './store';
 
 const bbStore = () =>
 {
-
   const setDonors = (donors, globalState) => ({donors});
   const setNews = (news, globalState) => ({news});
 
