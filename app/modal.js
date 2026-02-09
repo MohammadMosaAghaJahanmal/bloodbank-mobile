@@ -6,7 +6,7 @@ export default function ModalScreen() {
     <View style={{ flex: 1, gap: 10, alignItems: 'center', justifyContent: 'center', padding: 20 }}>
       <Text style={{ fontSize: 20 }}>This is a modal</Text>
       <Link href="/(tabs)" style={{ color: '#3b82f6', fontSize: 16 }}>
-        Go back Home
+        Go back to Home
       </Link>
     </View>
   );
