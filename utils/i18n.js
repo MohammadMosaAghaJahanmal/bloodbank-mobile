@@ -119,7 +119,6 @@ export const initializeI18n = async () => {
     return 'en';
   } catch (err) {
     console.log('🌐 Error initializing i18n:', err);
-    // Fallback to English
     i18n.locale = 'en';
     return 'en';
   }
