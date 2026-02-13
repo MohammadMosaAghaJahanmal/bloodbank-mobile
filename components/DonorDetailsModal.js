@@ -12,7 +12,6 @@ import { COLORS } from "../utils/styles";
 
 const { width } = Dimensions.get('window');
 
-
 const DonorDetailsModal = ({ visible, donor, onClose, t }) => {
   if (!donor) return null;
 
