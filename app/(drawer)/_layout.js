@@ -20,7 +20,6 @@ import { COLORS, globalStyle } from '../../utils/styles';
 
 const {drawer : styles} = globalStyle
 
-
 const LANGUAGES = [
   { code: 'en', label: 'English', rtl: false, short: 'EN' },
   { code: 'ps', label: 'پښتو',   rtl: true,  short: 'PS' },
