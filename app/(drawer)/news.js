@@ -20,7 +20,6 @@ import i18n, { t } from '../../utils/i18n';
 import serverPath from '../../utils/serverPath';
 import { COLORS, globalStyle } from '../../utils/styles';
 
-
 const NewsScreen = () => {
   const { createRTLStyles, isRTL, writingDirection } = useRTLStyles();
   
