@@ -1,6 +1,5 @@
 import { Link } from 'expo-router';
 import { Text, View } from 'react-native';
-
 export default function ModalScreen() {
   return (
     <View style={{ flex: 1, gap: 10, alignItems: 'center', justifyContent: 'center', padding: 20 }}>
